@@ -3,5 +3,13 @@
   "dest": "dist",
   "lib": {
     "entryFile": "src/index.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["@teqbench/tbx-mat-icons", "@teqbench/tbx-mat-severity-icons"],
+  "assets": [
+    {
+      "input": "src/styles",
+      "glob": "**/*",
+      "output": "styles"
+    }
+  ]
 }
