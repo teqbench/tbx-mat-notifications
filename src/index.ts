@@ -5,6 +5,7 @@
  *   - NotificationService     — inject and call success/error/warn/info/help
  *   - SeverityLevelType       — severity enum (re-exported from @teqbench/tbx-mat-severity-icons)
  *   - NotificationConfig      — full config interface for show()
+ *   - NotificationConfigArgsType — optional config for convenience methods
  *   - NOTIFICATION_ICON_SERVICE — optional injection token for custom icon service
  *   - NotificationIconService — default icon implementation (Material Symbols Rounded)
  *
