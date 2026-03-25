@@ -68,7 +68,8 @@
     "zone.js": "^0.16.1"
   },
   "overrides": {
-    "undici": ">=7.24.0"
+    "undici": ">=7.24.0",
+    "picomatch": ">=4.0.4"
   },
   "lint-staged": {
     "*.{ts,json,md,yml,yaml}": [
