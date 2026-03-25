@@ -27,7 +27,7 @@ Import the global notification styles in your application's stylesheet:
 ## Usage
 
 ```typescript
-import { NotificationService } from '@teqbench/tbx-mat-notifications';
+import { NotificationService, SeverityLevelType } from '@teqbench/tbx-mat-notifications';
 
 // Inject the service
 private readonly notify = inject(NotificationService);
