@@ -3,7 +3,7 @@ import angular from 'angular-eslint';
 
 export default tseslint.config(
     {
-        ignores: ['coverage/', 'dist/', 'node_modules/'],
+        ignores: ['coverage/', 'dist/', 'node_modules/', '.storybook/', 'storybook-static/'],
     },
     ...tseslint.configs.recommended,
     ...angular.configs.tsRecommended,
