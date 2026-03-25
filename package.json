@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "Opinionated Angular notification service built on Material snackbar. Provides severity-leveled methods (success, error, warn, info, help), FIFO queuing with signal-based state, configurable duration/position, and a pure-CSS countdown bar — no JS timers. Designed for Angular 21+ zoneless applications.",
   "type": "module",
+  "exports": {
+    "./styles/*": {
+      "sass": "./styles/_*.scss"
+    }
+  },
   "license": "Apache-2.0",
   "engines": {
     "node": ">=24.0.0"
