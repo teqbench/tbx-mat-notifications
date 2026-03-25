@@ -4,9 +4,7 @@ This file provides guidance for Claude Code when working in this repository.
 
 ## Package Overview
 
-<!-- TODO: Describe what this package does and its primary use case -->
-
-This is a `@teqbench` npm package built with TypeScript.
+`@teqbench/tbx-mat-notifications` is an opinionated Angular notification service built on Material snackbar. It provides severity-leveled methods (success, error, warn, info, help), FIFO queuing with signal-based state, configurable duration/position, and a pure-CSS countdown bar — no JS timers. Designed for Angular 21+ zoneless applications.
 
 ## Tech Stack
 
@@ -78,5 +76,3 @@ Follow **Conventional Commits** strictly:
 - Never delete branches.
 - Never modify CI workflow files without explicit instruction.
 - Never modify `release-please-config.json`, `.release-please-manifest.json`, or `CHANGELOG.md`.
-
-<!-- TODO: Add package-specific guidance below -->
