@@ -1,0 +1,162 @@
+@use '@angular/material' as mat;
+
+/* ─── Notification Color Tokens ─────────────────────────────────────────────
+ *
+ * Default notification colors follow universal UX conventions:
+ *   success = green, error = red, warning = amber, info = blue, help = blue
+ *
+ * These are intentionally NOT tied to --mat-sys-* palette tokens because
+ * notification severity colors must be immediately recognizable regardless
+ * of theme. A purple-themed app still needs red errors and green successes.
+ *
+ * Themes can optionally override these via html[data-theme="id"] blocks
+ * in the consuming application's theme stylesheet by redefining the
+ * --tbx-notification-* properties.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+html {
+    /* Success — green */
+    --tbx-notification-success-bg: #2e7d32;
+    --tbx-notification-success-text: #ffffff;
+
+    /* Error — red */
+    --tbx-notification-error-bg: #c62828;
+    --tbx-notification-error-text: #ffffff;
+
+    /* Warning — amber */
+    --tbx-notification-warning-bg: #f9a825;
+    --tbx-notification-warning-text: #ffffff;
+
+    /* Info — blue */
+    --tbx-notification-info-bg: #1565c0;
+    --tbx-notification-info-text: #ffffff;
+
+    /* Help — blue (lighter) */
+    --tbx-notification-help-bg: #1976d2;
+    --tbx-notification-help-text: #ffffff;
+}
+
+/* ─── Panel Styles ──────────────────────────────────────────────────────────
+ *
+ * Applied via MatSnackBarConfig.panelClass in NotificationService.
+ *
+ * Uses Angular Material's recommended override mixin API:
+ *   mat.snack-bar-overrides()   — container and text colors
+ *   mat.icon-button-overrides() — dismiss button icon color
+ *
+ * This replaces the prior approach of targeting .mdc-snackbar__surface with
+ * !important overrides and child selectors, which was brittle and broke
+ * specificity for downstream consumers.
+ *
+ * See: https://material.angular.dev/components/snack-bar/styling
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+.tbx-snackbar-success {
+    @include mat.snack-bar-overrides(
+        (
+            container-color: var(--tbx-notification-success-bg),
+            supporting-text-color: var(--tbx-notification-success-text),
+        )
+    );
+
+    @include mat.icon-button-overrides(
+        (
+            icon-color: var(--tbx-notification-success-text),
+        )
+    );
+}
+
+.tbx-snackbar-error {
+    @include mat.snack-bar-overrides(
+        (
+            container-color: var(--tbx-notification-error-bg),
+            supporting-text-color: var(--tbx-notification-error-text),
+        )
+    );
+
+    @include mat.icon-button-overrides(
+        (
+            icon-color: var(--tbx-notification-error-text),
+        )
+    );
+}
+
+.tbx-snackbar-warning {
+    @include mat.snack-bar-overrides(
+        (
+            container-color: var(--tbx-notification-warning-bg),
+            supporting-text-color: var(--tbx-notification-warning-text),
+        )
+    );
+
+    @include mat.icon-button-overrides(
+        (
+            icon-color: var(--tbx-notification-warning-text),
+        )
+    );
+}
+
+.tbx-snackbar-info {
+    @include mat.snack-bar-overrides(
+        (
+            container-color: var(--tbx-notification-info-bg),
+            supporting-text-color: var(--tbx-notification-info-text),
+        )
+    );
+
+    @include mat.icon-button-overrides(
+        (
+            icon-color: var(--tbx-notification-info-text),
+        )
+    );
+}
+
+.tbx-snackbar-help {
+    @include mat.snack-bar-overrides(
+        (
+            container-color: var(--tbx-notification-help-bg),
+            supporting-text-color: var(--tbx-notification-help-text),
+        )
+    );
+
+    @include mat.icon-button-overrides(
+        (
+            icon-color: var(--tbx-notification-help-text),
+        )
+    );
+}
+
+/* ─── Countdown Bar ─────────────────────────────────────────────────────────
+ *
+ * The countdown element is rendered by NotificationComponent but
+ * positioned globally because it must break out of the component's content
+ * padding to span the full width of the snackbar surface. Global CSS can
+ * reach into the component; component-scoped CSS cannot reach up to the
+ * surface container.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+    position: relative;
+    overflow: hidden;
+}
+
+.mat-mdc-snack-bar-container .snackbar-countdown {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: currentColor;
+    opacity: 0.4;
+    transform-origin: left;
+    animation: countdown linear forwards;
+}
+
+@keyframes countdown {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
+    }
+}
