@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.0](https://github.com/teqbench/tbx-mat-notifications/compare/v0.1.1...v0.2.0) (2026-03-26)
+
+
+### Features
+
+* **storybook:** add Storybook with Analog.js Vite builder ([55428d4](https://github.com/teqbench/tbx-mat-notifications/commit/55428d44c4974f93790ad764dc3d5e556d52d663))
+* **storybook:** add Storybook with Analog.js Vite builder ([57a5cb6](https://github.com/teqbench/tbx-mat-notifications/commit/57a5cb6fdf14765acd2c5085a7e831892749fcc1)), closes [#16](https://github.com/teqbench/tbx-mat-notifications/issues/16)
+
+
+### Bug Fixes
+
+* **component:** restructure notification layout to use native Material snackbar directives ([bce3222](https://github.com/teqbench/tbx-mat-notifications/commit/bce3222429de521e4eb2e7e8920d7392ecd81ed2))
+* **component:** restructure notification layout to use native Material snackbar directives ([f3d95d4](https://github.com/teqbench/tbx-mat-notifications/commit/f3d95d4f4dede31be7d381d1e044619290882bd2)), closes [#15](https://github.com/teqbench/tbx-mat-notifications/issues/15) [#18](https://github.com/teqbench/tbx-mat-notifications/issues/18)
+* **deps:** align Storybook Angular deps to match @angular/core@21.2.5 ([411007b](https://github.com/teqbench/tbx-mat-notifications/commit/411007b0f39c421e941ec03357c240a68df5127c))
+* **deps:** regenerate lockfile for clean npm ci resolution ([60a6195](https://github.com/teqbench/tbx-mat-notifications/commit/60a6195f41ee4758b3a22e5e5ec0cf9b8c63f440))
+
 ## [0.1.1](https://github.com/teqbench/tbx-mat-notifications/compare/v0.1.0...v0.1.1) (2026-03-25)
 
 
