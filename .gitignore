@@ -3,6 +3,7 @@
 # Compiled output
 /dist
 /out-tsc
+/storybook-static
 
 # Node
 /node_modules

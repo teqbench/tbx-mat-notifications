@@ -63,7 +63,7 @@ describe('NotificationComponent', () => {
             it(`should display "${expectedIcon}" icon for ${type}`, () => {
                 const fixture = createFixture(buildData({ type }));
 
-                const icon = fixture.debugElement.query(By.css('.snackbar-icon'));
+                const icon = fixture.debugElement.query(By.css('.tbx-snackbar-icon'));
                 expect(icon.nativeElement.textContent.trim()).toBe(expectedIcon);
             });
         }
@@ -82,7 +82,7 @@ describe('NotificationComponent', () => {
             it(`should fall back to "${expectedIcon}" for ${type}`, () => {
                 const fixture = createFixtureWithoutIconService(buildData({ type }));
 
-                const icon = fixture.debugElement.query(By.css('.snackbar-icon'));
+                const icon = fixture.debugElement.query(By.css('.tbx-snackbar-icon'));
                 expect(icon.nativeElement.textContent.trim()).toBe(expectedIcon);
             });
         }
@@ -92,7 +92,7 @@ describe('NotificationComponent', () => {
         it('should display the provided message', () => {
             const fixture = createFixture(buildData({ message: 'Hello world' }));
 
-            const message = fixture.debugElement.query(By.css('[matSnackBarLabel]'));
+            const message = fixture.debugElement.query(By.css('[matSnackBarLabel] span'));
             expect(message.nativeElement.textContent.trim()).toBe('Hello world');
         });
     });
@@ -122,21 +122,21 @@ describe('NotificationComponent', () => {
         it('should not render countdown bar when showCountdown is false', () => {
             const fixture = createFixture(buildData({ showCountdown: false }));
 
-            const countdown = fixture.debugElement.query(By.css('.snackbar-countdown'));
+            const countdown = fixture.debugElement.query(By.css('.tbx-snackbar-countdown'));
             expect(countdown).toBeNull();
         });
 
         it('should render countdown bar when showCountdown is true', () => {
             const fixture = createFixture(buildData({ showCountdown: true }));
 
-            const countdown = fixture.debugElement.query(By.css('.snackbar-countdown'));
+            const countdown = fixture.debugElement.query(By.css('.tbx-snackbar-countdown'));
             expect(countdown).not.toBeNull();
         });
 
         it('should set animation-duration to the provided duration', () => {
             const fixture = createFixture(buildData({ showCountdown: true, duration: 3000 }));
 
-            const countdown = fixture.debugElement.query(By.css('.snackbar-countdown'));
+            const countdown = fixture.debugElement.query(By.css('.tbx-snackbar-countdown'));
             expect(countdown.nativeElement.style.animationDuration).toBe('3000ms');
         });
     });

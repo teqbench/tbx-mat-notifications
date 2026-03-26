@@ -18,6 +18,12 @@ Install the package:
 npm install @teqbench/tbx-mat-notifications
 ```
 
+### Prerequisites
+
+This package renders inside Angular Material's snackbar overlay and relies on an **active M3 theme** for typography, shape (border-radius), and interactive states (button ripples, hover effects). If no Material theme is applied, notifications will render with unstyled browser defaults.
+
+Notification severity colors (success = green, error = red, etc.) are **not** tied to the theme palette — they use dedicated CSS custom properties and remain consistent regardless of which theme is active.
+
 Import the global notification styles in your application's stylesheet:
 
 ```scss
