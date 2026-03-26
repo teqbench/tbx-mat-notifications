@@ -26,6 +26,8 @@ This file provides guidance for Claude Code when working in this repository.
 - `npm run lint` — Run ESLint
 - `npm run format` — Format all files with Prettier
 - `npm run format:check` — Check formatting (CI mode)
+- `npm run storybook` — Start Storybook dev server on port 6006
+- `npm run build-storybook` — Build static Storybook output
 
 ## Project Structure
 

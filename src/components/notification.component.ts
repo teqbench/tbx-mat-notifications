@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+import {
+    MatSnackBarLabel,
+    MatSnackBarActions,
+    MatSnackBarAction,
+    MAT_SNACK_BAR_DATA,
+} from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {
-    MatSnackBarAction,
-    MatSnackBarActions,
-    MatSnackBarLabel,
-} from '@angular/material/snack-bar';
 import { SeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import { NOTIFICATION_ICON_SERVICE } from '../tokens/notification-icon-service.token';
 import { type NotificationData } from '../models/notification-data.model';
@@ -40,49 +40,49 @@ import { type NotificationData } from '../models/notification-data.model';
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'tbx-snackbar-notification',
     imports: [
+        MatSnackBarLabel,
+        MatSnackBarActions,
+        MatSnackBarAction,
         MatButtonModule,
         MatIconModule,
-        MatSnackBarAction,
-        MatSnackBarActions,
-        MatSnackBarLabel,
     ],
     template: `
-        <div class="snackbar-container">
-            <mat-icon class="snackbar-icon">{{ icon() }}</mat-icon>
-            <span matSnackBarLabel>{{ data.message }}</span>
-            <span matSnackBarActions>
-                <button
-                    matIconButton
-                    matSnackBarAction
-                    (click)="data.dismiss()"
-                    aria-label="Dismiss notification"
-                >
-                    <mat-icon>close</mat-icon>
-                </button>
-            </span>
+        <div matSnackBarLabel class="tbx-snackbar-label">
+            <mat-icon class="tbx-snackbar-icon">{{ icon() }}</mat-icon>
+            <span>{{ data.message }}</span>
+        </div>
+        <div matSnackBarActions class="tbx-snackbar-actions">
+            <button
+                matIconButton
+                matSnackBarAction
+                (click)="data.dismiss()"
+                aria-label="Dismiss notification"
+            >
+                <mat-icon>close</mat-icon>
+            </button>
         </div>
         @if (data.showCountdown) {
-            <!-- Countdown uses a pure CSS scaleX animation rather than mat-progress-bar.
-                mat-progress-bar requires a JavaScript timer to increment its value property —
-                it cannot self-animate from 100% to 0%. The CSS approach runs on the compositor
-                thread (60fps, no layout recalc), requires zero JS, and stays perfectly in sync
-                with MatSnackBar's auto-dismiss because the same duration value drives both. -->
-            <div class="snackbar-countdown" [style.animation-duration.ms]="data.duration"></div>
+            <div class="tbx-snackbar-countdown" [style.animation-duration.ms]="data.duration"></div>
         }
     `,
     styles: `
-        [matSnackBarLabel] {
-            flex: 1;
+        :host {
+            display: flex;
+            padding: 0.25rem;
         }
 
-        .snackbar-container {
+        .tbx-snackbar-label {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            width: 100%;
+            gap: 1rem;
+            flex-grow: 1;
         }
 
-        .snackbar-icon {
+        .tbx-snackbar-actions {
+            padding-left: 1rem;
+        }
+
+        .tbx-snackbar-icon {
             flex-shrink: 0;
         }
     `,

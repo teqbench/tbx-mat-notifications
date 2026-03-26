@@ -103,6 +103,7 @@ Storybook requires several Angular packages as devDependencies that the library 
 - `@angular/common`
 - `@angular/cdk`
 - `@angular/animations`
+- `@angular/forms`
 - `@angular/platform-browser-dynamic`
 
 These are listed in `devDependencies` and are not published as part of the package.
