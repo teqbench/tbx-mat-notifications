@@ -7,7 +7,7 @@ import {
 } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { SeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import { NOTIFICATION_ICON_SERVICE } from '../tokens/notification-icon-service.token';
 import { type NotificationData } from '../models/notification-data.model';
 
@@ -92,23 +92,23 @@ export class NotificationComponent {
     private readonly icons = inject(NOTIFICATION_ICON_SERVICE, { optional: true });
 
     /** Hardcoded fallbacks when NOTIFICATION_ICON_SERVICE is not provided. */
-    private static readonly FALLBACK_ICONS: Readonly<Record<SeverityLevelType, string>> = {
-        [SeverityLevelType.Success]: 'check_circle',
-        [SeverityLevelType.Error]: 'error',
-        [SeverityLevelType.Warning]: 'warning_amber',
-        [SeverityLevelType.Information]: 'info',
-        [SeverityLevelType.Help]: 'help',
+    private static readonly FALLBACK_ICONS: Readonly<Record<TbxMatSeverityLevelType, string>> = {
+        [TbxMatSeverityLevelType.Success]: 'check_circle',
+        [TbxMatSeverityLevelType.Error]: 'error',
+        [TbxMatSeverityLevelType.Warning]: 'warning_amber',
+        [TbxMatSeverityLevelType.Information]: 'info',
+        [TbxMatSeverityLevelType.Help]: 'help',
     };
 
     readonly icon = computed(() => this.resolveIcon(this.data.type));
 
     /**
-     * Map SeverityLevelType to the corresponding icon ligature.
-     * Delegates to the injected SeverityIconService.resolve() when available,
+     * Map TbxMatSeverityLevelType to the corresponding icon ligature.
+     * Delegates to the injected TbxMatSeverityIconService.resolve() when available,
      * falling back to hardcoded ligatures if the icon service is not provided
      * or returns a falsy value.
      */
-    private resolveIcon(type: SeverityLevelType): string {
+    private resolveIcon(type: TbxMatSeverityLevelType): string {
         const resolved = this.icons?.resolve(type);
         return resolved || NotificationComponent.FALLBACK_ICONS[type];
     }

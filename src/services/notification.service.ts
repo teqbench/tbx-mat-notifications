@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { SeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import { NotificationComponent } from '../components/notification.component';
 import { type NotificationConfigArgsType } from '../types/notification-config-args.type';
 import { type NotificationConfig } from '../models/notification-config.model';
@@ -23,12 +23,12 @@ import {
  * partial into their global stylesheet (snackbar overlays render
  * outside component scope).
  */
-const PANEL_CLASS_MAP: Readonly<Record<SeverityLevelType, string>> = {
-    [SeverityLevelType.Success]: 'tbx-snackbar-success',
-    [SeverityLevelType.Error]: 'tbx-snackbar-error',
-    [SeverityLevelType.Warning]: 'tbx-snackbar-warning',
-    [SeverityLevelType.Information]: 'tbx-snackbar-info',
-    [SeverityLevelType.Help]: 'tbx-snackbar-help',
+const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
+    [TbxMatSeverityLevelType.Success]: 'tbx-snackbar-success',
+    [TbxMatSeverityLevelType.Error]: 'tbx-snackbar-error',
+    [TbxMatSeverityLevelType.Warning]: 'tbx-snackbar-warning',
+    [TbxMatSeverityLevelType.Information]: 'tbx-snackbar-info',
+    [TbxMatSeverityLevelType.Help]: 'tbx-snackbar-help',
 };
 
 /**
@@ -61,7 +61,7 @@ const PANEL_CLASS_MAP: Readonly<Record<SeverityLevelType, string>> = {
  * For full control over type, duration, position, and countdown:
  * ```typescript
  * this.notify.show({
- *     type: SeverityLevelType.Warning,
+ *     type: TbxMatSeverityLevelType.Warning,
  *     message: 'Unsaved changes will be lost.',
  *     duration: 6000,
  *     showCountdown: true,
@@ -176,7 +176,7 @@ export class NotificationService {
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
     success(message: string, configArgs?: NotificationConfigArgsType): void {
-        this.show({ type: SeverityLevelType.Success, message, ...configArgs });
+        this.show({ type: TbxMatSeverityLevelType.Success, message, ...configArgs });
     }
 
     /**
@@ -186,7 +186,7 @@ export class NotificationService {
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
     error(message: string, configArgs?: NotificationConfigArgsType): void {
-        this.show({ type: SeverityLevelType.Error, message, ...configArgs });
+        this.show({ type: TbxMatSeverityLevelType.Error, message, ...configArgs });
     }
 
     /**
@@ -196,7 +196,7 @@ export class NotificationService {
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
     warn(message: string, configArgs?: NotificationConfigArgsType): void {
-        this.show({ type: SeverityLevelType.Warning, message, ...configArgs });
+        this.show({ type: TbxMatSeverityLevelType.Warning, message, ...configArgs });
     }
 
     /**
@@ -206,7 +206,7 @@ export class NotificationService {
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
     info(message: string, configArgs?: NotificationConfigArgsType): void {
-        this.show({ type: SeverityLevelType.Information, message, ...configArgs });
+        this.show({ type: TbxMatSeverityLevelType.Information, message, ...configArgs });
     }
 
     /**
@@ -216,7 +216,7 @@ export class NotificationService {
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
     help(message: string, configArgs?: NotificationConfigArgsType): void {
-        this.show({ type: SeverityLevelType.Help, message, ...configArgs });
+        this.show({ type: TbxMatSeverityLevelType.Help, message, ...configArgs });
     }
 
     /**

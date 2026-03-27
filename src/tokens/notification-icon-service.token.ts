@@ -1,10 +1,10 @@
 import { InjectionToken } from '@angular/core';
-import type { SeverityIconService } from '@teqbench/tbx-mat-severity-icons';
+import type { TbxMatSeverityIconService } from '@teqbench/tbx-mat-severity-icons';
 
 /**
  * Optional injection token for customizing notification icons.
  *
- * Provide a SeverityIconService implementation to override the default
+ * Provide a TbxMatSeverityIconService implementation to override the default
  * hardcoded Material Icons ligatures used by NotificationComponent.
  *
  * ```typescript
@@ -13,6 +13,6 @@ import type { SeverityIconService } from '@teqbench/tbx-mat-severity-icons';
  * ]
  * ```
  */
-export const NOTIFICATION_ICON_SERVICE = new InjectionToken<SeverityIconService>(
+export const NOTIFICATION_ICON_SERVICE = new InjectionToken<TbxMatSeverityIconService>(
     'NOTIFICATION_ICON_SERVICE'
 );

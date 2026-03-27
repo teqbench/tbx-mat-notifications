@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
-import { SeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import { NOTIFICATION_ICON_SERVICE } from '../tokens/notification-icon-service.token';
 import { NotificationIconService } from './notification-icon.service';
 import { NotificationService } from './notification.service';
@@ -52,7 +52,7 @@ describe('NotificationService', () => {
     describe('show()', () => {
         it('should open snackbar with NotificationComponent', () => {
             service.show({
-                type: SeverityLevelType.Success,
+                type: TbxMatSeverityLevelType.Success,
                 message: 'Saved',
             });
 
@@ -60,7 +60,7 @@ describe('NotificationService', () => {
                 NotificationComponent,
                 expect.objectContaining({
                     data: expect.objectContaining({
-                        type: SeverityLevelType.Success,
+                        type: TbxMatSeverityLevelType.Success,
                         message: 'Saved',
                     }),
                 })
@@ -69,7 +69,7 @@ describe('NotificationService', () => {
 
         it('should position snackbar at bottom-start', () => {
             service.show({
-                type: SeverityLevelType.Information,
+                type: TbxMatSeverityLevelType.Information,
                 message: 'Hello',
             });
 
@@ -79,12 +79,12 @@ describe('NotificationService', () => {
         });
 
         it('should apply the correct panel class for each type', () => {
-            const cases: Array<[SeverityLevelType, string]> = [
-                [SeverityLevelType.Success, 'tbx-snackbar-success'],
-                [SeverityLevelType.Error, 'tbx-snackbar-error'],
-                [SeverityLevelType.Warning, 'tbx-snackbar-warning'],
-                [SeverityLevelType.Information, 'tbx-snackbar-info'],
-                [SeverityLevelType.Help, 'tbx-snackbar-help'],
+            const cases: Array<[TbxMatSeverityLevelType, string]> = [
+                [TbxMatSeverityLevelType.Success, 'tbx-snackbar-success'],
+                [TbxMatSeverityLevelType.Error, 'tbx-snackbar-error'],
+                [TbxMatSeverityLevelType.Warning, 'tbx-snackbar-warning'],
+                [TbxMatSeverityLevelType.Information, 'tbx-snackbar-info'],
+                [TbxMatSeverityLevelType.Help, 'tbx-snackbar-help'],
             ];
 
             for (const [type, expectedClass] of cases) {
@@ -106,7 +106,7 @@ describe('NotificationService', () => {
 
         it('should use default duration when none is provided', () => {
             service.show({
-                type: SeverityLevelType.Information,
+                type: TbxMatSeverityLevelType.Information,
                 message: 'Hello',
             });
 
@@ -116,7 +116,7 @@ describe('NotificationService', () => {
 
         it('should use the provided duration when within range', () => {
             service.show({
-                type: SeverityLevelType.Information,
+                type: TbxMatSeverityLevelType.Information,
                 message: 'Hello',
                 duration: 3000,
             });
@@ -127,7 +127,7 @@ describe('NotificationService', () => {
 
         it('should clamp duration to minimum', () => {
             service.show({
-                type: SeverityLevelType.Information,
+                type: TbxMatSeverityLevelType.Information,
                 message: 'Hello',
                 duration: 100,
             });
@@ -138,7 +138,7 @@ describe('NotificationService', () => {
 
         it('should clamp duration to maximum', () => {
             service.show({
-                type: SeverityLevelType.Information,
+                type: TbxMatSeverityLevelType.Information,
                 message: 'Hello',
                 duration: 99_000,
             });
@@ -149,7 +149,7 @@ describe('NotificationService', () => {
 
         it('should provide a dismiss callback in the data', () => {
             service.show({
-                type: SeverityLevelType.Success,
+                type: TbxMatSeverityLevelType.Success,
                 message: 'Done',
             });
 
@@ -161,7 +161,7 @@ describe('NotificationService', () => {
 
         it('should pass resolved duration in data for countdown animation', () => {
             service.show({
-                type: SeverityLevelType.Information,
+                type: TbxMatSeverityLevelType.Information,
                 message: 'Hello',
                 duration: 3000,
             });
@@ -172,7 +172,7 @@ describe('NotificationService', () => {
 
         it('should pass default duration in data when none is provided', () => {
             service.show({
-                type: SeverityLevelType.Information,
+                type: TbxMatSeverityLevelType.Information,
                 message: 'Hello',
             });
 
@@ -184,7 +184,7 @@ describe('NotificationService', () => {
     describe('showCountdown', () => {
         it('should default showCountdown to false', () => {
             service.show({
-                type: SeverityLevelType.Information,
+                type: TbxMatSeverityLevelType.Information,
                 message: 'Hello',
             });
 
@@ -194,7 +194,7 @@ describe('NotificationService', () => {
 
         it('should pass showCountdown true when specified', () => {
             service.show({
-                type: SeverityLevelType.Information,
+                type: TbxMatSeverityLevelType.Information,
                 message: 'Hello',
                 showCountdown: true,
             });
@@ -213,23 +213,23 @@ describe('NotificationService', () => {
 
     describe('queue', () => {
         it('should display the first notification immediately', () => {
-            service.show({ type: SeverityLevelType.Success, message: 'First' });
+            service.show({ type: TbxMatSeverityLevelType.Success, message: 'First' });
 
             expect(snackBarSpy.openFromComponent).toHaveBeenCalledTimes(1);
             expect(snackBarSpy.openFromComponent.mock.calls[0][1].data.message).toBe('First');
         });
 
         it('should not display a second notification until the first is dismissed', () => {
-            service.show({ type: SeverityLevelType.Success, message: 'First' });
-            service.show({ type: SeverityLevelType.Error, message: 'Second' });
+            service.show({ type: TbxMatSeverityLevelType.Success, message: 'First' });
+            service.show({ type: TbxMatSeverityLevelType.Error, message: 'Second' });
 
             expect(snackBarSpy.openFromComponent).toHaveBeenCalledTimes(1);
             expect(snackBarSpy.openFromComponent.mock.calls[0][1].data.message).toBe('First');
         });
 
         it('should display the second notification after the first is dismissed', () => {
-            service.show({ type: SeverityLevelType.Success, message: 'First' });
-            service.show({ type: SeverityLevelType.Error, message: 'Second' });
+            service.show({ type: TbxMatSeverityLevelType.Success, message: 'First' });
+            service.show({ type: TbxMatSeverityLevelType.Error, message: 'Second' });
 
             // Simulate first notification dismissed
             afterDismissed$.next();
@@ -239,9 +239,9 @@ describe('NotificationService', () => {
         });
 
         it('should process multiple queued notifications in FIFO order', () => {
-            service.show({ type: SeverityLevelType.Success, message: 'First' });
-            service.show({ type: SeverityLevelType.Error, message: 'Second' });
-            service.show({ type: SeverityLevelType.Warning, message: 'Third' });
+            service.show({ type: TbxMatSeverityLevelType.Success, message: 'First' });
+            service.show({ type: TbxMatSeverityLevelType.Error, message: 'Second' });
+            service.show({ type: TbxMatSeverityLevelType.Warning, message: 'Third' });
 
             // Set up fresh subject for the second notification BEFORE dismissing the first
             const secondDismissed$ = new Subject<void>();
@@ -265,19 +265,19 @@ describe('NotificationService', () => {
         it('should report correct pendingCount', () => {
             expect(service.pendingCount()).toBe(0);
 
-            service.show({ type: SeverityLevelType.Success, message: 'First' });
+            service.show({ type: TbxMatSeverityLevelType.Success, message: 'First' });
             // First is immediately shown (shifted off queue)
             expect(service.pendingCount()).toBe(0);
 
-            service.show({ type: SeverityLevelType.Error, message: 'Second' });
+            service.show({ type: TbxMatSeverityLevelType.Error, message: 'Second' });
             expect(service.pendingCount()).toBe(1);
 
-            service.show({ type: SeverityLevelType.Warning, message: 'Third' });
+            service.show({ type: TbxMatSeverityLevelType.Warning, message: 'Third' });
             expect(service.pendingCount()).toBe(2);
         });
 
         it('should accept new notifications after queue drains', () => {
-            service.show({ type: SeverityLevelType.Success, message: 'First' });
+            service.show({ type: TbxMatSeverityLevelType.Success, message: 'First' });
             afterDismissed$.next();
 
             // Queue is empty, service should accept new notifications
@@ -286,7 +286,7 @@ describe('NotificationService', () => {
                 afterDismissed: () => afterDismissed$.asObservable(),
             });
 
-            service.show({ type: SeverityLevelType.Error, message: 'New' });
+            service.show({ type: TbxMatSeverityLevelType.Error, message: 'New' });
 
             expect(snackBarSpy.openFromComponent).toHaveBeenCalledTimes(2);
             expect(snackBarSpy.openFromComponent.mock.calls[1][1].data.message).toBe('New');
@@ -295,14 +295,14 @@ describe('NotificationService', () => {
 
     describe('dismiss()', () => {
         it('should call snackBar.dismiss()', () => {
-            service.show({ type: SeverityLevelType.Success, message: 'Test' });
+            service.show({ type: TbxMatSeverityLevelType.Success, message: 'Test' });
             service.dismiss();
             expect(snackBarSpy.dismiss).toHaveBeenCalled();
         });
 
         it('should advance to the next queued notification', () => {
-            service.show({ type: SeverityLevelType.Success, message: 'First' });
-            service.show({ type: SeverityLevelType.Error, message: 'Second' });
+            service.show({ type: TbxMatSeverityLevelType.Success, message: 'First' });
+            service.show({ type: TbxMatSeverityLevelType.Error, message: 'Second' });
 
             service.dismiss();
             // Simulate dismiss completing
@@ -315,16 +315,16 @@ describe('NotificationService', () => {
 
     describe('dismissAll()', () => {
         it('should dismiss the current notification', () => {
-            service.show({ type: SeverityLevelType.Success, message: 'Test' });
+            service.show({ type: TbxMatSeverityLevelType.Success, message: 'Test' });
             service.dismissAll();
 
             expect(snackBarSpy.dismiss).toHaveBeenCalled();
         });
 
         it('should clear the queue so no further notifications show', () => {
-            service.show({ type: SeverityLevelType.Success, message: 'First' });
-            service.show({ type: SeverityLevelType.Error, message: 'Second' });
-            service.show({ type: SeverityLevelType.Warning, message: 'Third' });
+            service.show({ type: TbxMatSeverityLevelType.Success, message: 'First' });
+            service.show({ type: TbxMatSeverityLevelType.Error, message: 'Second' });
+            service.show({ type: TbxMatSeverityLevelType.Warning, message: 'Third' });
 
             service.dismissAll();
 
@@ -334,8 +334,8 @@ describe('NotificationService', () => {
         });
 
         it('should allow new notifications after dismissAll', () => {
-            service.show({ type: SeverityLevelType.Success, message: 'First' });
-            service.show({ type: SeverityLevelType.Error, message: 'Queued' });
+            service.show({ type: TbxMatSeverityLevelType.Success, message: 'First' });
+            service.show({ type: TbxMatSeverityLevelType.Error, message: 'Queued' });
 
             service.dismissAll();
 
@@ -346,7 +346,7 @@ describe('NotificationService', () => {
                 afterDismissed: () => afterDismissed$.asObservable(),
             });
 
-            service.show({ type: SeverityLevelType.Help, message: 'Fresh' });
+            service.show({ type: TbxMatSeverityLevelType.Help, message: 'Fresh' });
 
             expect(snackBarSpy.openFromComponent).toHaveBeenCalledTimes(1);
             expect(snackBarSpy.openFromComponent.mock.calls[0][1].data.message).toBe('Fresh');
@@ -364,7 +364,7 @@ describe('NotificationService', () => {
             service.success('Saved');
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
-            expect(config.data.type).toBe(SeverityLevelType.Success);
+            expect(config.data.type).toBe(TbxMatSeverityLevelType.Success);
             expect(config.data.message).toBe('Saved');
         });
 
@@ -372,7 +372,7 @@ describe('NotificationService', () => {
             service.error('Failed');
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
-            expect(config.data.type).toBe(SeverityLevelType.Error);
+            expect(config.data.type).toBe(TbxMatSeverityLevelType.Error);
             expect(config.data.message).toBe('Failed');
         });
 
@@ -380,7 +380,7 @@ describe('NotificationService', () => {
             service.warn('Careful');
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
-            expect(config.data.type).toBe(SeverityLevelType.Warning);
+            expect(config.data.type).toBe(TbxMatSeverityLevelType.Warning);
             expect(config.data.message).toBe('Careful');
         });
 
@@ -388,7 +388,7 @@ describe('NotificationService', () => {
             service.info('FYI');
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
-            expect(config.data.type).toBe(SeverityLevelType.Information);
+            expect(config.data.type).toBe(TbxMatSeverityLevelType.Information);
             expect(config.data.message).toBe('FYI');
         });
 
@@ -396,7 +396,7 @@ describe('NotificationService', () => {
             service.help('Try this');
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
-            expect(config.data.type).toBe(SeverityLevelType.Help);
+            expect(config.data.type).toBe(TbxMatSeverityLevelType.Help);
             expect(config.data.message).toBe('Try this');
         });
 

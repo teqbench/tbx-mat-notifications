@@ -33,7 +33,7 @@ Import the global notification styles in your application's stylesheet:
 ## Usage
 
 ```typescript
-import { NotificationService, SeverityLevelType } from '@teqbench/tbx-mat-notifications';
+import { NotificationService, TbxMatSeverityLevelType } from '@teqbench/tbx-mat-notifications';
 
 // Inject the service
 private readonly notify = inject(NotificationService);
@@ -47,7 +47,7 @@ this.notify.help('Click the + button to add a new item.');
 
 // Full control via show()
 this.notify.show({
-  type: SeverityLevelType.Warning,
+  type: TbxMatSeverityLevelType.Warning,
   message: 'Unsaved changes will be lost.',
   duration: 6000,
   showCountdown: true,
@@ -64,7 +64,7 @@ this.notify.dismissAll();    // clear current + all queued
 
 ### Custom Icon Service
 
-Provide a custom `SeverityIconService` via the `NOTIFICATION_ICON_SERVICE` token:
+Provide a custom `TbxMatSeverityIconService` via the `NOTIFICATION_ICON_SERVICE` token:
 
 ```typescript
 import { NOTIFICATION_ICON_SERVICE, NotificationIconService } from '@teqbench/tbx-mat-notifications';
@@ -93,7 +93,7 @@ providers: [{ provide: NOTIFICATION_ICON_SERVICE, useClass: NotificationIconServ
 
 | Property             | Type                            | Default    | Description                        |
 | -------------------- | ------------------------------- | ---------- | ---------------------------------- |
-| `type`               | `SeverityLevelType`             | —          | Severity level (required)          |
+| `type`               | `TbxMatSeverityLevelType`       | —          | Severity level (required)          |
 | `message`            | `string`                        | —          | Message text (required)            |
 | `duration`           | `number`                        | 4000       | Duration in ms (clamped 1000–6000) |
 | `horizontalPosition` | `MatSnackBarHorizontalPosition` | `'start'`  | Horizontal position                |

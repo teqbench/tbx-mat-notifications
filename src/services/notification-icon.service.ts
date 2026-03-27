@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { SeverityIconService } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityIconService } from '@teqbench/tbx-mat-severity-icons';
 
 /**
  * Default notification icon service using Material Symbols Rounded.
  *
  * Provides icon ligatures for each severity level. Consumers can use this
- * implementation directly or provide their own SeverityIconService subclass
+ * implementation directly or provide their own TbxMatSeverityIconService subclass
  * via the NOTIFICATION_ICON_SERVICE injection token.
  */
 @Injectable()
-export class NotificationIconService extends SeverityIconService {
+export class NotificationIconService extends TbxMatSeverityIconService {
     constructor() {
         super('material-symbols-rounded');
     }

@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
-import { SeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import { NOTIFICATION_ICON_SERVICE } from '../tokens/notification-icon-service.token';
 import { NotificationIconService } from '../services/notification-icon.service';
 import { NotificationComponent } from './notification.component';
@@ -26,7 +26,7 @@ function createFixture(data: NotificationData): ComponentFixture<NotificationCom
 /** Helper to build NotificationData with sensible defaults. */
 function buildData(overrides: Partial<NotificationData> = {}): NotificationData {
     return {
-        type: SeverityLevelType.Information,
+        type: TbxMatSeverityLevelType.Information,
         message: 'Test',
         dismiss: vi.fn(),
         duration: NOTIFICATION_DEFAULT_DURATION_MS,
@@ -51,12 +51,12 @@ function createFixtureWithoutIconService(
 
 describe('NotificationComponent', () => {
     describe('icon mapping via NOTIFICATION_ICON_SERVICE', () => {
-        const cases: Array<[SeverityLevelType, string]> = [
-            [SeverityLevelType.Success, 'check_circle'],
-            [SeverityLevelType.Error, 'error'],
-            [SeverityLevelType.Warning, 'warning_amber'],
-            [SeverityLevelType.Information, 'info'],
-            [SeverityLevelType.Help, 'help'],
+        const cases: Array<[TbxMatSeverityLevelType, string]> = [
+            [TbxMatSeverityLevelType.Success, 'check_circle'],
+            [TbxMatSeverityLevelType.Error, 'error'],
+            [TbxMatSeverityLevelType.Warning, 'warning_amber'],
+            [TbxMatSeverityLevelType.Information, 'info'],
+            [TbxMatSeverityLevelType.Help, 'help'],
         ];
 
         for (const [type, expectedIcon] of cases) {
@@ -70,12 +70,12 @@ describe('NotificationComponent', () => {
     });
 
     describe('fallback icons when NOTIFICATION_ICON_SERVICE is not provided', () => {
-        const cases: Array<[SeverityLevelType, string]> = [
-            [SeverityLevelType.Success, 'check_circle'],
-            [SeverityLevelType.Error, 'error'],
-            [SeverityLevelType.Warning, 'warning_amber'],
-            [SeverityLevelType.Information, 'info'],
-            [SeverityLevelType.Help, 'help'],
+        const cases: Array<[TbxMatSeverityLevelType, string]> = [
+            [TbxMatSeverityLevelType.Success, 'check_circle'],
+            [TbxMatSeverityLevelType.Error, 'error'],
+            [TbxMatSeverityLevelType.Warning, 'warning_amber'],
+            [TbxMatSeverityLevelType.Information, 'info'],
+            [TbxMatSeverityLevelType.Help, 'help'],
         ];
 
         for (const [type, expectedIcon] of cases) {

@@ -2,7 +2,7 @@ import type {
     MatSnackBarHorizontalPosition,
     MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import { SeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 
 /**
  * Configuration for a single notification. Passed to NotificationService.show()
@@ -11,7 +11,7 @@ import { SeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
  */
 export interface NotificationConfig {
     /** Severity level — determines icon, color, and panel styling. */
-    readonly type: SeverityLevelType;
+    readonly type: TbxMatSeverityLevelType;
 
     /** Message text displayed in the snackbar body. */
     readonly message: string;
