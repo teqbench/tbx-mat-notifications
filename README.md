@@ -33,7 +33,7 @@ Import the global notification styles in your application's stylesheet:
 ## Usage
 
 ```typescript
-import { TbxMatNotificationService, TbxMatSeverityLevelType } from '@teqbench/tbx-mat-notifications';
+import { TbxMatNotificationService, TbxSeverityLevelType } from '@teqbench/tbx-mat-notifications';
 
 // Inject the service
 private readonly notify = inject(TbxMatNotificationService);
@@ -47,7 +47,7 @@ this.notify.help('Click the + button to add a new item.');
 
 // Full control via show()
 this.notify.show({
-  type: TbxMatSeverityLevelType.Warning,
+  type: TbxSeverityLevelType.Warning,
   message: 'Unsaved changes will be lost.',
   duration: 6000,
   showCountdown: true,
@@ -62,77 +62,143 @@ this.notify.dismiss();       // dismiss current (next in queue shows)
 this.notify.dismissAll();    // clear current + all queued
 ```
 
-### Icon Service
+### Icon Configuration
 
-Notification icons are resolved by the `TBX_MAT_NOTIFICATION_ICON_SERVICE` injection token. The built-in `TbxMatNotificationIconService` provides Material Symbols Rounded ligatures for each severity level.
+Icons are configured via the `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG` injection token. The config provides a severity icon resolver service and an optional close icon override.
 
-#### Font set resolution
+When not provided, the component falls back to hardcoded Material Symbols font ligatures for severity icons and uses `close` for the dismiss button.
 
-`TbxMatNotificationIconService` resolves its font set through a fallback chain:
+#### Font icons with `MAT_ICON_DEFAULT_OPTIONS`
 
-1. **Explicit `fontSet`** passed to the constructor via `useFactory`
-2. **`TBX_MAT_FONT_ICON_DEFAULT_FONT_SET` token** from `@teqbench/tbx-mat-icons` (application-level default)
-3. **Error** if neither is configured
-
-#### Using the application-level default
-
-If your app already provides `TBX_MAT_FONT_ICON_DEFAULT_FONT_SET`, register the icon service with no arguments — it inherits the default automatically:
+When the app already configures the global font set via `MAT_ICON_DEFAULT_OPTIONS`, the font icon service picks it up automatically — no explicit fontSet argument needed:
 
 ```typescript
-import { TBX_MAT_NOTIFICATION_ICON_SERVICE, TbxMatNotificationIconService } from '@teqbench/tbx-mat-notifications';
-
-providers: [{ provide: TBX_MAT_NOTIFICATION_ICON_SERVICE, useClass: TbxMatNotificationIconService }];
-```
-
-#### Overriding the font set per-service
-
-To use a different font set for notification icons without changing the app-wide default:
-
-```typescript
-import { TBX_MAT_NOTIFICATION_ICON_SERVICE, TbxMatNotificationIconService } from '@teqbench/tbx-mat-notifications';
+// app.config.ts
+import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
+import {
+    TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+    TbxMatNotificationFontIconService,
+} from '@teqbench/tbx-mat-notifications';
 
 providers: [
+    { provide: MAT_ICON_DEFAULT_OPTIONS, useValue: { fontSet: 'material-symbols-rounded' } },
     {
-        provide: TBX_MAT_NOTIFICATION_ICON_SERVICE,
-        useFactory: () => new TbxMatNotificationIconService('material-symbols-outlined'),
+        provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+        useFactory: () => ({
+            severityIconResolverService: new TbxMatNotificationFontIconService(),
+        }),
     },
 ];
 ```
 
-#### Providing a fully custom icon service
+#### Font icons with explicit fontSet
 
-Subclass `TbxMatSeverityIconService` from `@teqbench/tbx-mat-severity-icons` to map severity levels to your own icon ligatures:
+Pass the fontSet directly to use a specific font regardless of global configuration:
+
+```typescript
+// app.config.ts
+import {
+    TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+    TbxMatNotificationFontIconService,
+} from '@teqbench/tbx-mat-notifications';
+
+providers: [
+    {
+        provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+        useFactory: () => ({
+            severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
+        }),
+    },
+];
+```
+
+#### Font icons with `TBX_MAT_FONT_ICON_DEFAULT_FONT_SET` token
+
+Use the `@teqbench/tbx-mat-icons` application-level default:
+
+```typescript
+// app.config.ts
+import {
+    TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
+    TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
+} from '@teqbench/tbx-mat-icons';
+import {
+    TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+    TbxMatNotificationFontIconService,
+} from '@teqbench/tbx-mat-notifications';
+
+providers: [
+    { provide: TBX_MAT_FONT_ICON_DEFAULT_FONT_SET, useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED },
+    {
+        provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+        useFactory: () => ({
+            severityIconResolverService: new TbxMatNotificationFontIconService(),
+        }),
+    },
+];
+```
+
+#### SVG icons
+
+Subclass `TbxMatNotificationSvgIconService` to register your own SVG markup:
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { TbxMatSeverityIconService } from '@teqbench/tbx-mat-severity-icons';
-import { TBX_MAT_NOTIFICATION_ICON_SERVICE } from '@teqbench/tbx-mat-notifications';
+import { TbxMatNotificationSvgIconService } from '@teqbench/tbx-mat-notifications';
+import { TbxSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 
 @Injectable()
-export class MyAppNotificationIconService extends TbxMatSeverityIconService {
+export class MyNotificationSvgIcons extends TbxMatNotificationSvgIconService {
     constructor() {
-        super('my-custom-icon-font');
-    }
-
-    override success() {
-        return 'thumbs_up';
-    }
-    override error() {
-        return 'cancel';
-    }
-    override warning() {
-        return 'alert';
-    }
-    override information() {
-        return 'lightbulb';
-    }
-    override help() {
-        return 'question_mark';
+        super();
+        this.register(TbxSeverityLevelType.Success, '<svg>...</svg>');
+        this.register(TbxSeverityLevelType.Error, '<svg>...</svg>');
+        this.register(TbxSeverityLevelType.Warning, '<svg>...</svg>');
+        this.register(TbxSeverityLevelType.Information, '<svg>...</svg>');
+        this.register(TbxSeverityLevelType.Help, '<svg>...</svg>');
     }
 }
-
-providers: [{ provide: TBX_MAT_NOTIFICATION_ICON_SERVICE, useClass: MyAppNotificationIconService }];
 ```
+
+```typescript
+// app.config.ts
+import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '@teqbench/tbx-mat-notifications';
+
+providers: [
+    {
+        provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+        useFactory: () => ({
+            severityIconResolverService: new MyNotificationSvgIcons(),
+        }),
+    },
+];
+```
+
+#### Custom close icon
+
+Override the dismiss button icon via the `closeIcon` property:
+
+```typescript
+// Font close icon
+{
+    provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+    useFactory: () => ({
+        severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
+        closeIcon: { name: 'cancel', type: 'font' },
+    }),
+}
+
+// SVG close icon (must be registered with MatIconRegistry)
+{
+    provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+    useFactory: () => ({
+        severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
+        closeIcon: { name: 'my-close-icon', type: 'svg' },
+    }),
+}
+```
+
+When omitted, defaults to `{ name: 'close', type: 'font' }`.
 
 ### CSS Custom Properties
 
@@ -215,21 +281,42 @@ html[data-theme='dark'] {
 
 | Property             | Type                            | Default    | Description                        |
 | -------------------- | ------------------------------- | ---------- | ---------------------------------- |
-| `type`               | `TbxMatSeverityLevelType`       | —          | Severity level (required)          |
+| `type`               | `TbxSeverityLevelType`          | —          | Severity level (required)          |
 | `message`            | `string`                        | —          | Message text (required)            |
 | `duration`           | `number`                        | 4000       | Duration in ms (clamped 1000–6000) |
 | `horizontalPosition` | `MatSnackBarHorizontalPosition` | `'start'`  | Horizontal position                |
 | `verticalPosition`   | `MatSnackBarVerticalPosition`   | `'bottom'` | Vertical position                  |
 | `showCountdown`      | `boolean`                       | `false`    | Show countdown progress bar        |
 
+### TbxMatNotificationProviderConfig
+
+| Property                      | Type                                                            | Default                           | Description                       |
+| ----------------------------- | --------------------------------------------------------------- | --------------------------------- | --------------------------------- |
+| `severityIconResolverService` | `ITbxSeverityResolver & ITbxIconResolver<TbxSeverityLevelType>` | —                                 | Severity icon resolver (required) |
+| `closeIcon`                   | `{ name: string; type: 'font' \| 'svg' }`                       | `{ name: 'close', type: 'font' }` | Dismiss button icon               |
+
+### TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
+
+`InjectionToken<TbxMatNotificationProviderConfig>` — Provide in `app.config.ts` to configure severity icons and the close button icon. When not provided, the component falls back to hardcoded Material Symbols font ligatures.
+
+### TbxMatNotificationFontIconService
+
+Default font-based severity icon service. Extends `TbxMatFontIconService<TbxSeverityLevelType>` and implements `ITbxSeverityResolver`. Provides Material Symbols ligatures for each severity level.
+
+### TbxMatNotificationSvgIconService
+
+Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxSeverityLevelType>` and implements `ITbxSeverityResolver`. Subclass and call `this.register()` to provide SVG markup for each severity level.
+
 ## Compatibility
 
-| Dependency       | Version  |
-| ---------------- | -------- |
-| Angular          | >=21.0.0 |
-| Angular Material | >=21.0.0 |
-| TypeScript       | ~5.9.0   |
-| Node.js          | >=24.0.0 |
+| Dependency                       | Version  |
+| -------------------------------- | -------- |
+| Angular                          | >=21.0.0 |
+| Angular Material                 | >=21.0.0 |
+| @teqbench/tbx-mat-icons          | >=2.0.0  |
+| @teqbench/tbx-mat-severity-icons | >=2.0.0  |
+| TypeScript                       | ~5.9.0   |
+| Node.js                          | >=24.0.0 |
 
 ## License
 

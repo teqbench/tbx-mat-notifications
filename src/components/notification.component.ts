@@ -7,9 +7,12 @@ import {
 } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
-import { TBX_MAT_NOTIFICATION_ICON_SERVICE } from '../tokens/notification-icon-service.token';
+import { TbxSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { type NotificationData } from '../models/notification-data.model';
+
+/** Default close icon when TBX_MAT_NOTIFICATION_PROVIDER_CONFIG is not provided or closeIcon is omitted. */
+const DEFAULT_CLOSE_ICON = { name: 'close', type: 'font' as const };
 
 /**
  * Custom snackbar content component for typed notifications.
@@ -18,16 +21,31 @@ import { type NotificationData } from '../models/notification-data.model';
  * through MAT_SNACK_BAR_DATA injection token. The component displays a
  * severity icon, message text, and a dismiss button.
  *
- * Icon resolution is delegated to the injected TBX_MAT_NOTIFICATION_ICON_SERVICE,
- * ensuring notifications use icons optimized for flat snackbar panels
- * (outline variants by default). Downstream apps swap the icon set via
- * { provide: TBX_MAT_NOTIFICATION_ICON_SERVICE, useClass: ... } in app.config.ts.
+ * ### Icon resolution
+ *
+ * Icons are resolved via the {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG}
+ * injection token. When provided, the config's `severityIconResolverService` resolver
+ * maps severity levels to icon identifiers (font ligatures or svgIcon names).
+ * When not provided, the component falls back to hardcoded Material Symbols
+ * font ligatures.
+ *
+ * The close/dismiss button icon is configured via `config.closeIcon`. When
+ * omitted, it defaults to the `close` font ligature.
+ *
+ * Both severity icons and the close icon support font and SVG rendering.
+ * The component detects the icon type from the config and renders the
+ * appropriate `<mat-icon>` binding (`fontSet` + ligature for font icons,
+ * `svgIcon` for SVG icons).
+ *
+ * ### Countdown bar
  *
  * Optionally renders a countdown progress bar along the bottom edge that
  * shrinks from full width to zero over the notification's duration. The
  * animation is pure CSS (no JavaScript timers) — the resolved duration
  * is passed as a CSS animation-duration via style binding, keeping the
  * countdown perfectly in sync with MatSnackBar's auto-dismiss timer.
+ *
+ * ### Styling
  *
  * Styling uses M3 tokens applied via panel classes on the MatSnackBar
  * container (set by TbxMatNotificationService). The component itself only
@@ -48,7 +66,17 @@ import { type NotificationData } from '../models/notification-data.model';
     ],
     template: `
         <div matSnackBarLabel class="tbx-mat-notification-snackbar-label">
-            <mat-icon class="tbx-mat-notification-snackbar-icon">{{ icon() }}</mat-icon>
+            @let severitySvg = severityIconSvg();
+            @if (severitySvg) {
+                <mat-icon
+                    class="tbx-mat-notification-snackbar-icon"
+                    [svgIcon]="severitySvg"
+                ></mat-icon>
+            } @else {
+                <mat-icon class="tbx-mat-notification-snackbar-icon">{{
+                    severityIconFont()
+                }}</mat-icon>
+            }
             <span>{{ data.message }}</span>
         </div>
         <div matSnackBarActions class="tbx-mat-notification-snackbar-actions">
@@ -58,7 +86,12 @@ import { type NotificationData } from '../models/notification-data.model';
                 (click)="data.dismiss()"
                 aria-label="Dismiss notification"
             >
-                <mat-icon>close</mat-icon>
+                @let closeSvg = closeIconSvg();
+                @if (closeSvg) {
+                    <mat-icon [svgIcon]="closeSvg"></mat-icon>
+                } @else {
+                    <mat-icon>{{ closeIconFont() }}</mat-icon>
+                }
             </button>
         </div>
         @if (data.showCountdown) {
@@ -96,27 +129,57 @@ import { type NotificationData } from '../models/notification-data.model';
 })
 export class NotificationComponent {
     readonly data = inject<NotificationData>(MAT_SNACK_BAR_DATA);
-    private readonly icons = inject(TBX_MAT_NOTIFICATION_ICON_SERVICE, { optional: true });
+    private readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, { optional: true });
 
-    /** Hardcoded fallbacks when TBX_MAT_NOTIFICATION_ICON_SERVICE is not provided. */
-    private static readonly FALLBACK_ICONS: Readonly<Record<TbxMatSeverityLevelType, string>> = {
-        [TbxMatSeverityLevelType.Success]: 'check_circle',
-        [TbxMatSeverityLevelType.Error]: 'error',
-        [TbxMatSeverityLevelType.Warning]: 'warning_amber',
-        [TbxMatSeverityLevelType.Information]: 'info',
-        [TbxMatSeverityLevelType.Help]: 'help',
+    /** Hardcoded fallbacks when TBX_MAT_NOTIFICATION_PROVIDER_CONFIG is not provided. */
+    private static readonly FALLBACK_ICONS: Readonly<Record<TbxSeverityLevelType, string>> = {
+        [TbxSeverityLevelType.Success]: 'check_circle',
+        [TbxSeverityLevelType.Error]: 'error',
+        [TbxSeverityLevelType.Warning]: 'warning_amber',
+        [TbxSeverityLevelType.Information]: 'info',
+        [TbxSeverityLevelType.Help]: 'help',
     };
 
-    readonly icon = computed(() => this.resolveIcon(this.data.type));
+    /**
+     * Resolved severity icon for font rendering.
+     * Returns the ligature string when the icon is font-based, `null` when SVG.
+     */
+    readonly severityIconFont = computed(() => {
+        const resolved = this.config?.severityIconResolverService.resolve(this.data.type);
+        if (!resolved) {
+            return NotificationComponent.FALLBACK_ICONS[this.data.type];
+        }
+        // If config has a font icon service (has fontSet property), it's font-based
+        if ('fontSet' in this.config!.severityIconResolverService) {
+            return resolved;
+        }
+        return null;
+    });
 
     /**
-     * Map TbxMatSeverityLevelType to the corresponding icon ligature.
-     * Delegates to the injected TbxMatSeverityIconService.resolve() when available,
-     * falling back to hardcoded ligatures if the icon service is not provided
-     * or returns a falsy value.
+     * Resolved severity icon for SVG rendering.
+     * Returns the svgIcon name when the icon is SVG-based, `null` when font.
      */
-    private resolveIcon(type: TbxMatSeverityLevelType): string {
-        const resolved = this.icons?.resolve(type);
-        return resolved || NotificationComponent.FALLBACK_ICONS[type];
-    }
+    readonly severityIconSvg = computed(() => {
+        const resolved = this.config?.severityIconResolverService.resolve(this.data.type);
+        if (!resolved) {
+            return null;
+        }
+        if ('fontSet' in this.config!.severityIconResolverService) {
+            return null;
+        }
+        return resolved;
+    });
+
+    /** Close icon font ligature. `null` when the close icon is SVG-based. */
+    readonly closeIconFont = computed(() => {
+        const icon = this.config?.closeIcon ?? DEFAULT_CLOSE_ICON;
+        return icon.type === 'font' ? icon.name : null;
+    });
+
+    /** Close icon svgIcon name. `null` when the close icon is font-based. */
+    readonly closeIconSvg = computed(() => {
+        const icon = this.config?.closeIcon ?? DEFAULT_CLOSE_ICON;
+        return icon.type === 'svg' ? icon.name : null;
+    });
 }

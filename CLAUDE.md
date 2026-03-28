@@ -4,7 +4,7 @@ This file provides guidance for Claude Code when working in this repository.
 
 ## Package Overview
 
-`@teqbench/tbx-mat-notifications` is an opinionated Angular notification service built on Material snackbar. It provides severity-leveled methods (success, error, warn, info, help), FIFO queuing with signal-based state, configurable duration/position, and a pure-CSS countdown bar — no JS timers. Designed for Angular 21+ zoneless applications.
+`@teqbench/tbx-mat-notifications` is an opinionated Angular notification service built on Material snackbar. It provides severity-leveled methods (success, error, warn, info, help), FIFO queuing with signal-based state, configurable duration/position, and a pure-CSS countdown bar — no JS timers. Supports both font and SVG icons via `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG` injection token with `TbxMatNotificationFontIconService` or `TbxMatNotificationSvgIconService`. Designed for Angular 21+ zoneless applications.
 
 ## Tech Stack
 
