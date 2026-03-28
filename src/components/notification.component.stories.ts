@@ -4,7 +4,8 @@ import type {
     MatSnackBarHorizontalPosition,
     MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
+import { MAT_ICON_DEFAULT_OPTIONS, MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig, moduleMetadata } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -18,7 +19,6 @@ import { TbxMatNotificationService } from '../services/notification.service';
  * Source: https://www.svgrepo.com/collection/web-5/
  * License: CC0 (no attribution required)
  */
-/* eslint-disable max-len */
 const SVG_SUCCESS =
     '<svg width="800px" height="800px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><polygon style="fill:#FBB429;" points="256,22.23 317.195,191.236 501.801,200.815 363.092,304.447 407.913,489.77 256,371.251 104.087,489.77 149.929,304.447 10.2,200.815 195.825,191.236"/><g><path style="fill:#4D4D4D;" d="M104.085,499.969c-1.926,0-3.855-0.544-5.548-1.642c-3.648-2.366-5.395-6.785-4.351-11.007l44.21-178.729L4.124,209.006c-3.457-2.564-4.932-7.021-3.688-11.141c1.244-4.119,4.94-7.015,9.238-7.237l178.826-9.228l57.891-162.59c1.444-4.055,5.277-6.767,9.582-6.778c0.009,0,0.018,0,0.027,0c4.293,0,8.128,2.689,9.589,6.726l58.891,162.643l177.848,9.228c4.29,0.223,7.981,3.111,9.23,7.221c1.249,4.111-0.213,8.563-3.654,11.135L374.586,308.59l43.24,178.784c1.02,4.216-0.74,8.617-4.386,10.968s-8.381,2.14-11.801-0.53L256,384.187L110.361,497.812C108.524,499.245,106.308,499.969,104.085,499.969z M256,361.052c2.215,0,4.431,0.719,6.274,2.158l128.849,100.525l-37.945-156.891c-0.959-3.967,0.539-8.125,3.808-10.568l116.097-86.738l-156.418-8.117c-4.095-0.212-7.665-2.858-9.061-6.713L256.081,52.41l-50.647,142.247c-1.382,3.883-4.967,6.552-9.082,6.764l-157.269,8.117l116.923,86.717c3.305,2.451,4.813,6.648,3.825,10.642l-38.759,156.688l128.656-100.374C251.57,361.771,253.785,361.052,256,361.052z"/><path style="fill:#4D4D4D;" d="M357.7,420.902c-4.602,0-8.775-3.134-9.905-7.804l-13.241-54.748c-1.325-5.475,2.041-10.987,7.516-12.31c5.475-1.324,10.986,2.041,12.31,7.516l13.241,54.748c1.325,5.475-2.041,10.987-7.516,12.31C359.301,420.808,358.493,420.902,357.7,420.902z"/><path style="fill:#4D4D4D;" d="M337.059,335.557c-4.601,0-8.775-3.133-9.905-7.802l-0.494-2.041c-1.325-5.475,2.039-10.987,7.514-12.312c5.477-1.327,10.987,2.04,12.312,7.514l0.494,2.041c1.325,5.475-2.039,10.987-7.514,12.312C338.661,335.463,337.854,335.557,337.059,335.557z"/></g></svg>';
 
@@ -33,7 +33,17 @@ const SVG_INFO =
 
 const SVG_HELP =
     '<svg width="800px" height="800px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g><circle style="fill:#1FCFC1;" cx="256.551" cy="470.479" r="31.323"/><path style="fill:#1FCFC1;" d="M256,401.786c-17.34,0-31.395-14.057-31.395-31.395v-97.04c0-17.34,14.057-31.395,31.395-31.395c46.584,0,84.482-37.898,84.482-84.482S302.584,72.991,256,72.991s-84.482,37.898-84.482,84.482c0,17.34-14.057,31.395-31.395,31.395s-31.395-14.057-31.395-31.395C108.727,76.266,174.793,10.199,256,10.199s147.273,66.066,147.273,147.273c0,70.437-49.702,129.482-115.878,143.906v69.013C287.395,387.731,273.34,401.786,256,401.786z"/></g><g><path style="fill:#4D4D4D;" d="M256.55,512c-22.895,0-41.522-18.627-41.522-41.522s18.627-41.522,41.522-41.522s41.522,18.627,41.522,41.522S279.445,512,256.55,512z M256.55,449.353c-11.647,0-21.124,9.476-21.124,21.124c0,11.647,9.476,21.125,21.124,21.125s21.124-9.476,21.124-21.124C277.673,458.831,268.197,449.353,256.55,449.353z"/><path style="fill:#4D4D4D;" d="M256,411.986c-22.935,0-41.594-18.659-41.594-41.594V273.35c0-22.935,18.659-41.594,41.594-41.594c40.96,0,74.284-33.323,74.284-74.284S296.96,83.189,256,83.189s-74.284,33.323-74.284,74.284c0,22.935-18.659,41.594-41.594,41.594s-41.594-18.659-41.594-41.594C98.527,70.642,169.169,0,256,0s157.473,70.642,157.473,157.473c0,36.106-12.579,71.41-35.42,99.404c-20.756,25.44-49.086,43.867-80.458,52.489v61.025C297.594,393.327,278.935,411.986,256,411.986z M256,62.79c52.208,0,94.682,42.475,94.682,94.682S308.208,252.154,256,252.154c-11.687,0-21.196,9.509-21.196,21.196v97.041c0,11.687,9.509,21.196,21.196,21.196s21.196-9.509,21.196-21.196v-69.014c0-4.796,3.341-8.944,8.028-9.966c62.493-13.62,107.85-69.95,107.85-133.94c0-75.582-61.491-137.073-137.074-137.073S118.926,81.889,118.926,157.473c0,11.687,9.509,21.196,21.196,21.196s21.196-9.509,21.196-21.196C161.318,105.265,203.792,62.79,256,62.79z"/></g></svg>';
-/* eslint-enable max-len */
+
+/**
+ * Close icon SVG from SVG Repo.
+ * Source: https://www.svgrepo.com/svg/208324/error-close
+ * License: CC0 (no attribution required)
+ */
+const SVG_CLOSE =
+    '<svg fill="#FFFFFF" opacity="0.4" width="800px" height="800px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g><g><path d="M437.02,74.98C388.667,26.628,324.38,0,256,0S123.333,26.628,74.98,74.98C26.628,123.333,0,187.62,0,256s26.628,132.667,74.98,181.02C123.333,485.372,187.62,512,256,512s132.667-26.628,181.02-74.98C485.372,388.667,512,324.38,512,256S485.372,123.333,437.02,74.98z M256,491.602c-129.911,0-235.602-105.69-235.602-235.602S126.089,20.398,256,20.398S491.602,126.089,491.602,256S385.911,491.602,256,491.602z"/></g></g><g><g><path d="M318.022,256l84.75-84.749c3.983-3.984,3.983-10.442,0-14.425l-47.599-47.599c-3.984-3.982-10.442-3.982-14.425,0L256,193.978l-84.749-84.75c-3.984-3.982-10.442-3.982-14.425,0l-47.599,47.599c-3.983,3.984-3.983,10.442,0,14.425L193.978,256l-84.75,84.749c-3.983,3.984-3.983,10.442,0,14.425l47.599,47.599c3.984,3.982,10.442,3.982,14.425,0L256,318.022l84.75,84.749c1.991,1.991,4.602,2.987,7.212,2.987s5.22-0.995,7.212-2.986l47.599-47.599c3.983-3.984,3.983-10.442,0-14.425L318.022,256z M347.961,381.137l-84.749-84.75c-1.991-1.991-4.602-2.987-7.212-2.987s-5.221,0.996-7.213,2.987l-84.749,84.75l-33.175-33.175l84.75-84.749c3.983-3.984,3.983-10.442,0-14.425l-84.75-84.749l33.175-33.175l84.749,84.75c3.984,3.982,10.442,3.982,14.425,0l84.749-84.75l33.175,33.175l-84.75,84.749c-3.983,3.984-3.983,10.442,0,14.425l84.75,84.749L347.961,381.137z"/></g></g></svg>';
+
+/** Register the close SVG icon with MatIconRegistry for Storybook use. */
+const CLOSE_ICON_NAME = 'storybook-close';
 
 /**
  * SVG icon service that registers distinct SVG icons for each severity level.
@@ -70,6 +80,36 @@ function withSvgIcons() {
     });
 }
 
+/** applicationConfig decorator that provides SVG severity icons AND a custom SVG close icon. */
+function withSvgIconsAndSvgClose() {
+    return applicationConfig({
+        providers: [
+            provideAnimationsAsync(),
+            {
+                provide: MAT_ICON_DEFAULT_OPTIONS,
+                useValue: { fontSet: 'material-symbols-rounded' },
+            },
+            {
+                provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+                useFactory: () => {
+                    // Register the close SVG with MatIconRegistry
+                    const registry = inject(MatIconRegistry);
+                    const sanitizer = inject(DomSanitizer);
+                    registry.addSvgIconLiteral(
+                        CLOSE_ICON_NAME,
+                        sanitizer.bypassSecurityTrustHtml(SVG_CLOSE)
+                    );
+
+                    return {
+                        severityIconResolverService: new StorybookSvgIconService(),
+                        closeIcon: { name: CLOSE_ICON_NAME, type: 'svg' as const },
+                    };
+                },
+            },
+        ],
+    });
+}
+
 /**
  * Wrapper component that exposes buttons to trigger notifications.
  * Notifications render in the CDK overlay (outside the component tree),
@@ -88,8 +128,8 @@ function withSvgIcons() {
             <div class="button-group">
                 <button mat-flat-button (click)="fire('success')">Success</button>
                 <button mat-flat-button (click)="fire('error')">Error</button>
-                <button mat-flat-button (click)="fire('warn')">Warning</button>
-                <button mat-flat-button (click)="fire('info')">Info</button>
+                <button mat-flat-button (click)="fire('warning')">Warning</button>
+                <button mat-flat-button (click)="fire('information')">Information</button>
                 <button mat-flat-button (click)="fire('help')">Help</button>
             </div>
 
@@ -97,8 +137,8 @@ function withSvgIcons() {
             <div class="button-group">
                 <button mat-flat-button (click)="fire('success', true)">Success</button>
                 <button mat-flat-button (click)="fire('error', true)">Error</button>
-                <button mat-flat-button (click)="fire('warn', true)">Warning</button>
-                <button mat-flat-button (click)="fire('info', true)">Info</button>
+                <button mat-flat-button (click)="fire('warning', true)">Warning</button>
+                <button mat-flat-button (click)="fire('information', true)">Information</button>
                 <button mat-flat-button (click)="fire('help', true)">Help</button>
             </div>
 
@@ -155,8 +195,8 @@ class NotificationHarnessComponent {
     private readonly messages: Record<string, string> = {
         success: 'Operation completed successfully.',
         error: 'Something went wrong. Please try again.',
-        warn: 'Your session will expire in 5 minutes.',
-        info: 'A new version is available.',
+        warning: 'Your session will expire in 5 minutes.',
+        information: 'A new version is available.',
         help: 'Click the + button to add a new item.',
     };
 
@@ -178,12 +218,12 @@ class NotificationHarnessComponent {
             horizontalPosition: this.horizontalPosition(),
             verticalPosition: this.verticalPosition(),
         });
-        this.notify.warn('Step 2: Review needed.', {
+        this.notify.warning('Step 2: Review needed.', {
             showCountdown: true,
             horizontalPosition: this.horizontalPosition(),
             verticalPosition: this.verticalPosition(),
         });
-        this.notify.info('Step 3: All done.', {
+        this.notify.information('Step 3: All done.', {
             showCountdown: true,
             horizontalPosition: this.horizontalPosition(),
             verticalPosition: this.verticalPosition(),
@@ -372,4 +412,12 @@ export const SvgIconsLargeIconOnly: Story = {
         `),
         withSvgIcons(),
     ],
+};
+
+export const SvgCloseIcon: Story = {
+    args: {
+        horizontalPosition: 'start',
+        verticalPosition: 'bottom',
+    },
+    decorators: [withDefaultProperties(), withSvgIconsAndSvgClose()],
 };

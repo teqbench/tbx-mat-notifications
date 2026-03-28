@@ -370,16 +370,16 @@ describe('TbxMatNotificationService', () => {
             expect(config.data.message).toBe('Failed');
         });
 
-        it('warn() should show a Warning notification', () => {
-            service.warn('Careful');
+        it('warning() should show a Warning notification', () => {
+            service.warning('Careful');
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
             expect(config.data.type).toBe(TbxMatSeverityLevelType.Warning);
             expect(config.data.message).toBe('Careful');
         });
 
-        it('info() should show an Information notification', () => {
-            service.info('FYI');
+        it('information() should show an Information notification', () => {
+            service.information('FYI');
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
             expect(config.data.type).toBe(TbxMatSeverityLevelType.Information);

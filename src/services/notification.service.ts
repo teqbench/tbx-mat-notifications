@@ -53,8 +53,8 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
  *
  * this.notify.success('Item saved successfully.');
  * this.notify.error('Failed to load data. Please try again.');
- * this.notify.warn('Your session will expire in 5 minutes.');
- * this.notify.info('New version available.');
+ * this.notify.warning('Your session will expire in 5 minutes.');
+ * this.notify.information('New version available.');
  * this.notify.help('Click the + button to add a new item.');
  * ```
  *
@@ -195,7 +195,7 @@ export class TbxMatNotificationService {
      * @param message The message to display to the user.
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
-    warn(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
+    warning(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Warning, message, ...configArgs });
     }
 
@@ -205,7 +205,7 @@ export class TbxMatNotificationService {
      * @param message The message to display to the user.
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
-    info(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
+    information(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Information, message, ...configArgs });
     }
 

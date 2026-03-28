@@ -2,7 +2,7 @@
 
 ![Build Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-build-status.json) ![Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-tests.json) ![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-coverage.json) ![Version](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-version.json) ![Build Number](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-build-number.json)
 
-> Opinionated Angular notification service built on Material snackbar. Provides severity-leveled methods (success, error, warn, info, help), FIFO queuing with signal-based state, configurable duration/position, and a pure-CSS countdown bar — no JS timers. Designed for Angular 21+ zoneless applications.
+> Opinionated notification service for Angular Material projects, built on the Material Snackbar component. Provides `TbxMatNotificationService` with severity-leveled methods (`success()`, `error()`, `warning()`, `information()`, `help()`), FIFO queuing with signal-based state, configurable duration/position, and a pure-CSS countdown bar — no JS timers. Supports both font and SVG icons via `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG`.
 
 ## Installation
 
@@ -41,8 +41,8 @@ private readonly notify = inject(TbxMatNotificationService);
 // Convenience methods
 this.notify.success('Item saved successfully.');
 this.notify.error('Failed to load data. Please try again.');
-this.notify.warn('Your session will expire in 5 minutes.');
-this.notify.info('New version available.');
+this.notify.warning('Your session will expire in 5 minutes.');
+this.notify.information('New version available.');
 this.notify.help('Click the + button to add a new item.');
 
 // Full control via show()
@@ -176,10 +176,11 @@ providers: [
 
 #### Custom close icon
 
-Override the dismiss button icon via the `closeIcon` property:
+Override the dismiss button icon via the `closeIcon` property.
+
+Font close icon — use any ligature name from the active font set:
 
 ```typescript
-// Font close icon
 {
     provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
     useFactory: () => ({
@@ -187,14 +188,34 @@ Override the dismiss button icon via the `closeIcon` property:
         closeIcon: { name: 'cancel', type: 'font' },
     }),
 }
+```
 
-// SVG close icon (must be registered with MatIconRegistry)
+SVG close icon — the SVG must be registered with `MatIconRegistry` before the notification component renders. Register it in the `useFactory` via `inject()`:
+
+```typescript
+import { inject } from '@angular/core';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import {
+    TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+    TbxMatNotificationFontIconService,
+} from '@teqbench/tbx-mat-notifications';
+
 {
     provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
-    useFactory: () => ({
-        severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
-        closeIcon: { name: 'my-close-icon', type: 'svg' },
-    }),
+    useFactory: () => {
+        const registry = inject(MatIconRegistry);
+        const sanitizer = inject(DomSanitizer);
+        registry.addSvgIconLiteral(
+            'my-close-icon',
+            sanitizer.bypassSecurityTrustHtml('<svg>...</svg>'),
+        );
+
+        return {
+            severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
+            closeIcon: { name: 'my-close-icon', type: 'svg' },
+        };
+    },
 }
 ```
 
@@ -264,18 +285,18 @@ html[data-theme='dark'] {
 
 ### TbxMatNotificationService
 
-| Method                      | Description                               |
-| --------------------------- | ----------------------------------------- |
-| `success(message, config?)` | Show a success notification               |
-| `error(message, config?)`   | Show an error notification                |
-| `warn(message, config?)`    | Show a warning notification               |
-| `info(message, config?)`    | Show an info notification                 |
-| `help(message, config?)`    | Show a help notification                  |
-| `show(config)`              | Show a notification with full config      |
-| `dismiss()`                 | Dismiss the current notification          |
-| `dismissAll()`              | Dismiss current and clear the queue       |
-| `isActive()`                | Signal: whether a notification is visible |
-| `pendingCount()`            | Signal: count of queued notifications     |
+| Method                          | Description                               |
+| ------------------------------- | ----------------------------------------- |
+| `success(message, config?)`     | Show a success notification               |
+| `error(message, config?)`       | Show an error notification                |
+| `warning(message, config?)`     | Show a warning notification               |
+| `information(message, config?)` | Show an information notification          |
+| `help(message, config?)`        | Show a help notification                  |
+| `show(config)`                  | Show a notification with full config      |
+| `dismiss()`                     | Dismiss the current notification          |
+| `dismissAll()`                  | Dismiss current and clear the queue       |
+| `isActive()`                    | Signal: whether a notification is visible |
+| `pendingCount()`                | Signal: count of queued notifications     |
 
 ### TbxMatNotificationConfig
 
@@ -313,8 +334,8 @@ Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSev
 | -------------------------------- | -------- |
 | Angular                          | >=21.0.0 |
 | Angular Material                 | >=21.0.0 |
-| @teqbench/tbx-mat-icons          | >=2.0.0  |
-| @teqbench/tbx-mat-severity-icons | >=2.0.0  |
+| @teqbench/tbx-mat-icons          | >=3.0.0  |
+| @teqbench/tbx-mat-severity-icons | >=3.0.0  |
 | TypeScript                       | ~5.9.0   |
 | Node.js                          | >=24.0.0 |
 
