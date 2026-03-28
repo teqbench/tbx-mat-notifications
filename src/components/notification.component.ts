@@ -38,7 +38,7 @@ import { type NotificationData } from '../models/notification-data.model';
  */
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
-    selector: 'tbx-mat-notification-snackbar-notification',
+    selector: 'tbx-mat-notification-snackbar',
     imports: [
         MatSnackBarLabel,
         MatSnackBarActions,

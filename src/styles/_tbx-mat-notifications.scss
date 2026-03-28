@@ -51,7 +51,7 @@ html {
  * See: https://material.angular.dev/components/snack-bar/styling
  * ─────────────────────────────────────────────────────────────────────────── */
 
-.tbx-snackbar-success {
+.tbx-mat-notification-snackbar-success {
     @include mat.snack-bar-overrides(
         (
             container-color: var(--tbx-notification-success-bg),
@@ -66,7 +66,7 @@ html {
     );
 }
 
-.tbx-snackbar-error {
+.tbx-mat-notification-snackbar-error {
     @include mat.snack-bar-overrides(
         (
             container-color: var(--tbx-notification-error-bg),
@@ -81,7 +81,7 @@ html {
     );
 }
 
-.tbx-snackbar-warning {
+.tbx-mat-notification-snackbar-warning {
     @include mat.snack-bar-overrides(
         (
             container-color: var(--tbx-notification-warning-bg),
@@ -96,7 +96,7 @@ html {
     );
 }
 
-.tbx-snackbar-info {
+.tbx-mat-notification-snackbar-info {
     @include mat.snack-bar-overrides(
         (
             container-color: var(--tbx-notification-info-bg),
@@ -111,7 +111,7 @@ html {
     );
 }
 
-.tbx-snackbar-help {
+.tbx-mat-notification-snackbar-help {
     @include mat.snack-bar-overrides(
         (
             container-color: var(--tbx-notification-help-bg),
@@ -140,7 +140,7 @@ html {
     overflow: hidden;
 }
 
-.mat-mdc-snack-bar-container .tbx-snackbar-countdown {
+.mat-mdc-snack-bar-container .tbx-mat-notification-snackbar-countdown {
     position: absolute;
     bottom: 0;
     left: 0;
