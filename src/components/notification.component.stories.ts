@@ -6,12 +6,12 @@ import type {
 } from '@angular/material/snack-bar';
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import { NotificationService } from '../services/notification.service';
+import { TbxMatNotificationService } from '../services/notification.service';
 
 /**
  * Wrapper component that exposes buttons to trigger notifications.
  * Notifications render in the CDK overlay (outside the component tree),
- * so we trigger them programmatically via NotificationService.
+ * so we trigger them programmatically via TbxMatNotificationService.
  */
 @Component({
     selector: 'tbx-notification-harness',
@@ -86,7 +86,7 @@ import { NotificationService } from '../services/notification.service';
     `,
 })
 class NotificationHarnessComponent {
-    readonly notify = inject(NotificationService);
+    readonly notify = inject(TbxMatNotificationService);
     readonly horizontalPosition = input<MatSnackBarHorizontalPosition>('start');
     readonly verticalPosition = input<MatSnackBarVerticalPosition>('bottom');
 
@@ -99,7 +99,7 @@ class NotificationHarnessComponent {
     };
 
     fire(level: string, showCountdown = false): void {
-        const method = this.notify[level as keyof NotificationService] as (
+        const method = this.notify[level as keyof TbxMatNotificationService] as (
             msg: string,
             args?: object
         ) => void;

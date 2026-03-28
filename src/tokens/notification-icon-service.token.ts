@@ -9,10 +9,10 @@ import type { TbxMatSeverityIconService } from '@teqbench/tbx-mat-severity-icons
  *
  * ```typescript
  * providers: [
- *     { provide: NOTIFICATION_ICON_SERVICE, useClass: NotificationIconService },
+ *     { provide: TBX_MAT_NOTIFICATION_ICON_SERVICE, useClass: TbxMatNotificationIconService },
  * ]
  * ```
  */
-export const NOTIFICATION_ICON_SERVICE = new InjectionToken<TbxMatSeverityIconService>(
-    'NOTIFICATION_ICON_SERVICE'
+export const TBX_MAT_NOTIFICATION_ICON_SERVICE = new InjectionToken<TbxMatSeverityIconService>(
+    'TBX_MAT_NOTIFICATION_ICON_SERVICE'
 );

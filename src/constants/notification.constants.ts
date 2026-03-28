@@ -7,7 +7,7 @@ import type {
  * Notification system constants.
  *
  * Centralizes timing defaults for snackbar notifications. Override per-call
- * via NotificationConfig.duration when the default is inappropriate.
+ * via TbxMatNotificationConfig.duration when the default is inappropriate.
  */
 
 /** Minimum duration a notification is displayed (milliseconds). */

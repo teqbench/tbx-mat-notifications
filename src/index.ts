@@ -2,12 +2,12 @@
  * Notification system — typed snackbar notifications with severity levels.
  *
  * Public API:
- *   - NotificationService     — inject and call success/error/warn/info/help
- *   - TbxMatSeverityLevelType — severity enum (re-exported from @teqbench/tbx-mat-severity-icons)
- *   - NotificationConfig      — full config interface for show()
- *   - NotificationConfigArgsType — optional config for convenience methods
- *   - NOTIFICATION_ICON_SERVICE — optional injection token for custom icon service
- *   - NotificationIconService — default icon implementation (Material Symbols Rounded)
+ *   - TbxMatNotificationService     — inject and call success/error/warn/info/help
+ *   - TbxMatSeverityLevelType       — severity enum (re-exported from @teqbench/tbx-mat-severity-icons)
+ *   - TbxMatNotificationConfig      — full config interface for show()
+ *   - TbxMatNotificationConfigArgsType — optional config for convenience methods
+ *   - TBX_MAT_NOTIFICATION_ICON_SERVICE — optional injection token for custom icon service
+ *   - TbxMatNotificationIconService — default icon implementation (Material Symbols Rounded)
  *
  * Internal (not re-exported):
  *   - NotificationComponent — custom snackbar content
@@ -17,14 +17,14 @@
 
 // Types (re-exported from @teqbench/tbx-mat-severity-icons)
 export { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
-export type { NotificationConfigArgsType } from './types/notification-config-args.type';
+export type { TbxMatNotificationConfigArgsType } from './types/notification-config-args.type';
 
 // Models
-export type { NotificationConfig } from './models/notification-config.model';
+export type { TbxMatNotificationConfig } from './models/notification-config.model';
 
 // Tokens
-export { NOTIFICATION_ICON_SERVICE } from './tokens/notification-icon-service.token';
+export { TBX_MAT_NOTIFICATION_ICON_SERVICE } from './tokens/notification-icon-service.token';
 
 // Services
-export { NotificationService } from './services/notification.service';
-export { NotificationIconService } from './services/notification-icon.service';
+export { TbxMatNotificationService } from './services/notification.service';
+export { TbxMatNotificationIconService } from './services/notification-icon.service';

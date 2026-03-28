@@ -33,10 +33,10 @@ Import the global notification styles in your application's stylesheet:
 ## Usage
 
 ```typescript
-import { NotificationService, TbxMatSeverityLevelType } from '@teqbench/tbx-mat-notifications';
+import { TbxMatNotificationService, TbxMatSeverityLevelType } from '@teqbench/tbx-mat-notifications';
 
 // Inject the service
-private readonly notify = inject(NotificationService);
+private readonly notify = inject(TbxMatNotificationService);
 
 // Convenience methods
 this.notify.success('Item saved successfully.');
@@ -62,19 +62,81 @@ this.notify.dismiss();       // dismiss current (next in queue shows)
 this.notify.dismissAll();    // clear current + all queued
 ```
 
-### Custom Icon Service
+### Icon Service
 
-Provide a custom `TbxMatSeverityIconService` via the `NOTIFICATION_ICON_SERVICE` token:
+Notification icons are resolved by the `TBX_MAT_NOTIFICATION_ICON_SERVICE` injection token. The built-in `TbxMatNotificationIconService` provides Material Symbols Rounded ligatures for each severity level.
+
+#### Font set resolution
+
+`TbxMatNotificationIconService` resolves its font set through a fallback chain:
+
+1. **Explicit `fontSet`** passed to the constructor via `useFactory`
+2. **`TBX_MAT_FONT_ICON_DEFAULT_FONT_SET` token** from `@teqbench/tbx-mat-icons` (application-level default)
+3. **Error** if neither is configured
+
+#### Using the application-level default
+
+If your app already provides `TBX_MAT_FONT_ICON_DEFAULT_FONT_SET`, register the icon service with no arguments — it inherits the default automatically:
 
 ```typescript
-import { NOTIFICATION_ICON_SERVICE, NotificationIconService } from '@teqbench/tbx-mat-notifications';
+import { TBX_MAT_NOTIFICATION_ICON_SERVICE, TbxMatNotificationIconService } from '@teqbench/tbx-mat-notifications';
 
-providers: [{ provide: NOTIFICATION_ICON_SERVICE, useClass: NotificationIconService }];
+providers: [{ provide: TBX_MAT_NOTIFICATION_ICON_SERVICE, useClass: TbxMatNotificationIconService }];
+```
+
+#### Overriding the font set per-service
+
+To use a different font set for notification icons without changing the app-wide default:
+
+```typescript
+import { TBX_MAT_NOTIFICATION_ICON_SERVICE, TbxMatNotificationIconService } from '@teqbench/tbx-mat-notifications';
+
+providers: [
+    {
+        provide: TBX_MAT_NOTIFICATION_ICON_SERVICE,
+        useFactory: () => new TbxMatNotificationIconService('material-symbols-outlined'),
+    },
+];
+```
+
+#### Providing a fully custom icon service
+
+Subclass `TbxMatSeverityIconService` from `@teqbench/tbx-mat-severity-icons` to map severity levels to your own icon ligatures:
+
+```typescript
+import { Injectable } from '@angular/core';
+import { TbxMatSeverityIconService } from '@teqbench/tbx-mat-severity-icons';
+import { TBX_MAT_NOTIFICATION_ICON_SERVICE } from '@teqbench/tbx-mat-notifications';
+
+@Injectable()
+export class MyAppNotificationIconService extends TbxMatSeverityIconService {
+    constructor() {
+        super('my-custom-icon-font');
+    }
+
+    override success() {
+        return 'thumbs_up';
+    }
+    override error() {
+        return 'cancel';
+    }
+    override warning() {
+        return 'alert';
+    }
+    override information() {
+        return 'lightbulb';
+    }
+    override help() {
+        return 'question_mark';
+    }
+}
+
+providers: [{ provide: TBX_MAT_NOTIFICATION_ICON_SERVICE, useClass: MyAppNotificationIconService }];
 ```
 
 ## API Reference
 
-### NotificationService
+### TbxMatNotificationService
 
 | Method                      | Description                               |
 | --------------------------- | ----------------------------------------- |
@@ -89,7 +151,7 @@ providers: [{ provide: NOTIFICATION_ICON_SERVICE, useClass: NotificationIconServ
 | `isActive()`                | Signal: whether a notification is visible |
 | `pendingCount()`            | Signal: count of queued notifications     |
 
-### NotificationConfig
+### TbxMatNotificationConfig
 
 | Property             | Type                            | Default    | Description                        |
 | -------------------- | ------------------------------- | ---------- | ---------------------------------- |

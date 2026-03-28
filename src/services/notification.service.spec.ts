@@ -3,9 +3,13 @@ import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
-import { NOTIFICATION_ICON_SERVICE } from '../tokens/notification-icon-service.token';
-import { NotificationIconService } from './notification-icon.service';
-import { NotificationService } from './notification.service';
+import {
+    TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
+    TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
+} from '@teqbench/tbx-mat-icons';
+import { TBX_MAT_NOTIFICATION_ICON_SERVICE } from '../tokens/notification-icon-service.token';
+import { TbxMatNotificationIconService } from './notification-icon.service';
+import { TbxMatNotificationService } from './notification.service';
 import { NotificationComponent } from '../components/notification.component';
 import {
     NOTIFICATION_DEFAULT_DURATION_MS,
@@ -13,8 +17,8 @@ import {
     NOTIFICATION_MIN_DURATION_MS,
 } from '../constants/notification.constants';
 
-describe('NotificationService', () => {
-    let service: NotificationService;
+describe('TbxMatNotificationService', () => {
+    let service: TbxMatNotificationService;
     let snackBarSpy: {
         openFromComponent: ReturnType<typeof vi.fn>;
         dismiss: ReturnType<typeof vi.fn>;
@@ -40,13 +44,20 @@ describe('NotificationService', () => {
 
         TestBed.configureTestingModule({
             providers: [
-                NotificationService,
+                TbxMatNotificationService,
                 { provide: MatSnackBar, useValue: snackBarSpy },
-                { provide: NOTIFICATION_ICON_SERVICE, useClass: NotificationIconService },
+                {
+                    provide: TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
+                    useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
+                },
+                {
+                    provide: TBX_MAT_NOTIFICATION_ICON_SERVICE,
+                    useFactory: () => new TbxMatNotificationIconService(),
+                },
             ],
         });
 
-        service = TestBed.inject(NotificationService);
+        service = TestBed.inject(TbxMatNotificationService);
     });
 
     describe('show()', () => {
@@ -80,11 +91,11 @@ describe('NotificationService', () => {
 
         it('should apply the correct panel class for each type', () => {
             const cases: Array<[TbxMatSeverityLevelType, string]> = [
-                [TbxMatSeverityLevelType.Success, 'tbx-snackbar-success'],
-                [TbxMatSeverityLevelType.Error, 'tbx-snackbar-error'],
-                [TbxMatSeverityLevelType.Warning, 'tbx-snackbar-warning'],
-                [TbxMatSeverityLevelType.Information, 'tbx-snackbar-info'],
-                [TbxMatSeverityLevelType.Help, 'tbx-snackbar-help'],
+                [TbxMatSeverityLevelType.Success, 'tbx-mat-notification-snackbar-success'],
+                [TbxMatSeverityLevelType.Error, 'tbx-mat-notification-snackbar-error'],
+                [TbxMatSeverityLevelType.Warning, 'tbx-mat-notification-snackbar-warning'],
+                [TbxMatSeverityLevelType.Information, 'tbx-mat-notification-snackbar-info'],
+                [TbxMatSeverityLevelType.Help, 'tbx-mat-notification-snackbar-help'],
             ];
 
             for (const [type, expectedClass] of cases) {

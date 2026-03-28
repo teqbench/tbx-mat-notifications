@@ -3,8 +3,8 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import { NotificationComponent } from '../components/notification.component';
-import { type NotificationConfigArgsType } from '../types/notification-config-args.type';
-import { type NotificationConfig } from '../models/notification-config.model';
+import { type TbxMatNotificationConfigArgsType } from '../types/notification-config-args.type';
+import { type TbxMatNotificationConfig } from '../models/notification-config.model';
 import { type NotificationData } from '../models/notification-data.model';
 import {
     NOTIFICATION_DEFAULT_DURATION_MS,
@@ -24,11 +24,11 @@ import {
  * outside component scope).
  */
 const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
-    [TbxMatSeverityLevelType.Success]: 'tbx-snackbar-success',
-    [TbxMatSeverityLevelType.Error]: 'tbx-snackbar-error',
-    [TbxMatSeverityLevelType.Warning]: 'tbx-snackbar-warning',
-    [TbxMatSeverityLevelType.Information]: 'tbx-snackbar-info',
-    [TbxMatSeverityLevelType.Help]: 'tbx-snackbar-help',
+    [TbxMatSeverityLevelType.Success]: 'tbx-mat-notification-snackbar-success',
+    [TbxMatSeverityLevelType.Error]: 'tbx-mat-notification-snackbar-error',
+    [TbxMatSeverityLevelType.Warning]: 'tbx-mat-notification-snackbar-warning',
+    [TbxMatSeverityLevelType.Information]: 'tbx-mat-notification-snackbar-info',
+    [TbxMatSeverityLevelType.Help]: 'tbx-mat-notification-snackbar-help',
 };
 
 /**
@@ -49,7 +49,7 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
  *
  * Usage:
  * ```typescript
- * private readonly notify = inject(NotificationService);
+ * private readonly notify = inject(TbxMatNotificationService);
  *
  * this.notify.success('Item saved successfully.');
  * this.notify.error('Failed to load data. Please try again.');
@@ -89,7 +89,7 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
  * ```
  */
 @Injectable({ providedIn: 'root' })
-export class NotificationService {
+export class TbxMatNotificationService {
     private readonly snackBar = inject(MatSnackBar);
 
     /**
@@ -97,7 +97,7 @@ export class NotificationService {
      * the next entry is shifted off and displayed. The queue self-drains as
      * notifications auto-dismiss on their duration timeout.
      */
-    private readonly queue: NotificationConfig[] = [];
+    private readonly queue: TbxMatNotificationConfig[] = [];
 
     /**
      * Subscription to the current notification's afterDismissed() observable.
@@ -128,7 +128,7 @@ export class NotificationService {
      * Duration is clamped to [NOTIFICATION_MIN_DURATION_MS, NOTIFICATION_MAX_DURATION_MS].
      * Defaults to NOTIFICATION_DEFAULT_DURATION_MS when omitted.
      */
-    show(config: NotificationConfig): void {
+    show(config: TbxMatNotificationConfig): void {
         this.queue.push(config);
         this.pendingCount.set(this.queue.length);
 
@@ -175,7 +175,7 @@ export class NotificationService {
      * @param message The message to display to the user.
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
-    success(message: string, configArgs?: NotificationConfigArgsType): void {
+    success(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Success, message, ...configArgs });
     }
 
@@ -185,7 +185,7 @@ export class NotificationService {
      * @param message The message to display to the user.
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
-    error(message: string, configArgs?: NotificationConfigArgsType): void {
+    error(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Error, message, ...configArgs });
     }
 
@@ -195,7 +195,7 @@ export class NotificationService {
      * @param message The message to display to the user.
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
-    warn(message: string, configArgs?: NotificationConfigArgsType): void {
+    warn(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Warning, message, ...configArgs });
     }
 
@@ -205,7 +205,7 @@ export class NotificationService {
      * @param message The message to display to the user.
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
-    info(message: string, configArgs?: NotificationConfigArgsType): void {
+    info(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Information, message, ...configArgs });
     }
 
@@ -215,7 +215,7 @@ export class NotificationService {
      * @param message The message to display to the user.
      * @param configArgs Optional overrides for duration, position, and countdown.
      */
-    help(message: string, configArgs?: NotificationConfigArgsType): void {
+    help(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Help, message, ...configArgs });
     }
 

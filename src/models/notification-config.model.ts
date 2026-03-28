@@ -5,11 +5,11 @@ import type {
 import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 
 /**
- * Configuration for a single notification. Passed to NotificationService.show()
+ * Configuration for a single notification. Passed to TbxMatNotificationService.show()
  * for full control, or use the convenience methods (success, error, warn, etc.)
  * which set the type automatically.
  */
-export interface NotificationConfig {
+export interface TbxMatNotificationConfig {
     /** Severity level — determines icon, color, and panel styling. */
     readonly type: TbxMatSeverityLevelType;
 

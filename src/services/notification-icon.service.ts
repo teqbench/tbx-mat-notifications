@@ -2,16 +2,28 @@ import { Injectable } from '@angular/core';
 import { TbxMatSeverityIconService } from '@teqbench/tbx-mat-severity-icons';
 
 /**
- * Default notification icon service using Material Symbols Rounded.
+ * Default notification icon service.
  *
- * Provides icon ligatures for each severity level. Consumers can use this
- * implementation directly or provide their own TbxMatSeverityIconService subclass
- * via the NOTIFICATION_ICON_SERVICE injection token.
+ * Provides icon ligatures for each severity level using whichever font set
+ * is resolved by the fallback chain:
+ *
+ * 1. Explicit `fontSet` passed to the constructor
+ * 2. Application-level `TBX_MAT_FONT_ICON_DEFAULT_FONT_SET` token
+ * 3. Error if neither is configured
+ *
+ * Consumers can use this implementation directly or provide their own
+ * TbxMatSeverityIconService subclass via the TBX_MAT_NOTIFICATION_ICON_SERVICE
+ * injection token.
  */
 @Injectable()
-export class NotificationIconService extends TbxMatSeverityIconService {
-    constructor() {
-        super('material-symbols-rounded');
+export class TbxMatNotificationIconService extends TbxMatSeverityIconService {
+    /**
+     * @param fontSet - Optional font set identifier (e.g., `'material-symbols-rounded'`).
+     *                  When provided, takes precedence over the application-level default.
+     *                  When omitted, falls back to the `TBX_MAT_FONT_ICON_DEFAULT_FONT_SET` token.
+     */
+    constructor(fontSet?: string) {
+        super(fontSet);
     }
 
     override success(): string {

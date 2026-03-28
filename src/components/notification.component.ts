@@ -8,7 +8,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
-import { NOTIFICATION_ICON_SERVICE } from '../tokens/notification-icon-service.token';
+import { TBX_MAT_NOTIFICATION_ICON_SERVICE } from '../tokens/notification-icon-service.token';
 import { type NotificationData } from '../models/notification-data.model';
 
 /**
@@ -18,10 +18,10 @@ import { type NotificationData } from '../models/notification-data.model';
  * through MAT_SNACK_BAR_DATA injection token. The component displays a
  * severity icon, message text, and a dismiss button.
  *
- * Icon resolution is delegated to the injected NOTIFICATION_ICON_SERVICE,
+ * Icon resolution is delegated to the injected TBX_MAT_NOTIFICATION_ICON_SERVICE,
  * ensuring notifications use icons optimized for flat snackbar panels
  * (outline variants by default). Downstream apps swap the icon set via
- * { provide: NOTIFICATION_ICON_SERVICE, useClass: ... } in app.config.ts.
+ * { provide: TBX_MAT_NOTIFICATION_ICON_SERVICE, useClass: ... } in app.config.ts.
  *
  * Optionally renders a countdown progress bar along the bottom edge that
  * shrinks from full width to zero over the notification's duration. The
@@ -30,15 +30,15 @@ import { type NotificationData } from '../models/notification-data.model';
  * countdown perfectly in sync with MatSnackBar's auto-dismiss timer.
  *
  * Styling uses M3 tokens applied via panel classes on the MatSnackBar
- * container (set by NotificationService). The component itself only
+ * container (set by TbxMatNotificationService). The component itself only
  * handles layout — color comes from the panel class.
  *
  * This component is internal to the notification system. Consumers use
- * NotificationService, never this component directly.
+ * TbxMatNotificationService, never this component directly.
  */
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
-    selector: 'tbx-snackbar-notification',
+    selector: 'tbx-mat-notification-snackbar-notification',
     imports: [
         MatSnackBarLabel,
         MatSnackBarActions,
@@ -47,11 +47,11 @@ import { type NotificationData } from '../models/notification-data.model';
         MatIconModule,
     ],
     template: `
-        <div matSnackBarLabel class="tbx-snackbar-label">
-            <mat-icon class="tbx-snackbar-icon">{{ icon() }}</mat-icon>
+        <div matSnackBarLabel class="tbx-mat-notification-snackbar-label">
+            <mat-icon class="tbx-mat-notification-snackbar-icon">{{ icon() }}</mat-icon>
             <span>{{ data.message }}</span>
         </div>
-        <div matSnackBarActions class="tbx-snackbar-actions">
+        <div matSnackBarActions class="tbx-mat-notification-snackbar-actions">
             <button
                 matIconButton
                 matSnackBarAction
@@ -62,7 +62,10 @@ import { type NotificationData } from '../models/notification-data.model';
             </button>
         </div>
         @if (data.showCountdown) {
-            <div class="tbx-snackbar-countdown" [style.animation-duration.ms]="data.duration"></div>
+            <div
+                class="tbx-mat-notification-snackbar-countdown"
+                [style.animation-duration.ms]="data.duration"
+            ></div>
         }
     `,
     styles: `
@@ -71,27 +74,27 @@ import { type NotificationData } from '../models/notification-data.model';
             padding: 0.25rem;
         }
 
-        .tbx-snackbar-label {
+        .tbx-mat-notification-snackbar-label {
             display: flex;
             align-items: center;
             gap: 1rem;
             flex-grow: 1;
         }
 
-        .tbx-snackbar-actions {
+        .tbx-mat-notification-snackbar-actions {
             padding-left: 1rem;
         }
 
-        .tbx-snackbar-icon {
+        .tbx-mat-notification-snackbar-icon {
             flex-shrink: 0;
         }
     `,
 })
 export class NotificationComponent {
     readonly data = inject<NotificationData>(MAT_SNACK_BAR_DATA);
-    private readonly icons = inject(NOTIFICATION_ICON_SERVICE, { optional: true });
+    private readonly icons = inject(TBX_MAT_NOTIFICATION_ICON_SERVICE, { optional: true });
 
-    /** Hardcoded fallbacks when NOTIFICATION_ICON_SERVICE is not provided. */
+    /** Hardcoded fallbacks when TBX_MAT_NOTIFICATION_ICON_SERVICE is not provided. */
     private static readonly FALLBACK_ICONS: Readonly<Record<TbxMatSeverityLevelType, string>> = {
         [TbxMatSeverityLevelType.Success]: 'check_circle',
         [TbxMatSeverityLevelType.Error]: 'error',
