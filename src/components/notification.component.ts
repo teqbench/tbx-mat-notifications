@@ -71,22 +71,26 @@ import { type NotificationData } from '../models/notification-data.model';
     styles: `
         :host {
             display: flex;
-            padding: 0.25rem;
+            padding: var(--tbx-mat-notification-padding, 0.25rem);
         }
 
         .tbx-mat-notification-snackbar-label {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: var(--tbx-mat-notification-label-gap, 1rem);
             flex-grow: 1;
+            font-size: var(--tbx-mat-notification-font-size, inherit);
         }
 
         .tbx-mat-notification-snackbar-actions {
-            padding-left: 1rem;
+            padding-left: var(--tbx-mat-notification-actions-padding, 1rem);
         }
 
         .tbx-mat-notification-snackbar-icon {
             flex-shrink: 0;
+            font-size: var(--tbx-mat-notification-icon-size, 1.5rem);
+            width: var(--tbx-mat-notification-icon-size, 1.5rem);
+            height: var(--tbx-mat-notification-icon-size, 1.5rem);
         }
     `,
 })

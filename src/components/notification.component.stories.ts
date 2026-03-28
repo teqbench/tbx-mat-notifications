@@ -129,6 +129,32 @@ class NotificationHarnessComponent {
     }
 }
 
+const STYLE_TAG_ID = 'tbx-notification-story-overrides';
+
+/**
+ * Storybook decorator that injects CSS custom property overrides into
+ * the document head. Each story replaces the previous overrides so
+ * switching stories doesn't leak styles.
+ */
+function withCustomProperties(css: string) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (story: () => any) => {
+        document.getElementById(STYLE_TAG_ID)?.remove();
+        if (css) {
+            const style = document.createElement('style');
+            style.id = STYLE_TAG_ID;
+            style.textContent = css;
+            document.head.appendChild(style);
+        }
+        return story();
+    };
+}
+
+/** Decorator that clears any custom property overrides from a previous story. */
+function withDefaultProperties() {
+    return withCustomProperties('');
+}
+
 const meta: Meta<NotificationHarnessComponent> = {
     title: 'Notifications',
     component: NotificationHarnessComponent,
@@ -159,6 +185,7 @@ export const Default: Story = {
         horizontalPosition: 'start',
         verticalPosition: 'bottom',
     },
+    decorators: [withDefaultProperties()],
 };
 
 export const TopCenter: Story = {
@@ -166,6 +193,7 @@ export const TopCenter: Story = {
         horizontalPosition: 'center',
         verticalPosition: 'top',
     },
+    decorators: [withDefaultProperties()],
 };
 
 export const TopEnd: Story = {
@@ -173,6 +201,7 @@ export const TopEnd: Story = {
         horizontalPosition: 'end',
         verticalPosition: 'top',
     },
+    decorators: [withDefaultProperties()],
 };
 
 export const BottomCenter: Story = {
@@ -180,6 +209,7 @@ export const BottomCenter: Story = {
         horizontalPosition: 'center',
         verticalPosition: 'bottom',
     },
+    decorators: [withDefaultProperties()],
 };
 
 export const BottomEnd: Story = {
@@ -187,4 +217,56 @@ export const BottomEnd: Story = {
         horizontalPosition: 'end',
         verticalPosition: 'bottom',
     },
+    decorators: [withDefaultProperties()],
+};
+
+export const CompactSizing: Story = {
+    args: {
+        horizontalPosition: 'start',
+        verticalPosition: 'bottom',
+    },
+    decorators: [
+        withCustomProperties(`
+            html {
+                --tbx-mat-notification-icon-size: 1.125rem;
+                --tbx-mat-notification-font-size: 0.8125rem;
+                --tbx-mat-notification-padding: 0.125rem;
+                --tbx-mat-notification-label-gap: 0.5rem;
+                --tbx-mat-notification-actions-padding: 0.5rem;
+                --tbx-mat-notification-countdown-height: 0.125rem;
+            }
+        `),
+    ],
+};
+
+export const LargeSizing: Story = {
+    args: {
+        horizontalPosition: 'start',
+        verticalPosition: 'bottom',
+    },
+    decorators: [
+        withCustomProperties(`
+            html {
+                --tbx-mat-notification-icon-size: 3rem;
+                --tbx-mat-notification-font-size: 2rem;
+                --tbx-mat-notification-padding: 0.5rem;
+                --tbx-mat-notification-label-gap: 2rem;
+                --tbx-mat-notification-countdown-height: 0.25rem;
+            }
+        `),
+    ],
+};
+
+export const LargeIconOnly: Story = {
+    args: {
+        horizontalPosition: 'start',
+        verticalPosition: 'bottom',
+    },
+    decorators: [
+        withCustomProperties(`
+            html {
+                --tbx-mat-notification-icon-size: 3rem;
+            }
+        `),
+    ],
 };

@@ -134,6 +134,66 @@ export class MyAppNotificationIconService extends TbxMatSeverityIconService {
 providers: [{ provide: TBX_MAT_NOTIFICATION_ICON_SERVICE, useClass: MyAppNotificationIconService }];
 ```
 
+### CSS Custom Properties
+
+Notification appearance is customizable via CSS custom properties. Set them globally on `html` or scope them to a panel class for per-severity overrides.
+
+#### Layout
+
+| Property                                   | Default     | Description                   |
+| ------------------------------------------ | ----------- | ----------------------------- |
+| `--tbx-mat-notification-padding`           | `0.25rem`   | Host element padding          |
+| `--tbx-mat-notification-font-size`         | `inherit`   | Message text size             |
+| `--tbx-mat-notification-icon-size`         | `1.5rem`    | Severity icon size            |
+| `--tbx-mat-notification-label-gap`         | `1rem`      | Gap between icon and message  |
+| `--tbx-mat-notification-actions-padding`   | `1rem`      | Padding before dismiss button |
+| `--tbx-mat-notification-countdown-height`  | `0.1875rem` | Countdown bar thickness       |
+| `--tbx-mat-notification-countdown-opacity` | `0.4`       | Countdown bar opacity         |
+
+#### Colors
+
+| Property                          | Default   | Description             |
+| --------------------------------- | --------- | ----------------------- |
+| `--tbx-notification-success-bg`   | `#2E7D32` | Success background      |
+| `--tbx-notification-success-text` | `#FFFFFF` | Success text/icon color |
+| `--tbx-notification-error-bg`     | `#C62828` | Error background        |
+| `--tbx-notification-error-text`   | `#FFFFFF` | Error text/icon color   |
+| `--tbx-notification-warning-bg`   | `#F9A825` | Warning background      |
+| `--tbx-notification-warning-text` | `#FFFFFF` | Warning text/icon color |
+| `--tbx-notification-info-bg`      | `#1565C0` | Info background         |
+| `--tbx-notification-info-text`    | `#FFFFFF` | Info text/icon color    |
+| `--tbx-notification-help-bg`      | `#1976D2` | Help background         |
+| `--tbx-notification-help-text`    | `#FFFFFF` | Help text/icon color    |
+
+#### Examples
+
+Override globally:
+
+```scss
+html {
+    --tbx-mat-notification-icon-size: 1.25rem;
+    --tbx-mat-notification-font-size: 0.875rem;
+    --tbx-mat-notification-countdown-height: 0.125rem;
+}
+```
+
+Override per severity:
+
+```scss
+.tbx-mat-notification-snackbar-error {
+    --tbx-mat-notification-icon-size: 1.75rem;
+}
+```
+
+Override colors for a dark theme:
+
+```scss
+html[data-theme='dark'] {
+    --tbx-notification-success-bg: #388e3c;
+    --tbx-notification-error-bg: #d32f2f;
+}
+```
+
 ## API Reference
 
 ### TbxMatNotificationService
