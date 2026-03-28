@@ -7,7 +7,7 @@ import {
 } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { TbxSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { type NotificationData } from '../models/notification-data.model';
 
@@ -132,12 +132,12 @@ export class NotificationComponent {
     private readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, { optional: true });
 
     /** Hardcoded fallbacks when TBX_MAT_NOTIFICATION_PROVIDER_CONFIG is not provided. */
-    private static readonly FALLBACK_ICONS: Readonly<Record<TbxSeverityLevelType, string>> = {
-        [TbxSeverityLevelType.Success]: 'check_circle',
-        [TbxSeverityLevelType.Error]: 'error',
-        [TbxSeverityLevelType.Warning]: 'warning_amber',
-        [TbxSeverityLevelType.Information]: 'info',
-        [TbxSeverityLevelType.Help]: 'help',
+    private static readonly FALLBACK_ICONS: Readonly<Record<TbxMatSeverityLevelType, string>> = {
+        [TbxMatSeverityLevelType.Success]: 'check_circle',
+        [TbxMatSeverityLevelType.Error]: 'error',
+        [TbxMatSeverityLevelType.Warning]: 'warning_amber',
+        [TbxMatSeverityLevelType.Information]: 'info',
+        [TbxMatSeverityLevelType.Help]: 'help',
     };
 
     /**

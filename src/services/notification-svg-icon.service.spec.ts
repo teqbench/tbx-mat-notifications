@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { MatIconRegistry } from '@angular/material/icon';
-import { TbxSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import { TbxMatNotificationSvgIconService } from './notification-svg-icon.service';
 
 describe('TbxMatNotificationSvgIconService', () => {
@@ -21,33 +21,33 @@ describe('TbxMatNotificationSvgIconService', () => {
 
     describe('severity methods', () => {
         it('success() should return the Success enum value', () => {
-            expect(service.success()).toBe(TbxSeverityLevelType.Success);
+            expect(service.success()).toBe(TbxMatSeverityLevelType.Success);
         });
 
         it('error() should return the Error enum value', () => {
-            expect(service.error()).toBe(TbxSeverityLevelType.Error);
+            expect(service.error()).toBe(TbxMatSeverityLevelType.Error);
         });
 
         it('warning() should return the Warning enum value', () => {
-            expect(service.warning()).toBe(TbxSeverityLevelType.Warning);
+            expect(service.warning()).toBe(TbxMatSeverityLevelType.Warning);
         });
 
         it('information() should return the Information enum value', () => {
-            expect(service.information()).toBe(TbxSeverityLevelType.Information);
+            expect(service.information()).toBe(TbxMatSeverityLevelType.Information);
         });
 
         it('help() should return the Help enum value', () => {
-            expect(service.help()).toBe(TbxSeverityLevelType.Help);
+            expect(service.help()).toBe(TbxMatSeverityLevelType.Help);
         });
     });
 
     describe('resolve()', () => {
         it('should resolve all severity levels', () => {
-            expect(service.resolve(TbxSeverityLevelType.Success)).toBe('success');
-            expect(service.resolve(TbxSeverityLevelType.Error)).toBe('error');
-            expect(service.resolve(TbxSeverityLevelType.Warning)).toBe('warning');
-            expect(service.resolve(TbxSeverityLevelType.Information)).toBe('information');
-            expect(service.resolve(TbxSeverityLevelType.Help)).toBe('help');
+            expect(service.resolve(TbxMatSeverityLevelType.Success)).toBe('success');
+            expect(service.resolve(TbxMatSeverityLevelType.Error)).toBe('error');
+            expect(service.resolve(TbxMatSeverityLevelType.Warning)).toBe('warning');
+            expect(service.resolve(TbxMatSeverityLevelType.Information)).toBe('information');
+            expect(service.resolve(TbxMatSeverityLevelType.Help)).toBe('help');
         });
 
         it('should return undefined for unknown keys', () => {
@@ -68,7 +68,7 @@ describe('TbxMatNotificationSvgIconService', () => {
             class TestSvgService extends TbxMatNotificationSvgIconService {
                 constructor() {
                     super();
-                    this.register(TbxSeverityLevelType.Success, '<svg>check</svg>');
+                    this.register(TbxMatSeverityLevelType.Success, '<svg>check</svg>');
                 }
             }
 

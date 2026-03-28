@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
-import { TbxSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import {
     TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
     TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
@@ -40,7 +40,7 @@ function createFixture(data: NotificationData): ComponentFixture<NotificationCom
 /** Helper to build NotificationData with sensible defaults. */
 function buildData(overrides: Partial<NotificationData> = {}): NotificationData {
     return {
-        type: TbxSeverityLevelType.Information,
+        type: TbxMatSeverityLevelType.Information,
         message: 'Test',
         dismiss: vi.fn(),
         duration: NOTIFICATION_DEFAULT_DURATION_MS,
@@ -132,12 +132,12 @@ function createFixtureWithSvgResolver(
 
 describe('NotificationComponent', () => {
     describe('icon mapping via TBX_MAT_NOTIFICATION_PROVIDER_CONFIG', () => {
-        const cases: Array<[TbxSeverityLevelType, string]> = [
-            [TbxSeverityLevelType.Success, 'check_circle'],
-            [TbxSeverityLevelType.Error, 'error'],
-            [TbxSeverityLevelType.Warning, 'warning_amber'],
-            [TbxSeverityLevelType.Information, 'info'],
-            [TbxSeverityLevelType.Help, 'help'],
+        const cases: Array<[TbxMatSeverityLevelType, string]> = [
+            [TbxMatSeverityLevelType.Success, 'check_circle'],
+            [TbxMatSeverityLevelType.Error, 'error'],
+            [TbxMatSeverityLevelType.Warning, 'warning_amber'],
+            [TbxMatSeverityLevelType.Information, 'info'],
+            [TbxMatSeverityLevelType.Help, 'help'],
         ];
 
         for (const [type, expectedIcon] of cases) {
@@ -155,7 +155,7 @@ describe('NotificationComponent', () => {
     describe('SVG icon rendering via TBX_MAT_NOTIFICATION_PROVIDER_CONFIG', () => {
         it('should render svgIcon binding when resolver has no fontSet', () => {
             const fixture = createFixtureWithSvgResolver(
-                buildData({ type: TbxSeverityLevelType.Success })
+                buildData({ type: TbxMatSeverityLevelType.Success })
             );
 
             const icon = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-icon'));
@@ -164,7 +164,7 @@ describe('NotificationComponent', () => {
 
         it('should return null from severityIconFont when resolver has no fontSet', () => {
             const fixture = createFixtureWithSvgResolver(
-                buildData({ type: TbxSeverityLevelType.Success })
+                buildData({ type: TbxMatSeverityLevelType.Success })
             );
 
             const component = fixture.componentInstance;
@@ -173,7 +173,7 @@ describe('NotificationComponent', () => {
 
         it('should not render font ligature text when using SVG resolver', () => {
             const fixture = createFixtureWithSvgResolver(
-                buildData({ type: TbxSeverityLevelType.Error })
+                buildData({ type: TbxMatSeverityLevelType.Error })
             );
 
             const icon = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-icon'));
@@ -183,12 +183,12 @@ describe('NotificationComponent', () => {
     });
 
     describe('fallback icons when TBX_MAT_NOTIFICATION_PROVIDER_CONFIG is not provided', () => {
-        const cases: Array<[TbxSeverityLevelType, string]> = [
-            [TbxSeverityLevelType.Success, 'check_circle'],
-            [TbxSeverityLevelType.Error, 'error'],
-            [TbxSeverityLevelType.Warning, 'warning_amber'],
-            [TbxSeverityLevelType.Information, 'info'],
-            [TbxSeverityLevelType.Help, 'help'],
+        const cases: Array<[TbxMatSeverityLevelType, string]> = [
+            [TbxMatSeverityLevelType.Success, 'check_circle'],
+            [TbxMatSeverityLevelType.Error, 'error'],
+            [TbxMatSeverityLevelType.Warning, 'warning_amber'],
+            [TbxMatSeverityLevelType.Information, 'info'],
+            [TbxMatSeverityLevelType.Help, 'help'],
         ];
 
         for (const [type, expectedIcon] of cases) {

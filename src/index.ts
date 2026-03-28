@@ -3,7 +3,7 @@
  *
  * Public API:
  *   - TbxMatNotificationService          — inject and call success/error/warn/info/help
- *   - TbxSeverityLevelType               — severity enum (re-exported from @teqbench/tbx-mat-severity-icons)
+ *   - TbxMatSeverityLevelType               — severity enum (re-exported from @teqbench/tbx-mat-severity-icons)
  *   - TbxMatNotificationConfig           — full config interface for show()
  *   - TbxMatNotificationConfigArgsType   — optional config for convenience methods
  *   - TbxMatNotificationProviderConfig   — icon provider config interface
@@ -18,7 +18,7 @@
  */
 
 // Types (re-exported from @teqbench/tbx-mat-severity-icons)
-export { TbxSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+export { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 export type { TbxMatNotificationConfigArgsType } from './types/notification-config-args.type';
 
 // Models

@@ -33,7 +33,7 @@ Import the global notification styles in your application's stylesheet:
 ## Usage
 
 ```typescript
-import { TbxMatNotificationService, TbxSeverityLevelType } from '@teqbench/tbx-mat-notifications';
+import { TbxMatNotificationService, TbxMatSeverityLevelType } from '@teqbench/tbx-mat-notifications';
 
 // Inject the service
 private readonly notify = inject(TbxMatNotificationService);
@@ -47,7 +47,7 @@ this.notify.help('Click the + button to add a new item.');
 
 // Full control via show()
 this.notify.show({
-  type: TbxSeverityLevelType.Warning,
+  type: TbxMatSeverityLevelType.Warning,
   message: 'Unsaved changes will be lost.',
   duration: 6000,
   showCountdown: true,
@@ -145,17 +145,17 @@ Subclass `TbxMatNotificationSvgIconService` to register your own SVG markup:
 ```typescript
 import { Injectable } from '@angular/core';
 import { TbxMatNotificationSvgIconService } from '@teqbench/tbx-mat-notifications';
-import { TbxSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 
 @Injectable()
 export class MyNotificationSvgIcons extends TbxMatNotificationSvgIconService {
     constructor() {
         super();
-        this.register(TbxSeverityLevelType.Success, '<svg>...</svg>');
-        this.register(TbxSeverityLevelType.Error, '<svg>...</svg>');
-        this.register(TbxSeverityLevelType.Warning, '<svg>...</svg>');
-        this.register(TbxSeverityLevelType.Information, '<svg>...</svg>');
-        this.register(TbxSeverityLevelType.Help, '<svg>...</svg>');
+        this.register(TbxMatSeverityLevelType.Success, '<svg>...</svg>');
+        this.register(TbxMatSeverityLevelType.Error, '<svg>...</svg>');
+        this.register(TbxMatSeverityLevelType.Warning, '<svg>...</svg>');
+        this.register(TbxMatSeverityLevelType.Information, '<svg>...</svg>');
+        this.register(TbxMatSeverityLevelType.Help, '<svg>...</svg>');
     }
 }
 ```
@@ -281,7 +281,7 @@ html[data-theme='dark'] {
 
 | Property             | Type                            | Default    | Description                        |
 | -------------------- | ------------------------------- | ---------- | ---------------------------------- |
-| `type`               | `TbxSeverityLevelType`          | —          | Severity level (required)          |
+| `type`               | `TbxMatSeverityLevelType`       | —          | Severity level (required)          |
 | `message`            | `string`                        | —          | Message text (required)            |
 | `duration`           | `number`                        | 4000       | Duration in ms (clamped 1000–6000) |
 | `horizontalPosition` | `MatSnackBarHorizontalPosition` | `'start'`  | Horizontal position                |
@@ -290,10 +290,10 @@ html[data-theme='dark'] {
 
 ### TbxMatNotificationProviderConfig
 
-| Property                      | Type                                                            | Default                           | Description                       |
-| ----------------------------- | --------------------------------------------------------------- | --------------------------------- | --------------------------------- |
-| `severityIconResolverService` | `ITbxSeverityResolver & ITbxIconResolver<TbxSeverityLevelType>` | —                                 | Severity icon resolver (required) |
-| `closeIcon`                   | `{ name: string; type: 'font' \| 'svg' }`                       | `{ name: 'close', type: 'font' }` | Dismiss button icon               |
+| Property                      | Type                                                                     | Default                           | Description                       |
+| ----------------------------- | ------------------------------------------------------------------------ | --------------------------------- | --------------------------------- |
+| `severityIconResolverService` | `ITbxMatSeverityResolver & ITbxMatIconResolver<TbxMatSeverityLevelType>` | —                                 | Severity icon resolver (required) |
+| `closeIcon`                   | `{ name: string; type: 'font' \| 'svg' }`                                | `{ name: 'close', type: 'font' }` | Dismiss button icon               |
 
 ### TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
 
@@ -301,11 +301,11 @@ html[data-theme='dark'] {
 
 ### TbxMatNotificationFontIconService
 
-Default font-based severity icon service. Extends `TbxMatFontIconService<TbxSeverityLevelType>` and implements `ITbxSeverityResolver`. Provides Material Symbols ligatures for each severity level.
+Default font-based severity icon service. Extends `TbxMatFontIconService<TbxMatSeverityLevelType>` and implements `ITbxMatSeverityResolver`. Provides Material Symbols ligatures for each severity level.
 
 ### TbxMatNotificationSvgIconService
 
-Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxSeverityLevelType>` and implements `ITbxSeverityResolver`. Subclass and call `this.register()` to provide SVG markup for each severity level.
+Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSeverityLevelType>` and implements `ITbxMatSeverityResolver`. Subclass and call `this.register()` to provide SVG markup for each severity level.
 
 ## Compatibility
 

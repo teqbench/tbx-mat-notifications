@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { TbxMatFontIconService } from '@teqbench/tbx-mat-icons';
 import {
-    type ITbxSeverityResolver,
-    TbxSeverityLevelType,
-    tbxResolveSeverityIcon,
+    type ITbxMatSeverityResolver,
+    TbxMatSeverityLevelType,
+    tbxMatResolveSeverityIcon,
 } from '@teqbench/tbx-mat-severity-icons';
 
 /**
  * Default font-based notification icon service.
  *
  * Extends {@link TbxMatFontIconService} for fontSet resolution and implements
- * {@link ITbxSeverityResolver} for severity-level icon mapping. Uses Material
+ * {@link ITbxMatSeverityResolver} for severity-level icon mapping. Uses Material
  * Symbols ligatures for each severity level.
  *
  * ### fontSet resolution
@@ -46,7 +46,7 @@ import {
  *
  * // Component — no [fontSet] binding needed, <mat-icon> uses the global default:
  * // readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
- * // readonly severity = TbxSeverityLevelType.Success;
+ * // readonly severity = TbxMatSeverityLevelType.Success;
  * // <mat-icon>{{ config.severityIconResolverService.resolve(severity) }}</mat-icon>
  * ```
  *
@@ -66,7 +66,7 @@ import {
  *
  * // Component — must bind [fontSet] since fontSet was set explicitly:
  * // readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
- * // readonly severity = TbxSeverityLevelType.Success;
+ * // readonly severity = TbxMatSeverityLevelType.Success;
  * // <mat-icon [fontSet]="config.severityIconResolverService.fontSet">
  * //     {{ config.severityIconResolverService.resolve(severity) }}
  * // </mat-icon>
@@ -91,7 +91,7 @@ import {
  *
  * // Component — must bind [fontSet] since fontSet was set via token:
  * // readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
- * // readonly severity = TbxSeverityLevelType.Success;
+ * // readonly severity = TbxMatSeverityLevelType.Success;
  * // <mat-icon [fontSet]="config.severityIconResolverService.fontSet">
  * //     {{ config.severityIconResolverService.resolve(severity) }}
  * // </mat-icon>
@@ -99,8 +99,8 @@ import {
  */
 @Injectable()
 export class TbxMatNotificationFontIconService
-    extends TbxMatFontIconService<TbxSeverityLevelType>
-    implements ITbxSeverityResolver
+    extends TbxMatFontIconService<TbxMatSeverityLevelType>
+    implements ITbxMatSeverityResolver
 {
     /**
      * @param fontSet - Optional fontSet identifier (e.g., `'material-symbols-rounded'`).
@@ -132,9 +132,9 @@ export class TbxMatNotificationFontIconService
         return 'help';
     }
 
-    override resolve(name: TbxSeverityLevelType): string | undefined;
+    override resolve(name: TbxMatSeverityLevelType): string | undefined;
     override resolve(name: string): string | undefined;
     override resolve(name: string): string | undefined {
-        return tbxResolveSeverityIcon(this, name);
+        return tbxMatResolveSeverityIcon(this, name);
     }
 }

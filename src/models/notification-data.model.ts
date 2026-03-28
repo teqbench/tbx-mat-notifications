@@ -1,4 +1,4 @@
-import { TbxSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 
 /**
  * Internal data payload injected into NotificationComponent via
@@ -6,7 +6,7 @@ import { TbxSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
  * NotificationService, not this interface directly.
  */
 export interface NotificationData {
-    readonly type: TbxSeverityLevelType;
+    readonly type: TbxMatSeverityLevelType;
     readonly message: string;
     readonly dismiss: () => void;
 
