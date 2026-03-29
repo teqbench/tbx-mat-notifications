@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.0](https://github.com/teqbench/tbx-mat-notifications/compare/v1.0.0...v1.1.0) (2026-03-29)
+
+
+### Features
+
+* **notification:** add showCloseButton flag to hide dismiss button ([54db6db](https://github.com/teqbench/tbx-mat-notifications/commit/54db6dbbb758d0d98622747c1886f877a249dbdd))
+* **notification:** add showSeverityIcon and showCloseButton visibility flags ([95be3e3](https://github.com/teqbench/tbx-mat-notifications/commit/95be3e3546aed5da78fbabbdcb14c323591fdb93))
+* **notification:** add showSeverityIcon flag to hide severity icon ([3dcc327](https://github.com/teqbench/tbx-mat-notifications/commit/3dcc3278e2c755c349f80be2004f2abb739189fe))
+
 ## [1.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v0.2.0...v1.0.0) (2026-03-29)
 
 
