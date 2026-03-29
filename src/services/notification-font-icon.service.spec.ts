@@ -18,10 +18,7 @@ describe('TbxMatNotificationFontIconService', () => {
                         provide: TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
                         useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
                     },
-                    {
-                        provide: TbxMatNotificationFontIconService,
-                        useFactory: () => new TbxMatNotificationFontIconService(),
-                    },
+                    TbxMatNotificationFontIconService,
                 ],
             });
 
@@ -73,7 +70,7 @@ describe('TbxMatNotificationFontIconService', () => {
         });
     });
 
-    describe('with explicit fontSet via useFactory', () => {
+    describe('with explicit fontSet via constructor', () => {
         let service: TbxMatNotificationFontIconService;
 
         beforeEach(() => {

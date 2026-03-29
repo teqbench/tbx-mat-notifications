@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
-import { TbxMatFontIconService } from '@teqbench/tbx-mat-icons';
 import {
-    type ITbxMatSeverityResolver,
+    TbxMatSeverityFontIconService,
     TbxMatSeverityLevelType,
-    tbxMatResolveSeverityIcon,
 } from '@teqbench/tbx-mat-severity-icons';
 
 /**
  * Default font-based notification icon service.
  *
- * Extends {@link TbxMatFontIconService} for fontSet resolution and implements
- * {@link ITbxMatSeverityResolver} for severity-level icon mapping. Uses Material
- * Symbols ligatures for each severity level.
+ * Extends {@link TbxMatSeverityFontIconService} and registers Material Symbols
+ * ligatures for each severity level. The inherited `resolve()` and severity
+ * methods (`success()`, `error()`, etc.) work via the registered mappings.
  *
  * ### fontSet resolution
  *
@@ -98,10 +96,7 @@ import {
  * ```
  */
 @Injectable()
-export class TbxMatNotificationFontIconService
-    extends TbxMatFontIconService<TbxMatSeverityLevelType>
-    implements ITbxMatSeverityResolver
-{
+export class TbxMatNotificationFontIconService extends TbxMatSeverityFontIconService {
     /**
      * @param fontSet - Optional fontSet identifier (e.g., `'material-symbols-rounded'`).
      *                  When provided, takes precedence over all global defaults.
@@ -110,31 +105,11 @@ export class TbxMatNotificationFontIconService
      */
     constructor(fontSet?: string) {
         super(fontSet);
-    }
 
-    success(): string {
-        return 'check_circle';
-    }
-
-    error(): string {
-        return 'error';
-    }
-
-    warning(): string {
-        return 'warning_amber';
-    }
-
-    information(): string {
-        return 'info';
-    }
-
-    help(): string {
-        return 'help';
-    }
-
-    override resolve(name: TbxMatSeverityLevelType): string | undefined;
-    override resolve(name: string): string | undefined;
-    override resolve(name: string): string | undefined {
-        return tbxMatResolveSeverityIcon(this, name);
+        this.register(TbxMatSeverityLevelType.Success, 'check_circle');
+        this.register(TbxMatSeverityLevelType.Error, 'error');
+        this.register(TbxMatSeverityLevelType.Warning, 'warning_amber');
+        this.register(TbxMatSeverityLevelType.Information, 'info');
+        this.register(TbxMatSeverityLevelType.Help, 'help');
     }
 }

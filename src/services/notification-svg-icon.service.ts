@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TbxMatSvgIconService } from '@teqbench/tbx-mat-icons';
-import {
-    type ITbxMatSeverityResolver,
-    TbxMatSeverityLevelType,
-    tbxMatResolveSeverityIcon,
-} from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeveritySvgIconService } from '@teqbench/tbx-mat-severity-icons';
 
 /**
  * Default SVG-based notification icon service.
@@ -59,33 +54,4 @@ import {
  * ```
  */
 @Injectable()
-export class TbxMatNotificationSvgIconService
-    extends TbxMatSvgIconService<TbxMatSeverityLevelType>
-    implements ITbxMatSeverityResolver
-{
-    success(): string {
-        return TbxMatSeverityLevelType.Success;
-    }
-
-    error(): string {
-        return TbxMatSeverityLevelType.Error;
-    }
-
-    warning(): string {
-        return TbxMatSeverityLevelType.Warning;
-    }
-
-    information(): string {
-        return TbxMatSeverityLevelType.Information;
-    }
-
-    help(): string {
-        return TbxMatSeverityLevelType.Help;
-    }
-
-    override resolve(name: TbxMatSeverityLevelType): string | undefined;
-    override resolve(name: string): string | undefined;
-    override resolve(name: string): string | undefined {
-        return tbxMatResolveSeverityIcon(this, name);
-    }
-}
+export abstract class TbxMatNotificationSvgIconService extends TbxMatSeveritySvgIconService {}

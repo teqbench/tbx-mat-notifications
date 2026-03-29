@@ -95,18 +95,18 @@ function createFixtureWithCloseIcon(
 
 /** Stub SVG resolver — no fontSet property, so component detects it as SVG-based. */
 const svgResolverStub = {
-    success: () => 'svg-success',
-    error: () => 'svg-error',
-    warning: () => 'svg-warning',
-    information: () => 'svg-info',
-    help: () => 'svg-help',
+    success: () => 'success',
+    error: () => 'error',
+    warning: () => 'warning',
+    information: () => 'information',
+    help: () => 'help',
     resolve: (name: string) => {
         const map: Record<string, string> = {
-            success: 'svg-success',
-            error: 'svg-error',
-            warning: 'svg-warning',
-            information: 'svg-info',
-            help: 'svg-help',
+            [TbxMatSeverityLevelType.Success]: 'success',
+            [TbxMatSeverityLevelType.Error]: 'error',
+            [TbxMatSeverityLevelType.Warning]: 'warning',
+            [TbxMatSeverityLevelType.Information]: 'information',
+            [TbxMatSeverityLevelType.Help]: 'help',
         };
         return map[name];
     },
@@ -161,7 +161,7 @@ describe('NotificationComponent', () => {
             );
 
             const icon = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-icon'));
-            expect(icon.nativeElement.getAttribute('data-mat-icon-name')).toBe('svg-success');
+            expect(icon.nativeElement.getAttribute('data-mat-icon-name')).toBe('success');
         });
 
         it('should return null from severityIconFont when resolver has no fontSet', () => {
@@ -180,7 +180,7 @@ describe('NotificationComponent', () => {
 
             const icon = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-icon'));
             // SVG icons render via data-mat-icon-name attribute, not text content
-            expect(icon.nativeElement.getAttribute('data-mat-icon-name')).toBe('svg-error');
+            expect(icon.nativeElement.getAttribute('data-mat-icon-name')).toBe('error');
         });
     });
 

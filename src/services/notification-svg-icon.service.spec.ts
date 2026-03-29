@@ -1,18 +1,32 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatIconRegistry } from '@angular/material/icon';
 import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import { TbxMatNotificationSvgIconService } from './notification-svg-icon.service';
 
+/** Concrete test subclass that registers dummy SVG markup for each severity level. */
+@Injectable()
+class TestSvgIconService extends TbxMatNotificationSvgIconService {
+    constructor() {
+        super();
+        this.register(TbxMatSeverityLevelType.Success, '<svg>success</svg>');
+        this.register(TbxMatSeverityLevelType.Error, '<svg>error</svg>');
+        this.register(TbxMatSeverityLevelType.Warning, '<svg>warning</svg>');
+        this.register(TbxMatSeverityLevelType.Information, '<svg>information</svg>');
+        this.register(TbxMatSeverityLevelType.Help, '<svg>help</svg>');
+    }
+}
+
 describe('TbxMatNotificationSvgIconService', () => {
-    let service: TbxMatNotificationSvgIconService;
+    let service: TestSvgIconService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [TbxMatNotificationSvgIconService],
+            providers: [TestSvgIconService],
         });
 
-        service = TestBed.inject(TbxMatNotificationSvgIconService);
+        service = TestBed.inject(TestSvgIconService);
     });
 
     it('should be created', () => {
@@ -61,22 +75,10 @@ describe('TbxMatNotificationSvgIconService', () => {
 
             TestBed.resetTestingModule();
             TestBed.configureTestingModule({
-                providers: [TbxMatNotificationSvgIconService],
+                providers: [TestSvgIconService],
             });
 
-            // Subclass that registers SVGs
-            class TestSvgService extends TbxMatNotificationSvgIconService {
-                constructor() {
-                    super();
-                    this.register(TbxMatSeverityLevelType.Success, '<svg>check</svg>');
-                }
-            }
-
-            TestBed.configureTestingModule({
-                providers: [TestSvgService],
-            });
-
-            TestBed.inject(TestSvgService);
+            TestBed.inject(TestSvgIconService);
 
             expect(addSpy).toHaveBeenCalledWith('success', expect.anything());
             addSpy.mockRestore();
