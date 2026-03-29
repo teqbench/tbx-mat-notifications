@@ -1,5 +1,37 @@
 # Changelog
 
+## [1.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v0.2.0...v1.0.0) (2026-03-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* warn() renamed to warning(), info() renamed to information().
+* TbxSeverityLevelType re-export renamed to TbxMatSeverityLevelType.
+* TBX_MAT_NOTIFICATION_ICON_SERVICE and TbxMatNotificationIconService removed. Use TBX_MAT_NOTIFICATION_PROVIDER_CONFIG with TbxMatNotificationFontIconService or TbxMatNotificationSvgIconService. TbxMatSeverityLevelType renamed to TbxSeverityLevelType.
+* All public API symbols are renamed with TbxMat/TBX_MAT_ prefix.
+* **icons:** SeverityLevelType re-export is now TbxMatSeverityLevelType.
+
+### Features
+
+* add CSS custom properties for notification styling ([aaf261a](https://github.com/teqbench/tbx-mat-notifications/commit/aaf261a315adb7166b4b21460ead892f9d4c3ac4))
+* add fallback icons story and story description support ([12cb7b4](https://github.com/teqbench/tbx-mat-notifications/commit/12cb7b43ee2b18e222a76b58c9c5fb5aa41b3c2c))
+* add SVG icon stories with distinct severity icons ([87bd8b4](https://github.com/teqbench/tbx-mat-notifications/commit/87bd8b4e50d3f8287b1048b46e85ba9507e9696a))
+* apply TbxMat export naming convention to all public symbols ([0606d25](https://github.com/teqbench/tbx-mat-notifications/commit/0606d25733c0f6cf415b82cc58dd3c980857eeab))
+* fallback icons story, SVG close icon demo, audit allow-list fix ([3f4fe47](https://github.com/teqbench/tbx-mat-notifications/commit/3f4fe47235e98df373a1bc418bedcb4b8d4ebe62))
+* **icons:** align with TbxMat-prefixed naming from upstream v1.0.0 ([dc760af](https://github.com/teqbench/tbx-mat-notifications/commit/dc760af8d7dcd9802e63dc370eafd7597eff6434))
+* rename warn/info methods to warning/information, improve docs and stories ([a01cb8a](https://github.com/teqbench/tbx-mat-notifications/commit/a01cb8ab63f4e529a6bca219e6df0c2732351db3))
+* replace icon service with provider config, support font and SVG icons ([c87a6f5](https://github.com/teqbench/tbx-mat-notifications/commit/c87a6f5bfa4599962fff52f55f1351a59eebbe18))
+
+
+### Bug Fixes
+
+* align component selector and SCSS classes with naming convention ([4d00abb](https://github.com/teqbench/tbx-mat-notifications/commit/4d00abbbbf83387e238554d35895710258610103))
+
+
+### Code Refactoring
+
+* align upstream imports with TbxMat prefix convention ([2a5bc0f](https://github.com/teqbench/tbx-mat-notifications/commit/2a5bc0f0a3f542a8082b0963b7a05d86e26edb6f))
+
 ## [0.2.0](https://github.com/teqbench/tbx-mat-notifications/compare/v0.1.1...v0.2.0) (2026-03-26)
 
 
