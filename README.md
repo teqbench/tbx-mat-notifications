@@ -239,18 +239,18 @@ Notification appearance is customizable via CSS custom properties. Set them glob
 
 #### Colors
 
-| Property                          | Default   | Description             |
-| --------------------------------- | --------- | ----------------------- |
-| `--tbx-notification-success-bg`   | `#2E7D32` | Success background      |
-| `--tbx-notification-success-text` | `#FFFFFF` | Success text/icon color |
-| `--tbx-notification-error-bg`     | `#C62828` | Error background        |
-| `--tbx-notification-error-text`   | `#FFFFFF` | Error text/icon color   |
-| `--tbx-notification-warning-bg`   | `#F9A825` | Warning background      |
-| `--tbx-notification-warning-text` | `#FFFFFF` | Warning text/icon color |
-| `--tbx-notification-info-bg`      | `#1565C0` | Info background         |
-| `--tbx-notification-info-text`    | `#FFFFFF` | Info text/icon color    |
-| `--tbx-notification-help-bg`      | `#1976D2` | Help background         |
-| `--tbx-notification-help-text`    | `#FFFFFF` | Help text/icon color    |
+| Property                          | Default                                                            | Description             |
+| --------------------------------- | ------------------------------------------------------------------ | ----------------------- |
+| `--tbx-notification-success-bg`   | ![#2E7D32](https://placehold.co/15x15/2E7D32/2E7D32.png) `#2E7D32` | Success background      |
+| `--tbx-notification-success-text` | ![#FFFFFF](https://placehold.co/15x15/FFFFFF/FFFFFF.png) `#FFFFFF` | Success text/icon color |
+| `--tbx-notification-error-bg`     | ![#C62828](https://placehold.co/15x15/C62828/C62828.png) `#C62828` | Error background        |
+| `--tbx-notification-error-text`   | ![#FFFFFF](https://placehold.co/15x15/FFFFFF/FFFFFF.png) `#FFFFFF` | Error text/icon color   |
+| `--tbx-notification-warning-bg`   | ![#F9A825](https://placehold.co/15x15/F9A825/F9A825.png) `#F9A825` | Warning background      |
+| `--tbx-notification-warning-text` | ![#FFFFFF](https://placehold.co/15x15/FFFFFF/FFFFFF.png) `#FFFFFF` | Warning text/icon color |
+| `--tbx-notification-info-bg`      | ![#1565C0](https://placehold.co/15x15/1565C0/1565C0.png) `#1565C0` | Info background         |
+| `--tbx-notification-info-text`    | ![#FFFFFF](https://placehold.co/15x15/FFFFFF/FFFFFF.png) `#FFFFFF` | Info text/icon color    |
+| `--tbx-notification-help-bg`      | ![#1976D2](https://placehold.co/15x15/1976D2/1976D2.png) `#1976D2` | Help background         |
+| `--tbx-notification-help-text`    | ![#FFFFFF](https://placehold.co/15x15/FFFFFF/FFFFFF.png) `#FFFFFF` | Help text/icon color    |
 
 #### Examples
 
