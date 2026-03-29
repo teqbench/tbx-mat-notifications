@@ -37,8 +37,8 @@ The project does not have a root `vite.config.ts` (it uses ng-packagr for builds
 
 - **Azure Blue M3 theme** (`@angular/material/prebuilt-themes/azure-blue.css`) — provides typography, shape (border-radius), and interactive state tokens (ripples, hover). Without a theme, snackbar text, corners, and button effects fall back to unstyled browser defaults. Azure Blue is used as a neutral baseline; it does not affect notification severity colors, which are driven by `--tbx-notification-*` custom properties in the SCSS partial.
 - `provideAnimationsAsync()` — required by Material snackbar animations
-- `NOTIFICATION_ICON_SERVICE` — icon resolution (uses `NotificationIconService` with Material Symbols Rounded)
 - `MAT_ICON_DEFAULT_OPTIONS` — sets the default icon font set
+- `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG` — icon configuration (uses `TbxMatNotificationFontIconService` with Material Symbols Rounded)
 - Imports `_tbx-mat-notifications.scss` — the global styles for severity colors and countdown bar
 
 ### Font loading
@@ -52,7 +52,7 @@ The project does not have a root `vite.config.ts` (it uses ng-packagr for builds
 
 Stories live alongside their components as `*.stories.ts` files (e.g., `notification.component.stories.ts`).
 
-Since notifications are triggered programmatically via `NotificationService` (they render in the CDK overlay, not inline), stories use a harness component pattern — a wrapper with buttons that call the service methods.
+Since notifications are triggered programmatically via `TbxMatNotificationService` (they render in the CDK overlay, not inline), stories use a harness component pattern — a wrapper with buttons that call the service methods.
 
 ### Story file location
 
@@ -70,14 +70,14 @@ src/
 import { Component, inject } from '@angular/core';
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import { NotificationService } from '../services/notification.service';
+import { TbxMatNotificationService } from '../services/notification.service';
 
 @Component({
     selector: 'tbx-my-harness',
     template: `<button (click)="notify.success('It works!')">Test</button>`,
 })
 class MyHarnessComponent {
-    readonly notify = inject(NotificationService);
+    readonly notify = inject(TbxMatNotificationService);
 }
 
 const meta: Meta<MyHarnessComponent> = {

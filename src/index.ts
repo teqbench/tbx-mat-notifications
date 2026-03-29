@@ -1,30 +1,39 @@
 /**
- * Notification system — typed snackbar notifications with severity levels.
+ * tbx-mat-notifications — typed snackbar notifications with severity levels.
  *
  * Public API:
- *   - NotificationService     — inject and call success/error/warn/info/help
- *   - SeverityLevelType       — severity enum (re-exported from @teqbench/tbx-mat-severity-icons)
- *   - NotificationConfig      — full config interface for show()
- *   - NotificationConfigArgsType — optional config for convenience methods
- *   - NOTIFICATION_ICON_SERVICE — optional injection token for custom icon service
- *   - NotificationIconService — default icon implementation (Material Symbols Rounded)
+ *   - TbxMatNotificationService          — inject and call success/error/warning/information/help
+ *   - TbxMatSeverityLevelType            — severity enum (re-exported from @teqbench/tbx-mat-severity-icons)
+ *   - TbxMatNotificationConfig           — full config interface for show()
+ *   - TbxMatNotificationConfigArgsType   — optional config for convenience methods
+ *   - TbxMatNotificationProviderConfig   — icon provider config interface
+ *   - TBX_MAT_NOTIFICATION_PROVIDER_CONFIG — injection token for icon configuration
+ *   - TbxMatNotificationFontIconService  — default font-based severity icon service
+ *   - TbxMatNotificationSvgIconService   — default SVG-based severity icon service
+ *
+ * Icons are configured via TBX_MAT_NOTIFICATION_PROVIDER_CONFIG. The config
+ * groups a severity icon resolver (font or SVG) and an optional close icon
+ * into a single provider entry. When not provided, the component falls back
+ * to hardcoded Material Symbols font ligatures.
  *
  * Internal (not re-exported):
  *   - NotificationComponent — custom snackbar content
  *   - NotificationData      — MAT_SNACK_BAR_DATA payload
- *   - Constants                     — duration min/max/default
+ *   - Constants             — duration min/max/default, position defaults
  */
 
 // Types (re-exported from @teqbench/tbx-mat-severity-icons)
-export { SeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
-export type { NotificationConfigArgsType } from './types/notification-config-args.type';
+export { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+export type { TbxMatNotificationConfigArgsType } from './types/notification-config-args.type';
 
 // Models
-export type { NotificationConfig } from './models/notification-config.model';
+export type { TbxMatNotificationConfig } from './models/notification-config.model';
+export type { TbxMatNotificationProviderConfig } from './models/notification-provider-config.model';
 
 // Tokens
-export { NOTIFICATION_ICON_SERVICE } from './tokens/notification-icon-service.token';
+export { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from './tokens/notification-provider-config.token';
 
 // Services
-export { NotificationService } from './services/notification.service';
-export { NotificationIconService } from './services/notification-icon.service';
+export { TbxMatNotificationService } from './services/notification.service';
+export { TbxMatNotificationFontIconService } from './services/notification-font-icon.service';
+export { TbxMatNotificationSvgIconService } from './services/notification-svg-icon.service';
