@@ -111,6 +111,26 @@ function withSvgIconsAndSvgClose() {
 }
 
 /**
+ * applicationConfig decorator that removes the TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
+ * provider, forcing the component to use hardcoded fallback icons.
+ */
+function withNoIconConfig() {
+    return applicationConfig({
+        providers: [
+            provideAnimationsAsync(),
+            {
+                provide: MAT_ICON_DEFAULT_OPTIONS,
+                useValue: { fontSet: 'material-symbols-rounded' },
+            },
+            {
+                provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+                useValue: null,
+            },
+        ],
+    });
+}
+
+/**
  * Wrapper component that exposes buttons to trigger notifications.
  * Notifications render in the CDK overlay (outside the component tree),
  * so we trigger them programmatically via TbxMatNotificationService.
@@ -120,6 +140,9 @@ function withSvgIconsAndSvgClose() {
     imports: [MatButtonModule],
     template: `
         <div class="harness">
+            @if (description()) {
+                <p class="story-description">{{ description() }}</p>
+            }
             <p class="theme-note">
                 Theme: Angular Material prebuilt <strong>Azure Blue</strong>. Notification severity
                 colors are independent of the M3 theme palette.
@@ -185,12 +208,23 @@ function withSvgIconsAndSvgClose() {
             font-size: 0.875rem;
             color: #666;
         }
+
+        .story-description {
+            font-size: 0.875rem;
+            color: #333;
+            background: #f0f4ff;
+            border-left: 3px solid #1565c0;
+            padding: 0.5rem 0.75rem;
+            margin: 0 0 1rem;
+            line-height: 1.4;
+        }
     `,
 })
 class NotificationHarnessComponent {
     readonly notify = inject(TbxMatNotificationService);
     readonly horizontalPosition = input<MatSnackBarHorizontalPosition>('start');
     readonly verticalPosition = input<MatSnackBarVerticalPosition>('bottom');
+    readonly description = input<string>('');
 
     private readonly messages: Record<string, string> = {
         success: 'Operation completed successfully.',
@@ -420,4 +454,25 @@ export const SvgCloseIcon: Story = {
         verticalPosition: 'bottom',
     },
     decorators: [withDefaultProperties(), withSvgIconsAndSvgClose()],
+};
+
+/**
+ * Demonstrates the fallback behavior when TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
+ * is not provided. The component uses hardcoded Material Symbols font ligatures
+ * (check_circle, error, warning_amber, info, help) and the default "close"
+ * ligature for the dismiss button. This is the zero-configuration experience —
+ * consumers who don't provide the config token still get functional notifications
+ * as long as a Material Symbols font is loaded.
+ */
+export const FallbackIcons: Story = {
+    args: {
+        horizontalPosition: 'start',
+        verticalPosition: 'bottom',
+        description:
+            'No TBX_MAT_NOTIFICATION_PROVIDER_CONFIG is provided. The component falls back to ' +
+            'hardcoded Material Symbols font ligatures (check_circle, error, warning_amber, info, help) ' +
+            'and uses the "close" ligature for the dismiss button. This is the zero-configuration ' +
+            'experience — notifications work out of the box as long as a Material Symbols font is loaded.',
+    },
+    decorators: [withDefaultProperties(), withNoIconConfig()],
 };
