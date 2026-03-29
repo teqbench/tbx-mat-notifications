@@ -226,6 +226,7 @@ class NotificationHarnessComponent {
     readonly verticalPosition = input<MatSnackBarVerticalPosition>('bottom');
     readonly description = input<string>('');
     readonly showSeverityIcon = input<boolean>(true);
+    readonly showCloseButton = input<boolean>(true);
 
     private readonly messages: Record<string, string> = {
         success: 'Operation completed successfully.',
@@ -243,6 +244,7 @@ class NotificationHarnessComponent {
         method.call(this.notify, this.messages[level], {
             showCountdown,
             showSeverityIcon: this.showSeverityIcon(),
+            showCloseButton: this.showCloseButton(),
             horizontalPosition: this.horizontalPosition(),
             verticalPosition: this.verticalPosition(),
         });
@@ -252,18 +254,21 @@ class NotificationHarnessComponent {
         this.notify.success('Step 1: Complete.', {
             showCountdown: true,
             showSeverityIcon: this.showSeverityIcon(),
+            showCloseButton: this.showCloseButton(),
             horizontalPosition: this.horizontalPosition(),
             verticalPosition: this.verticalPosition(),
         });
         this.notify.warning('Step 2: Review needed.', {
             showCountdown: true,
             showSeverityIcon: this.showSeverityIcon(),
+            showCloseButton: this.showCloseButton(),
             horizontalPosition: this.horizontalPosition(),
             verticalPosition: this.verticalPosition(),
         });
         this.notify.information('Step 3: All done.', {
             showCountdown: true,
             showSeverityIcon: this.showSeverityIcon(),
+            showCloseButton: this.showCloseButton(),
             horizontalPosition: this.horizontalPosition(),
             verticalPosition: this.verticalPosition(),
         });
@@ -318,6 +323,10 @@ const meta: Meta<NotificationHarnessComponent> = {
         showSeverityIcon: {
             control: 'boolean',
             description: 'Show the severity icon in the snackbar',
+        },
+        showCloseButton: {
+            control: 'boolean',
+            description: 'Show the close/dismiss button in the snackbar',
         },
     },
 };
@@ -501,6 +510,45 @@ export const HiddenSeverityIcon: Story = {
             'showSeverityIcon is set to false. Notifications display only the message text ' +
             'and dismiss button — the severity icon is omitted. The panel color still indicates ' +
             'the severity level.',
+    },
+    decorators: [withDefaultProperties()],
+};
+
+/**
+ * Demonstrates notifications with the close button hidden via
+ * `showCloseButton: false`. The notification dismisses only via the
+ * duration timeout or programmatically. Combined with `showCountdown: true`
+ * in the "With Countdown" buttons to give users a visual cue that the
+ * notification will auto-dismiss.
+ */
+export const HiddenCloseButton: Story = {
+    args: {
+        horizontalPosition: 'start',
+        verticalPosition: 'bottom',
+        showCloseButton: false,
+        description:
+            'showCloseButton is set to false. Notifications dismiss only via the duration ' +
+            'timeout or programmatically — there is no close button. Use the "With Countdown" ' +
+            'buttons to see the auto-dismiss countdown.',
+    },
+    decorators: [withDefaultProperties()],
+};
+
+/**
+ * Demonstrates a minimal notification with both the severity icon and close
+ * button hidden. Only the message text and panel color remain — the most
+ * compact notification layout.
+ */
+export const MessageOnly: Story = {
+    args: {
+        horizontalPosition: 'start',
+        verticalPosition: 'bottom',
+        showSeverityIcon: false,
+        showCloseButton: false,
+        description:
+            'Both showSeverityIcon and showCloseButton are set to false. Notifications display ' +
+            'only the message text with the severity panel color. Use the "With Countdown" buttons ' +
+            'to see the auto-dismiss countdown.',
     },
     decorators: [withDefaultProperties()],
 };

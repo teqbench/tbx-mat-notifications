@@ -18,7 +18,8 @@ export interface NotificationData {
 
     /**
      * Callback to dismiss the current notification.
-     * Bound to the close button's `(click)` handler in the component template.
+     * Bound to the close button's `(click)` handler in the component template
+     * when `showCloseButton` is `true`.
      */
     readonly dismiss: () => void;
 
@@ -33,4 +34,7 @@ export interface NotificationData {
 
     /** Whether to render the severity icon. */
     readonly showSeverityIcon: boolean;
+
+    /** Whether to render the close/dismiss button. */
+    readonly showCloseButton: boolean;
 }

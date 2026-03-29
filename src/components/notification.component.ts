@@ -19,7 +19,7 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: 'font' as const };
  *
  * Rendered inside MatSnackBar via openFromComponent(). Receives its data
  * through MAT_SNACK_BAR_DATA injection token. The component displays an
- * optional severity icon, message text, and a dismiss button.
+ * optional severity icon, message text, and an optional dismiss button.
  *
  * ### Icon resolution
  *
@@ -32,7 +32,12 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: 'font' as const };
  * When not provided, the component falls back to hardcoded Material Symbols
  * font ligatures.
  *
- * The close/dismiss button icon is configured via `config.closeIcon`. When
+ * The close/dismiss button is shown by default (`data.showCloseButton === true`)
+ * and can be hidden per-notification via {@link TbxMatNotificationConfig.showCloseButton}.
+ * When hidden, the notification is dismissed only by the duration timeout or
+ * programmatically via `dismiss()` / `dismissAll()`.
+ *
+ * The close button icon is configured via `config.closeIcon`. When
  * omitted, it defaults to the `close` font ligature.
  *
  * Both severity icons and the close icon support font and SVG rendering.
@@ -84,21 +89,23 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: 'font' as const };
             }
             <span>{{ data.message }}</span>
         </div>
-        <div matSnackBarActions class="tbx-mat-notification-snackbar-actions">
-            <button
-                matIconButton
-                matSnackBarAction
-                (click)="data.dismiss()"
-                aria-label="Dismiss notification"
-            >
-                @let closeSvg = closeIconSvg();
-                @if (closeSvg) {
-                    <mat-icon [svgIcon]="closeSvg"></mat-icon>
-                } @else {
-                    <mat-icon>{{ closeIconFont() }}</mat-icon>
-                }
-            </button>
-        </div>
+        @if (data.showCloseButton) {
+            <div matSnackBarActions class="tbx-mat-notification-snackbar-actions">
+                <button
+                    matIconButton
+                    matSnackBarAction
+                    (click)="data.dismiss()"
+                    aria-label="Dismiss notification"
+                >
+                    @let closeSvg = closeIconSvg();
+                    @if (closeSvg) {
+                        <mat-icon [svgIcon]="closeSvg"></mat-icon>
+                    } @else {
+                        <mat-icon>{{ closeIconFont() }}</mat-icon>
+                    }
+                </button>
+            </div>
+        }
         @if (data.showCountdown) {
             <div
                 class="tbx-mat-notification-snackbar-countdown"

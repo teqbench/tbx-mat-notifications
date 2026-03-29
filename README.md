@@ -2,7 +2,7 @@
 
 ![Build Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-build-status.json) ![Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-tests.json) ![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-coverage.json) ![Version](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-version.json) ![Build Number](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-build-number.json)
 
-> Opinionated notification service for Angular Material projects, built on the Material Snackbar component. Provides `TbxMatNotificationService` with severity-leveled methods (`success()`, `error()`, `warning()`, `information()`, `help()`), FIFO queuing with signal-based state, configurable duration/position, optional severity icon visibility, and a pure-CSS countdown bar — no JS timers. Supports both font and SVG icons via `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG`.
+> Opinionated notification service for Angular Material projects, built on the Material Snackbar component. Provides `TbxMatNotificationService` with severity-leveled methods (`success()`, `error()`, `warning()`, `information()`, `help()`), FIFO queuing with signal-based state, configurable duration/position, optional severity icon and close button visibility, and a pure-CSS countdown bar — no JS timers. Supports both font and SVG icons via `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG`.
 
 ## Installation
 
@@ -52,6 +52,7 @@ this.notify.show({
   duration: 6000,
   showCountdown: true,
   showSeverityIcon: false,
+  showCloseButton: false,
 });
 
 // Queue state (reactive signals)
@@ -310,6 +311,7 @@ html[data-theme='dark'] {
 | `verticalPosition`   | `MatSnackBarVerticalPosition`   | `'bottom'` | Vertical position                  |
 | `showCountdown`      | `boolean`                       | `false`    | Show countdown progress bar        |
 | `showSeverityIcon`   | `boolean`                       | `true`     | Show severity icon                 |
+| `showCloseButton`    | `boolean`                       | `true`     | Show close/dismiss button          |
 
 ### TbxMatNotificationProviderConfig
 
