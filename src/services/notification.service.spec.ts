@@ -205,6 +205,66 @@ describe('TbxMatNotificationService', () => {
         });
     });
 
+    describe('showSeverityIcon', () => {
+        it('should default showSeverityIcon to true', () => {
+            service.show({
+                type: TbxMatSeverityLevelType.Information,
+                message: 'Hello',
+            });
+
+            const config = snackBarSpy.openFromComponent.mock.calls[0][1];
+            expect(config.data.showSeverityIcon).toBe(true);
+        });
+
+        it('should pass showSeverityIcon false when specified', () => {
+            service.show({
+                type: TbxMatSeverityLevelType.Information,
+                message: 'Hello',
+                showSeverityIcon: false,
+            });
+
+            const config = snackBarSpy.openFromComponent.mock.calls[0][1];
+            expect(config.data.showSeverityIcon).toBe(false);
+        });
+
+        it('should pass showSeverityIcon via convenience methods', () => {
+            service.success('Done', { showSeverityIcon: false });
+
+            const config = snackBarSpy.openFromComponent.mock.calls[0][1];
+            expect(config.data.showSeverityIcon).toBe(false);
+        });
+    });
+
+    describe('showCloseButton', () => {
+        it('should default showCloseButton to true', () => {
+            service.show({
+                type: TbxMatSeverityLevelType.Information,
+                message: 'Hello',
+            });
+
+            const config = snackBarSpy.openFromComponent.mock.calls[0][1];
+            expect(config.data.showCloseButton).toBe(true);
+        });
+
+        it('should pass showCloseButton false when specified', () => {
+            service.show({
+                type: TbxMatSeverityLevelType.Information,
+                message: 'Hello',
+                showCloseButton: false,
+            });
+
+            const config = snackBarSpy.openFromComponent.mock.calls[0][1];
+            expect(config.data.showCloseButton).toBe(false);
+        });
+
+        it('should pass showCloseButton via convenience methods', () => {
+            service.success('Done', { showCloseButton: false });
+
+            const config = snackBarSpy.openFromComponent.mock.calls[0][1];
+            expect(config.data.showCloseButton).toBe(false);
+        });
+    });
+
     describe('queue', () => {
         it('should display the first notification immediately', () => {
             service.show({ type: TbxMatSeverityLevelType.Success, message: 'First' });
