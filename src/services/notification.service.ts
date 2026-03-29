@@ -36,7 +36,7 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
  *
  * Wraps Angular Material's MatSnackBar with typed severity levels, consistent
  * positioning, configurable duration, and a custom snackbar component that
- * displays an icon + message + dismiss button.
+ * displays an optional severity icon + message + dismiss button.
  *
  * Notifications are queued FIFO and displayed one at a time. When the current
  * notification is dismissed (manually or by timeout), the next queued notification
@@ -58,13 +58,14 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
  * this.notify.help('Click the + button to add a new item.');
  * ```
  *
- * For full control over type, duration, position, and countdown:
+ * For full control over type, duration, position, countdown, and icon visibility:
  * ```typescript
  * this.notify.show({
  *     type: TbxMatSeverityLevelType.Warning,
  *     message: 'Unsaved changes will be lost.',
  *     duration: 6000,
  *     showCountdown: true,
+ *     showSeverityIcon: false,
  * });
  * ```
  *
@@ -173,7 +174,7 @@ export class TbxMatNotificationService {
      * Display a success notification.
      *
      * @param message The message to display to the user.
-     * @param configArgs Optional overrides for duration, position, and countdown.
+     * @param configArgs Optional overrides for duration, position, countdown, and icon visibility.
      */
     success(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Success, message, ...configArgs });
@@ -183,7 +184,7 @@ export class TbxMatNotificationService {
      * Display an error notification.
      *
      * @param message The message to display to the user.
-     * @param configArgs Optional overrides for duration, position, and countdown.
+     * @param configArgs Optional overrides for duration, position, countdown, and icon visibility.
      */
     error(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Error, message, ...configArgs });
@@ -193,7 +194,7 @@ export class TbxMatNotificationService {
      * Display a warning notification.
      *
      * @param message The message to display to the user.
-     * @param configArgs Optional overrides for duration, position, and countdown.
+     * @param configArgs Optional overrides for duration, position, countdown, and icon visibility.
      */
     warning(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Warning, message, ...configArgs });
@@ -203,7 +204,7 @@ export class TbxMatNotificationService {
      * Display an informational notification.
      *
      * @param message The message to display to the user.
-     * @param configArgs Optional overrides for duration, position, and countdown.
+     * @param configArgs Optional overrides for duration, position, countdown, and icon visibility.
      */
     information(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Information, message, ...configArgs });
@@ -213,7 +214,7 @@ export class TbxMatNotificationService {
      * Display a help notification.
      *
      * @param message The message to display to the user.
-     * @param configArgs Optional overrides for duration, position, and countdown.
+     * @param configArgs Optional overrides for duration, position, countdown, and icon visibility.
      */
     help(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Help, message, ...configArgs });
@@ -242,6 +243,7 @@ export class TbxMatNotificationService {
             dismiss: () => this.snackBar.dismiss(),
             duration,
             showCountdown: config.showCountdown ?? false,
+            showSeverityIcon: config.showSeverityIcon ?? true,
         };
 
         const snackBarConfig: MatSnackBarConfig<NotificationData> = {

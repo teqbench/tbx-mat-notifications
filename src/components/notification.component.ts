@@ -18,12 +18,15 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: 'font' as const };
  * Custom snackbar content component for typed notifications.
  *
  * Rendered inside MatSnackBar via openFromComponent(). Receives its data
- * through MAT_SNACK_BAR_DATA injection token. The component displays a
- * severity icon, message text, and a dismiss button.
+ * through MAT_SNACK_BAR_DATA injection token. The component displays an
+ * optional severity icon, message text, and a dismiss button.
  *
  * ### Icon resolution
  *
- * Icons are resolved via the {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG}
+ * The severity icon is shown by default (`data.showSeverityIcon === true`)
+ * and can be hidden per-notification via {@link TbxMatNotificationConfig.showSeverityIcon}.
+ *
+ * When shown, icons are resolved via the {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG}
  * injection token. When provided, the config's `severityIconResolverService` resolver
  * maps severity levels to icon identifiers (font ligatures or svgIcon names).
  * When not provided, the component falls back to hardcoded Material Symbols
@@ -66,16 +69,18 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: 'font' as const };
     ],
     template: `
         <div matSnackBarLabel class="tbx-mat-notification-snackbar-label">
-            @let severitySvg = severityIconSvg();
-            @if (severitySvg) {
-                <mat-icon
-                    class="tbx-mat-notification-snackbar-icon"
-                    [svgIcon]="severitySvg"
-                ></mat-icon>
-            } @else {
-                <mat-icon class="tbx-mat-notification-snackbar-icon">{{
-                    severityIconFont()
-                }}</mat-icon>
+            @if (data.showSeverityIcon) {
+                @let severitySvg = severityIconSvg();
+                @if (severitySvg) {
+                    <mat-icon
+                        class="tbx-mat-notification-snackbar-icon"
+                        [svgIcon]="severitySvg"
+                    ></mat-icon>
+                } @else {
+                    <mat-icon class="tbx-mat-notification-snackbar-icon">{{
+                        severityIconFont()
+                    }}</mat-icon>
+                }
             }
             <span>{{ data.message }}</span>
         </div>

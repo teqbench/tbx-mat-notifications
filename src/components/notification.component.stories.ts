@@ -225,6 +225,7 @@ class NotificationHarnessComponent {
     readonly horizontalPosition = input<MatSnackBarHorizontalPosition>('start');
     readonly verticalPosition = input<MatSnackBarVerticalPosition>('bottom');
     readonly description = input<string>('');
+    readonly showSeverityIcon = input<boolean>(true);
 
     private readonly messages: Record<string, string> = {
         success: 'Operation completed successfully.',
@@ -241,6 +242,7 @@ class NotificationHarnessComponent {
         ) => void;
         method.call(this.notify, this.messages[level], {
             showCountdown,
+            showSeverityIcon: this.showSeverityIcon(),
             horizontalPosition: this.horizontalPosition(),
             verticalPosition: this.verticalPosition(),
         });
@@ -249,16 +251,19 @@ class NotificationHarnessComponent {
     queueDemo(): void {
         this.notify.success('Step 1: Complete.', {
             showCountdown: true,
+            showSeverityIcon: this.showSeverityIcon(),
             horizontalPosition: this.horizontalPosition(),
             verticalPosition: this.verticalPosition(),
         });
         this.notify.warning('Step 2: Review needed.', {
             showCountdown: true,
+            showSeverityIcon: this.showSeverityIcon(),
             horizontalPosition: this.horizontalPosition(),
             verticalPosition: this.verticalPosition(),
         });
         this.notify.information('Step 3: All done.', {
             showCountdown: true,
+            showSeverityIcon: this.showSeverityIcon(),
             horizontalPosition: this.horizontalPosition(),
             verticalPosition: this.verticalPosition(),
         });
@@ -309,6 +314,10 @@ const meta: Meta<NotificationHarnessComponent> = {
             control: 'select',
             options: ['top', 'bottom'],
             description: 'Vertical position of the snackbar',
+        },
+        showSeverityIcon: {
+            control: 'boolean',
+            description: 'Show the severity icon in the snackbar',
         },
     },
 };
@@ -475,4 +484,23 @@ export const FallbackIcons: Story = {
             'experience — notifications work out of the box as long as a Material Symbols font is loaded.',
     },
     decorators: [withDefaultProperties(), withNoIconConfig()],
+};
+
+/**
+ * Demonstrates notifications with the severity icon hidden via
+ * `showSeverityIcon: false`. Only the message text and dismiss button are
+ * rendered — useful when the panel color alone provides sufficient context
+ * or when a more compact layout is desired.
+ */
+export const HiddenSeverityIcon: Story = {
+    args: {
+        horizontalPosition: 'start',
+        verticalPosition: 'bottom',
+        showSeverityIcon: false,
+        description:
+            'showSeverityIcon is set to false. Notifications display only the message text ' +
+            'and dismiss button — the severity icon is omitted. The panel color still indicates ' +
+            'the severity level.',
+    },
+    decorators: [withDefaultProperties()],
 };

@@ -45,6 +45,7 @@ function buildData(overrides: Partial<NotificationData> = {}): NotificationData 
         dismiss: vi.fn(),
         duration: NOTIFICATION_DEFAULT_DURATION_MS,
         showCountdown: false,
+        showSeverityIcon: true,
         ...overrides,
     };
 }
@@ -269,6 +270,31 @@ describe('NotificationComponent', () => {
             expect(closeButton.nativeElement.getAttribute('aria-label')).toBe(
                 'Dismiss notification'
             );
+        });
+    });
+
+    describe('severity icon visibility', () => {
+        it('should render severity icon when showSeverityIcon is true', () => {
+            const fixture = createFixture(buildData({ showSeverityIcon: true }));
+
+            const icon = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-icon'));
+            expect(icon).not.toBeNull();
+        });
+
+        it('should not render severity icon when showSeverityIcon is false', () => {
+            const fixture = createFixture(buildData({ showSeverityIcon: false }));
+
+            const icon = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-icon'));
+            expect(icon).toBeNull();
+        });
+
+        it('should still display the message when severity icon is hidden', () => {
+            const fixture = createFixture(
+                buildData({ showSeverityIcon: false, message: 'No icon here' })
+            );
+
+            const message = fixture.debugElement.query(By.css('[matSnackBarLabel] span'));
+            expect(message.nativeElement.textContent.trim()).toBe('No icon here');
         });
     });
 

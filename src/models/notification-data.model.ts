@@ -30,4 +30,7 @@ export interface NotificationData {
 
     /** Whether to render the countdown progress bar. */
     readonly showCountdown: boolean;
+
+    /** Whether to render the severity icon. */
+    readonly showSeverityIcon: boolean;
 }
