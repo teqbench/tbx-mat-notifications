@@ -18,18 +18,26 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: 'font' as const };
  * Custom snackbar content component for typed notifications.
  *
  * Rendered inside MatSnackBar via openFromComponent(). Receives its data
- * through MAT_SNACK_BAR_DATA injection token. The component displays a
- * severity icon, message text, and a dismiss button.
+ * through MAT_SNACK_BAR_DATA injection token. The component displays an
+ * optional severity icon, message text, and an optional dismiss button.
  *
  * ### Icon resolution
  *
- * Icons are resolved via the {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG}
+ * The severity icon is shown by default (`data.showSeverityIcon === true`)
+ * and can be hidden per-notification via {@link TbxMatNotificationConfig.showSeverityIcon}.
+ *
+ * When shown, icons are resolved via the {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG}
  * injection token. When provided, the config's `severityIconResolverService` resolver
  * maps severity levels to icon identifiers (font ligatures or svgIcon names).
  * When not provided, the component falls back to hardcoded Material Symbols
  * font ligatures.
  *
- * The close/dismiss button icon is configured via `config.closeIcon`. When
+ * The close/dismiss button is shown by default (`data.showCloseButton === true`)
+ * and can be hidden per-notification via {@link TbxMatNotificationConfig.showCloseButton}.
+ * When hidden, the notification is dismissed only by the duration timeout or
+ * programmatically via `dismiss()` / `dismissAll()`.
+ *
+ * The close button icon is configured via `config.closeIcon`. When
  * omitted, it defaults to the `close` font ligature.
  *
  * Both severity icons and the close icon support font and SVG rendering.
@@ -66,34 +74,38 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: 'font' as const };
     ],
     template: `
         <div matSnackBarLabel class="tbx-mat-notification-snackbar-label">
-            @let severitySvg = severityIconSvg();
-            @if (severitySvg) {
-                <mat-icon
-                    class="tbx-mat-notification-snackbar-icon"
-                    [svgIcon]="severitySvg"
-                ></mat-icon>
-            } @else {
-                <mat-icon class="tbx-mat-notification-snackbar-icon">{{
-                    severityIconFont()
-                }}</mat-icon>
+            @if (data.showSeverityIcon) {
+                @let severitySvg = severityIconSvg();
+                @if (severitySvg) {
+                    <mat-icon
+                        class="tbx-mat-notification-snackbar-icon"
+                        [svgIcon]="severitySvg"
+                    ></mat-icon>
+                } @else {
+                    <mat-icon class="tbx-mat-notification-snackbar-icon">{{
+                        severityIconFont()
+                    }}</mat-icon>
+                }
             }
             <span>{{ data.message }}</span>
         </div>
-        <div matSnackBarActions class="tbx-mat-notification-snackbar-actions">
-            <button
-                matIconButton
-                matSnackBarAction
-                (click)="data.dismiss()"
-                aria-label="Dismiss notification"
-            >
-                @let closeSvg = closeIconSvg();
-                @if (closeSvg) {
-                    <mat-icon [svgIcon]="closeSvg"></mat-icon>
-                } @else {
-                    <mat-icon>{{ closeIconFont() }}</mat-icon>
-                }
-            </button>
-        </div>
+        @if (data.showCloseButton) {
+            <div matSnackBarActions class="tbx-mat-notification-snackbar-actions">
+                <button
+                    matIconButton
+                    matSnackBarAction
+                    (click)="data.dismiss()"
+                    aria-label="Dismiss notification"
+                >
+                    @let closeSvg = closeIconSvg();
+                    @if (closeSvg) {
+                        <mat-icon [svgIcon]="closeSvg"></mat-icon>
+                    } @else {
+                        <mat-icon>{{ closeIconFont() }}</mat-icon>
+                    }
+                </button>
+            </div>
+        }
         @if (data.showCountdown) {
             <div
                 class="tbx-mat-notification-snackbar-countdown"

@@ -8,7 +8,8 @@ import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
  * Configuration for a single notification.
  *
  * Passed to {@link TbxMatNotificationService.show} for full control over
- * severity level, message, duration, position, and countdown behavior.
+ * severity level, message, duration, position, countdown behavior,
+ * icon visibility, and close button visibility.
  * The convenience methods (`success()`, `error()`, `warning()`, `information()`,
  * `help()`) set `type` automatically — use this interface directly when
  * you need to specify all options.
@@ -33,6 +34,12 @@ import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
  * ```typescript
  * // Type is set automatically; override duration and countdown:
  * this.notify.success('Item saved.', { duration: 2000, showCountdown: true });
+ *
+ * // Hide the severity icon:
+ * this.notify.warning('Low disk space.', { showSeverityIcon: false });
+ *
+ * // Auto-dismiss only (no close button):
+ * this.notify.information('Syncing...', { showCloseButton: false, showCountdown: true });
  * ```
  */
 export interface TbxMatNotificationConfig {
@@ -82,4 +89,27 @@ export interface TbxMatNotificationConfig {
      * Defaults to `false`.
      */
     readonly showCountdown?: boolean;
+
+    /**
+     * Show the severity icon in the snackbar.
+     *
+     * When `true` (the default), the severity-level icon is rendered to the
+     * left of the message text. Set to `false` to hide the icon and display
+     * only the message.
+     *
+     * Defaults to `true`.
+     */
+    readonly showSeverityIcon?: boolean;
+
+    /**
+     * Show the close/dismiss button in the snackbar.
+     *
+     * When `true` (the default), a dismiss button is rendered on the
+     * trailing edge of the notification. Set to `false` to hide the button
+     * so the notification can only be dismissed by the duration timeout or
+     * programmatically via `dismiss()` / `dismissAll()`.
+     *
+     * Defaults to `true`.
+     */
+    readonly showCloseButton?: boolean;
 }
