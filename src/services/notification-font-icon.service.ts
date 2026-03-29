@@ -105,7 +105,18 @@ export class TbxMatNotificationFontIconService extends TbxMatSeverityFontIconSer
      */
     constructor(fontSet?: string) {
         super(fontSet);
+    }
 
+    /**
+     * Register default Material Symbols ligature names for each severity level.
+     *
+     * These work with any Material Symbols font variant (outlined, rounded,
+     * sharp, etc.) since the ligature names are consistent across variants.
+     * Subclasses can override any of these defaults by calling `register()`
+     * with the same key and a different ligature.
+     */
+    protected override initialize(): void {
+        super.initialize();
         this.register(TbxMatSeverityLevelType.Success, 'check_circle');
         this.register(TbxMatSeverityLevelType.Error, 'error');
         this.register(TbxMatSeverityLevelType.Warning, 'warning_amber');

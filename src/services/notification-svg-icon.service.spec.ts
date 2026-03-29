@@ -1,32 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatIconRegistry } from '@angular/material/icon';
 import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import { TbxMatNotificationSvgIconService } from './notification-svg-icon.service';
 
-/** Concrete test subclass that registers dummy SVG markup for each severity level. */
-@Injectable()
-class TestSvgIconService extends TbxMatNotificationSvgIconService {
-    constructor() {
-        super();
-        this.register(TbxMatSeverityLevelType.Success, '<svg>success</svg>');
-        this.register(TbxMatSeverityLevelType.Error, '<svg>error</svg>');
-        this.register(TbxMatSeverityLevelType.Warning, '<svg>warning</svg>');
-        this.register(TbxMatSeverityLevelType.Information, '<svg>information</svg>');
-        this.register(TbxMatSeverityLevelType.Help, '<svg>help</svg>');
-    }
-}
-
 describe('TbxMatNotificationSvgIconService', () => {
-    let service: TestSvgIconService;
+    let service: TbxMatNotificationSvgIconService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [TestSvgIconService],
+            providers: [TbxMatNotificationSvgIconService],
         });
 
-        service = TestBed.inject(TestSvgIconService);
+        service = TestBed.inject(TbxMatNotificationSvgIconService);
     });
 
     it('should be created', () => {
@@ -70,17 +56,22 @@ describe('TbxMatNotificationSvgIconService', () => {
     });
 
     describe('register()', () => {
-        it('should register SVG markup with MatIconRegistry', () => {
+        it('should register all default SVG icons with MatIconRegistry', () => {
             const addSpy = vi.spyOn(MatIconRegistry.prototype, 'addSvgIconLiteral');
 
             TestBed.resetTestingModule();
             TestBed.configureTestingModule({
-                providers: [TestSvgIconService],
+                providers: [TbxMatNotificationSvgIconService],
             });
 
-            TestBed.inject(TestSvgIconService);
+            TestBed.inject(TbxMatNotificationSvgIconService);
 
             expect(addSpy).toHaveBeenCalledWith('success', expect.anything());
+            expect(addSpy).toHaveBeenCalledWith('error', expect.anything());
+            expect(addSpy).toHaveBeenCalledWith('warning', expect.anything());
+            expect(addSpy).toHaveBeenCalledWith('information', expect.anything());
+            expect(addSpy).toHaveBeenCalledWith('help', expect.anything());
+            expect(addSpy).toHaveBeenCalledTimes(5);
             addSpy.mockRestore();
         });
     });

@@ -18,7 +18,10 @@ describe('TbxMatNotificationFontIconService', () => {
                         provide: TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
                         useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
                     },
-                    TbxMatNotificationFontIconService,
+                    {
+                        provide: TbxMatNotificationFontIconService,
+                        useFactory: () => new TbxMatNotificationFontIconService(),
+                    },
                 ],
             });
 

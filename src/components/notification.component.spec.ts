@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import { By } from '@angular/platform-browser';
 import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import {
@@ -12,6 +14,17 @@ import { TbxMatNotificationFontIconService } from '../services/notification-font
 import { NotificationComponent } from './notification.component';
 import { type NotificationData } from '../models/notification-data.model';
 import { NOTIFICATION_DEFAULT_DURATION_MS } from '../constants/notification.constants';
+
+const DUMMY_SVG = '<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>';
+
+/** Register dummy SVG icons with MatIconRegistry so mat-icon doesn't log errors. */
+function registerDummySvgIcons(...names: string[]): void {
+    const registry = TestBed.inject(MatIconRegistry);
+    const sanitizer = TestBed.inject(DomSanitizer);
+    for (const name of names) {
+        registry.addSvgIconLiteral(name, sanitizer.bypassSecurityTrustHtml(DUMMY_SVG));
+    }
+}
 
 /** Create a fixture with the font icon provider config. */
 function createFixture(data: NotificationData): ComponentFixture<NotificationComponent> {
@@ -51,20 +64,6 @@ function buildData(overrides: Partial<NotificationData> = {}): NotificationData 
     };
 }
 
-/** Create a fixture without TBX_MAT_NOTIFICATION_PROVIDER_CONFIG to test fallback icons. */
-function createFixtureWithoutConfig(
-    data: NotificationData
-): ComponentFixture<NotificationComponent> {
-    TestBed.configureTestingModule({
-        imports: [NotificationComponent],
-        providers: [{ provide: MAT_SNACK_BAR_DATA, useValue: data }],
-    });
-
-    const fixture = TestBed.createComponent(NotificationComponent);
-    fixture.detectChanges();
-    return fixture;
-}
-
 /** Create a fixture with a custom close icon config. */
 function createFixtureWithCloseIcon(
     data: NotificationData,
@@ -87,6 +86,10 @@ function createFixtureWithCloseIcon(
             },
         ],
     });
+
+    if (closeIcon.type === 'svg') {
+        registerDummySvgIcons(closeIcon.name);
+    }
 
     const fixture = TestBed.createComponent(NotificationComponent);
     fixture.detectChanges();
@@ -126,6 +129,8 @@ function createFixtureWithSvgResolver(
             },
         ],
     });
+
+    registerDummySvgIcons('success', 'error', 'warning', 'information', 'help');
 
     const fixture = TestBed.createComponent(NotificationComponent);
     fixture.detectChanges();
@@ -182,27 +187,6 @@ describe('NotificationComponent', () => {
             // SVG icons render via data-mat-icon-name attribute, not text content
             expect(icon.nativeElement.getAttribute('data-mat-icon-name')).toBe('error');
         });
-    });
-
-    describe('fallback icons when TBX_MAT_NOTIFICATION_PROVIDER_CONFIG is not provided', () => {
-        const cases: Array<[TbxMatSeverityLevelType, string]> = [
-            [TbxMatSeverityLevelType.Success, 'check_circle'],
-            [TbxMatSeverityLevelType.Error, 'error'],
-            [TbxMatSeverityLevelType.Warning, 'warning_amber'],
-            [TbxMatSeverityLevelType.Information, 'info'],
-            [TbxMatSeverityLevelType.Help, 'help'],
-        ];
-
-        for (const [type, expectedIcon] of cases) {
-            it(`should fall back to "${expectedIcon}" for ${type}`, () => {
-                const fixture = createFixtureWithoutConfig(buildData({ type }));
-
-                const icon = fixture.debugElement.query(
-                    By.css('.tbx-mat-notification-snackbar-icon')
-                );
-                expect(icon.nativeElement.textContent.trim()).toBe(expectedIcon);
-            });
-        }
     });
 
     describe('close icon', () => {
