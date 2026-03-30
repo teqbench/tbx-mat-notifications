@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v1.1.0...v2.0.0) (2026-03-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* TBX_MAT_NOTIFICATION_PROVIDER_CONFIG is now required. Peer dependencies updated to @teqbench/tbx-mat-icons >=4.0.0 and @teqbench/tbx-mat-severity-icons >=4.0.0.
+* TBX_MAT_NOTIFICATION_PROVIDER_CONFIG is now required. The component no longer falls back to hardcoded font ligatures when the token is not provided. Consumers must configure the token with either TbxMatNotificationFontIconService or TbxMatNotificationSvgIconService.
+
+### Code Refactoring
+
+* adopt initialize() pattern, add default SVG icons, require provider config ([bff72bd](https://github.com/teqbench/tbx-mat-notifications/commit/bff72bd10f237ec503ecd51e6bd45439a6134c44))
+* require provider config, use TbxMatIconType enum, update deps to v4 ([dc4479e](https://github.com/teqbench/tbx-mat-notifications/commit/dc4479e7429d18978c39d1f265cc372246caa955))
+
 ## [1.1.0](https://github.com/teqbench/tbx-mat-notifications/compare/v1.0.0...v1.1.0) (2026-03-29)
 
 
