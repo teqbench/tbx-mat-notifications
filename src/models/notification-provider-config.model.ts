@@ -1,4 +1,4 @@
-import type { ITbxMatIconResolver } from '@teqbench/tbx-mat-icons';
+import { type ITbxMatIconResolver, type TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import type {
     ITbxMatSeverityResolver,
     TbxMatSeverityLevelType,
@@ -85,7 +85,9 @@ import type {
 export interface TbxMatNotificationProviderConfig {
     /** Severity icon resolver — maps severity levels to icon identifiers. */
     readonly severityIconResolverService: ITbxMatSeverityResolver &
-        ITbxMatIconResolver<TbxMatSeverityLevelType>;
+        ITbxMatIconResolver<TbxMatSeverityLevelType> & {
+            readonly iconType: TbxMatIconType;
+        };
 
     /**
      * Close/dismiss button icon configuration.
@@ -97,6 +99,6 @@ export interface TbxMatNotificationProviderConfig {
      */
     readonly closeIcon?: {
         readonly name: string;
-        readonly type: 'font' | 'svg';
+        readonly type: TbxMatIconType;
     };
 }

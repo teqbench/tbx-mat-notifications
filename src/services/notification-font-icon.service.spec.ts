@@ -73,7 +73,7 @@ describe('TbxMatNotificationFontIconService', () => {
         });
     });
 
-    describe('with explicit fontSet via useFactory', () => {
+    describe('with explicit fontSet via constructor', () => {
         let service: TbxMatNotificationFontIconService;
 
         beforeEach(() => {

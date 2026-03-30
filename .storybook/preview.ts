@@ -35,6 +35,20 @@ const preview: Preview = {
         }),
     ],
     parameters: {
+        options: {
+            storySort: {
+                order: [
+                    'Notifications',
+                    [
+                        'Default Font Icons',
+                        'Default SVG Icons',
+                        'Custom Font Icons',
+                        'Custom SVG Icons',
+                        'Visibility',
+                    ],
+                ],
+            },
+        },
         controls: {
             matchers: {
                 color: /(background|color)$/i,

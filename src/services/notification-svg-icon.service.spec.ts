@@ -56,7 +56,7 @@ describe('TbxMatNotificationSvgIconService', () => {
     });
 
     describe('register()', () => {
-        it('should register SVG markup with MatIconRegistry', () => {
+        it('should register all default SVG icons with MatIconRegistry', () => {
             const addSpy = vi.spyOn(MatIconRegistry.prototype, 'addSvgIconLiteral');
 
             TestBed.resetTestingModule();
@@ -64,21 +64,14 @@ describe('TbxMatNotificationSvgIconService', () => {
                 providers: [TbxMatNotificationSvgIconService],
             });
 
-            // Subclass that registers SVGs
-            class TestSvgService extends TbxMatNotificationSvgIconService {
-                constructor() {
-                    super();
-                    this.register(TbxMatSeverityLevelType.Success, '<svg>check</svg>');
-                }
-            }
-
-            TestBed.configureTestingModule({
-                providers: [TestSvgService],
-            });
-
-            TestBed.inject(TestSvgService);
+            TestBed.inject(TbxMatNotificationSvgIconService);
 
             expect(addSpy).toHaveBeenCalledWith('success', expect.anything());
+            expect(addSpy).toHaveBeenCalledWith('error', expect.anything());
+            expect(addSpy).toHaveBeenCalledWith('warning', expect.anything());
+            expect(addSpy).toHaveBeenCalledWith('information', expect.anything());
+            expect(addSpy).toHaveBeenCalledWith('help', expect.anything());
+            expect(addSpy).toHaveBeenCalledTimes(5);
             addSpy.mockRestore();
         });
     });
