@@ -7,11 +7,12 @@ import {
 } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { type NotificationData } from '../models/notification-data.model';
 
 /** Default close icon when closeIcon is omitted from the provider config. */
-const DEFAULT_CLOSE_ICON = { name: 'close', type: 'font' as const };
+const DEFAULT_CLOSE_ICON = { name: 'close', type: TbxMatIconType.Font };
 
 /**
  * Custom snackbar content component for typed notifications.
@@ -149,11 +150,7 @@ export class NotificationComponent {
      */
     readonly severityIconFont = computed(() => {
         const resolved = this.config.severityIconResolverService.resolve(this.data.type);
-        // fontSet check distinguishes font vs SVG resolvers — only font-based
-        // resolvers have fontSet. Without this guard, both severityIconFont and
-        // severityIconSvg would return the same value, and the template would
-        // incorrectly try to render a font ligature as an svgIcon binding.
-        if (!resolved || !('fontSet' in this.config.severityIconResolverService)) {
+        if (!resolved || this.config.severityIconResolverService.iconType !== TbxMatIconType.Font) {
             return null;
         }
         return resolved;
@@ -165,12 +162,7 @@ export class NotificationComponent {
      */
     readonly severityIconSvg = computed(() => {
         const resolved = this.config.severityIconResolverService.resolve(this.data.type);
-        // fontSet check distinguishes font vs SVG resolvers — font-based
-        // resolvers have fontSet, SVG-based do not. Without this guard, both
-        // severityIconFont and severityIconSvg would return the same value,
-        // and the template would incorrectly try to render a ligature as an
-        // svgIcon binding.
-        if (!resolved || 'fontSet' in this.config.severityIconResolverService) {
+        if (!resolved || this.config.severityIconResolverService.iconType !== TbxMatIconType.Svg) {
             return null;
         }
         return resolved;
@@ -179,12 +171,12 @@ export class NotificationComponent {
     /** Close icon font ligature. `null` when the close icon is SVG-based. */
     readonly closeIconFont = computed(() => {
         const icon = this.config.closeIcon ?? DEFAULT_CLOSE_ICON;
-        return icon.type === 'font' ? icon.name : null;
+        return icon.type === TbxMatIconType.Font ? icon.name : null;
     });
 
     /** Close icon svgIcon name. `null` when the close icon is font-based. */
     readonly closeIconSvg = computed(() => {
         const icon = this.config.closeIcon ?? DEFAULT_CLOSE_ICON;
-        return icon.type === 'svg' ? icon.name : null;
+        return icon.type === TbxMatIconType.Svg ? icon.name : null;
     });
 }

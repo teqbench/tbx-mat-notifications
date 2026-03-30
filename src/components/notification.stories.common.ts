@@ -8,6 +8,7 @@ import { MAT_ICON_DEFAULT_OPTIONS, MatIconRegistry } from '@angular/material/ico
 import { DomSanitizer } from '@angular/platform-browser';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { TbxMatNotificationFontIconService } from '../services/notification-font-icon.service';
@@ -164,7 +165,7 @@ export function withCustomSvgIconsAndSvgClose() {
 
                     return {
                         severityIconResolverService: new CustomSvgIconService(),
-                        closeIcon: { name: CLOSE_ICON_NAME, type: 'svg' as const },
+                        closeIcon: { name: CLOSE_ICON_NAME, type: TbxMatIconType.Svg },
                     };
                 },
             },

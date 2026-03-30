@@ -66,9 +66,7 @@ this.notify.dismissAll();    // clear current + all queued
 
 ### Icon Configuration
 
-Icons are configured via the `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG` injection token. The config provides a severity icon resolver service and an optional close icon override.
-
-When not provided, the component falls back to hardcoded Material Symbols font ligatures for severity icons and uses `close` for the dismiss button.
+Icons are configured via the `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG` injection token, which is required. The config provides a severity icon resolver service and an optional close icon override. Use `TbxMatNotificationFontIconService` for font icons or `TbxMatNotificationSvgIconService` for SVG icons — both ship with sensible defaults.
 
 #### Font icons with `MAT_ICON_DEFAULT_OPTIONS`
 
@@ -322,15 +320,15 @@ html[data-theme='dark'] {
 
 ### TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
 
-`InjectionToken<TbxMatNotificationProviderConfig>` — Provide in `app.config.ts` to configure severity icons and the close button icon. When not provided, the component falls back to hardcoded Material Symbols font ligatures.
+`InjectionToken<TbxMatNotificationProviderConfig>` — Required. Provide in `app.config.ts` to configure severity icons and the close button icon. Use `TbxMatNotificationFontIconService` or `TbxMatNotificationSvgIconService` as the resolver — both ship with defaults.
 
 ### TbxMatNotificationFontIconService
 
-Default font-based severity icon service. Extends `TbxMatFontIconService<TbxMatSeverityLevelType>` and implements `ITbxMatSeverityResolver`. Provides Material Symbols ligatures for each severity level.
+Default font-based severity icon service. Extends `TbxMatFontIconService<TbxMatSeverityLevelType>` and implements `ITbxMatSeverityResolver`. Provides Material Symbols ligatures for each severity level. Subclass and override `initialize()` to replace any icons.
 
 ### TbxMatNotificationSvgIconService
 
-Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSeverityLevelType>` and implements `ITbxMatSeverityResolver`. Subclass and call `this.register()` to provide SVG markup for each severity level.
+Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSeverityLevelType>` and implements `ITbxMatSeverityResolver`. Ships with default SVG icons from the "Small Flat Vectors" collection (SVG Repo, PD license). Subclass and override `initialize()` to replace any icons.
 
 ## Compatibility
 
@@ -338,8 +336,8 @@ Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSev
 | -------------------------------- | -------- |
 | Angular                          | >=21.0.0 |
 | Angular Material                 | >=21.0.0 |
-| @teqbench/tbx-mat-icons          | >=3.0.0  |
-| @teqbench/tbx-mat-severity-icons | >=3.0.0  |
+| @teqbench/tbx-mat-icons          | >=4.0.0  |
+| @teqbench/tbx-mat-severity-icons | >=4.0.0  |
 | TypeScript                       | ~5.9.0   |
 | Node.js                          | >=24.0.0 |
 

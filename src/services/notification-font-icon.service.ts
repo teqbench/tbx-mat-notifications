@@ -13,7 +13,7 @@ import {
  *
  * ### fontSet resolution
  *
- * The fontSet is resolved by {@link TbxMatFontIconService}'s fallback chain:
+ * The fontSet is resolved by `TbxMatFontIconService`'s fallback chain:
  *
  * 1. **Explicit constructor argument** — `new TbxMatNotificationFontIconService('material-symbols-sharp')`
  * 2. **`TBX_MAT_FONT_ICON_DEFAULT_FONT_SET` token** — set once in `app.config.ts`

@@ -8,6 +8,7 @@ import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 import {
     TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
     TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
+    TbxMatIconType,
 } from '@teqbench/tbx-mat-icons';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { TbxMatNotificationFontIconService } from '../services/notification-font-icon.service';
@@ -67,7 +68,7 @@ function buildData(overrides: Partial<NotificationData> = {}): NotificationData 
 /** Create a fixture with a custom close icon config. */
 function createFixtureWithCloseIcon(
     data: NotificationData,
-    closeIcon: { name: string; type: 'font' | 'svg' }
+    closeIcon: { name: string; type: TbxMatIconType }
 ): ComponentFixture<NotificationComponent> {
     TestBed.configureTestingModule({
         imports: [NotificationComponent],
@@ -87,7 +88,7 @@ function createFixtureWithCloseIcon(
         ],
     });
 
-    if (closeIcon.type === 'svg') {
+    if (closeIcon.type === TbxMatIconType.Svg) {
         registerDummySvgIcons(closeIcon.name);
     }
 
@@ -96,8 +97,9 @@ function createFixtureWithCloseIcon(
     return fixture;
 }
 
-/** Stub SVG resolver — no fontSet property, so component detects it as SVG-based. */
+/** Stub SVG resolver — iconType Svg tells the component to use svgIcon binding. */
 const svgResolverStub = {
+    iconType: TbxMatIconType.Svg,
     success: () => 'success',
     error: () => 'error',
     warning: () => 'warning',
@@ -200,7 +202,7 @@ describe('NotificationComponent', () => {
         it('should use a custom font close icon when configured', () => {
             const fixture = createFixtureWithCloseIcon(buildData(), {
                 name: 'cancel',
-                type: 'font',
+                type: TbxMatIconType.Font,
             });
 
             const closeIcon = fixture.debugElement.query(By.css('button[matIconButton] mat-icon'));
@@ -210,7 +212,7 @@ describe('NotificationComponent', () => {
         it('should use an SVG close icon when configured', () => {
             const fixture = createFixtureWithCloseIcon(buildData(), {
                 name: 'my-close-svg',
-                type: 'svg',
+                type: TbxMatIconType.Svg,
             });
 
             const closeIcon = fixture.debugElement.query(By.css('button[matIconButton] mat-icon'));
@@ -220,7 +222,7 @@ describe('NotificationComponent', () => {
         it('should return null from closeIconFont when close icon is SVG', () => {
             const fixture = createFixtureWithCloseIcon(buildData(), {
                 name: 'my-close-svg',
-                type: 'svg',
+                type: TbxMatIconType.Svg,
             });
 
             const component = fixture.componentInstance;

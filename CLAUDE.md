@@ -36,7 +36,6 @@ This file provides guidance for Claude Code when working in this repository.
 - `dist/` — Compiled output (git-ignored, only this directory is published)
 - `docs/` — Documentation (placeholder for package-specific guides)
 - `.github/workflows/` — CI/CD pipelines (ci, release, sync, dep-compat-check, claude)
-- `.github/dependabot.yml` — Automated dependency update PRs targeting `dev`
 
 ## Publishing
 
