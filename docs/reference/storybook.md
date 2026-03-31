@@ -35,7 +35,7 @@ The project does not have a root `vite.config.ts` (it uses ng-packagr for builds
 
 `preview.ts` provides the Angular environment that notification components need at runtime:
 
-- **Azure Blue M3 theme** (`@angular/material/prebuilt-themes/azure-blue.css`) — provides typography, shape (border-radius), and interactive state tokens (ripples, hover). Without a theme, snackbar text, corners, and button effects fall back to unstyled browser defaults. Azure Blue is used as a neutral baseline; it does not affect notification severity colors, which are driven by `--tbx-notification-*` custom properties in the SCSS partial.
+- **Azure Blue M3 theme** (`@angular/material/prebuilt-themes/azure-blue.css`) — provides typography, shape (border-radius), and interactive state tokens (ripples, hover). Without a theme, snackbar text, corners, and button effects fall back to unstyled browser defaults. Azure Blue is used as a neutral baseline; it does not affect notification severity colors, which are driven by `--tbx-mat-notification-*` custom properties in the SCSS partial.
 - `provideAnimationsAsync()` — required by Material snackbar animations
 - `MAT_ICON_DEFAULT_OPTIONS` — sets the default icon font set
 - `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG` — icon configuration (uses `TbxMatNotificationFontIconService` with Material Symbols Rounded)

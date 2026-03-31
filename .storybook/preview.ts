@@ -9,7 +9,7 @@ import { TbxMatNotificationFontIconService } from '../src/services/notification-
 // Without a theme, snackbar text, border-radius, and button ripples fall
 // back to unstyled browser defaults. Azure Blue is used as a neutral
 // baseline; it does not affect notification severity colors (those are
-// driven by --tbx-notification-* custom properties in the SCSS partial).
+// driven by --tbx-mat-notification-* custom properties in the SCSS partial).
 import '@angular/material/prebuilt-themes/azure-blue.css';
 
 import '../src/styles/_tbx-mat-notifications.scss';
