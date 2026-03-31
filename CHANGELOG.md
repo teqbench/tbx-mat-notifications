@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v2.0.0...v3.0.0) (2026-03-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* All color CSS custom properties renamed.
+
+### Bug Fixes
+
+* rename color tokens to follow --tbx-mat-notification-* convention ([ab67f64](https://github.com/teqbench/tbx-mat-notifications/commit/ab67f64cd15aea17ea8e86e2a4b17140394874fe)), closes [#47](https://github.com/teqbench/tbx-mat-notifications/issues/47)
+
 ## [2.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v1.1.0...v2.0.0) (2026-03-30)
 
 
