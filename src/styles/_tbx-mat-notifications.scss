@@ -3,7 +3,7 @@
 /* ─── Notification Color Tokens ─────────────────────────────────────────────
  *
  * Default notification colors follow universal UX conventions:
- *   success = green, error = red, warning = amber, info = blue, help = blue
+ *   success = green, error = red, warning = amber, information = blue, help = blue
  *
  * These are intentionally NOT tied to --mat-sys-* palette tokens because
  * notification severity colors must be immediately recognizable regardless
@@ -11,29 +11,29 @@
  *
  * Themes can optionally override these via html[data-theme="id"] blocks
  * in the consuming application's theme stylesheet by redefining the
- * --tbx-notification-* properties.
+ * --tbx-mat-notification-* properties.
  * ─────────────────────────────────────────────────────────────────────────── */
 
 html {
     /* Success — green */
-    --tbx-notification-success-bg: #2e7d32;
-    --tbx-notification-success-text: #ffffff;
+    --tbx-mat-notification-success-background: #2e7d32;
+    --tbx-mat-notification-success-text: #ffffff;
 
     /* Error — red */
-    --tbx-notification-error-bg: #c62828;
-    --tbx-notification-error-text: #ffffff;
+    --tbx-mat-notification-error-background: #c62828;
+    --tbx-mat-notification-error-text: #ffffff;
 
     /* Warning — amber */
-    --tbx-notification-warning-bg: #f9a825;
-    --tbx-notification-warning-text: #ffffff;
+    --tbx-mat-notification-warning-background: #f9a825;
+    --tbx-mat-notification-warning-text: #ffffff;
 
-    /* Info — blue */
-    --tbx-notification-info-bg: #1565c0;
-    --tbx-notification-info-text: #ffffff;
+    /* Information — blue */
+    --tbx-mat-notification-information-background: #1565c0;
+    --tbx-mat-notification-information-text: #ffffff;
 
     /* Help — blue (lighter) */
-    --tbx-notification-help-bg: #1976d2;
-    --tbx-notification-help-text: #ffffff;
+    --tbx-mat-notification-help-background: #1976d2;
+    --tbx-mat-notification-help-text: #ffffff;
 }
 
 /* ─── Panel Styles ──────────────────────────────────────────────────────────
@@ -54,14 +54,14 @@ html {
 .tbx-mat-notification-snackbar-success {
     @include mat.snack-bar-overrides(
         (
-            container-color: var(--tbx-notification-success-bg),
-            supporting-text-color: var(--tbx-notification-success-text),
+            container-color: var(--tbx-mat-notification-success-background),
+            supporting-text-color: var(--tbx-mat-notification-success-text),
         )
     );
 
     @include mat.icon-button-overrides(
         (
-            icon-color: var(--tbx-notification-success-text),
+            icon-color: var(--tbx-mat-notification-success-text),
         )
     );
 }
@@ -69,14 +69,14 @@ html {
 .tbx-mat-notification-snackbar-error {
     @include mat.snack-bar-overrides(
         (
-            container-color: var(--tbx-notification-error-bg),
-            supporting-text-color: var(--tbx-notification-error-text),
+            container-color: var(--tbx-mat-notification-error-background),
+            supporting-text-color: var(--tbx-mat-notification-error-text),
         )
     );
 
     @include mat.icon-button-overrides(
         (
-            icon-color: var(--tbx-notification-error-text),
+            icon-color: var(--tbx-mat-notification-error-text),
         )
     );
 }
@@ -84,14 +84,14 @@ html {
 .tbx-mat-notification-snackbar-warning {
     @include mat.snack-bar-overrides(
         (
-            container-color: var(--tbx-notification-warning-bg),
-            supporting-text-color: var(--tbx-notification-warning-text),
+            container-color: var(--tbx-mat-notification-warning-background),
+            supporting-text-color: var(--tbx-mat-notification-warning-text),
         )
     );
 
     @include mat.icon-button-overrides(
         (
-            icon-color: var(--tbx-notification-warning-text),
+            icon-color: var(--tbx-mat-notification-warning-text),
         )
     );
 }
@@ -99,14 +99,14 @@ html {
 .tbx-mat-notification-snackbar-info {
     @include mat.snack-bar-overrides(
         (
-            container-color: var(--tbx-notification-info-bg),
-            supporting-text-color: var(--tbx-notification-info-text),
+            container-color: var(--tbx-mat-notification-information-background),
+            supporting-text-color: var(--tbx-mat-notification-information-text),
         )
     );
 
     @include mat.icon-button-overrides(
         (
-            icon-color: var(--tbx-notification-info-text),
+            icon-color: var(--tbx-mat-notification-information-text),
         )
     );
 }
@@ -114,14 +114,14 @@ html {
 .tbx-mat-notification-snackbar-help {
     @include mat.snack-bar-overrides(
         (
-            container-color: var(--tbx-notification-help-bg),
-            supporting-text-color: var(--tbx-notification-help-text),
+            container-color: var(--tbx-mat-notification-help-background),
+            supporting-text-color: var(--tbx-mat-notification-help-text),
         )
     );
 
     @include mat.icon-button-overrides(
         (
-            icon-color: var(--tbx-notification-help-text),
+            icon-color: var(--tbx-mat-notification-help-text),
         )
     );
 }
