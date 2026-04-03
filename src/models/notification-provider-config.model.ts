@@ -5,8 +5,9 @@ import type {
 } from '@teqbench/tbx-mat-severity-icons';
 
 /**
- * Configuration for the notification component's injectable dependencies.
+ * Configuration for the notification component's injectable dependencies
  *
+ * @remarks
  * Provided via the {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG} injection token
  * in `app.config.ts`. Groups all notification icon customization into a single
  * provider entry.
@@ -14,13 +15,12 @@ import type {
  * ### Properties
  *
  * - **`severityIconResolverService`** — resolves severity levels to icon identifiers. Must
- *   implement {@link TbxMatIconResolver}. Use {@link TbxMatNotificationFontIconService}
- *   for font icons or {@link TbxMatNotificationSvgIconService} for SVG icons.
+ *   implement `TbxMatIconResolver` from `@teqbench/tbx-mat-icons`. Use
+ *   {@link TbxMatNotificationFontIconService} for font icons or
+ *   {@link TbxMatNotificationSvgIconService} for SVG icons.
  *
  * - **`closeIcon`** (optional) — configures the dismiss button icon. When omitted,
- *   defaults to the `close` Material Symbols font ligature.
- *
- * ### Examples
+ *   defaults to the `close` {@link https://fonts.google.com/icons | Material Symbols} font ligature.
  *
  * @example Font icons with explicit fontSet:
  * ```typescript
@@ -81,21 +81,36 @@ import type {
  *     },
  * ]
  * ```
+ *
+ * @category Models
+ * @since 1.0.0
+ * @related TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
+ * @related TbxMatNotificationFontIconService
+ * @related TbxMatNotificationSvgIconService
+ *
+ * @public
  */
 export interface TbxMatNotificationProviderConfig {
-    /** Severity icon resolver — maps severity levels to icon identifiers. */
+    /**
+     * Severity icon resolver — maps severity levels to icon identifiers
+     *
+     * @public
+     */
     readonly severityIconResolverService: TbxMatSeverityResolver &
         TbxMatIconResolver<TbxMatSeverityLevelType> & {
             readonly iconType: TbxMatIconType;
         };
 
     /**
-     * Close/dismiss button icon configuration.
+     * Close/dismiss button icon configuration
      *
+     * @remarks
      * - `name` — the icon identifier (font ligature or registered svgIcon name)
      * - `type` — `'font'` for font ligature, `'svg'` for registered svgIcon
      *
      * Defaults to `{ name: 'close', type: 'font' }` when omitted.
+     *
+     * @public
      */
     readonly closeIcon?: {
         readonly name: string;

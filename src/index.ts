@@ -1,25 +1,27 @@
 /**
- * tbx-mat-notifications — typed snackbar notifications with severity levels.
+ * Typed snackbar notifications with severity levels for {@link https://angular.dev | Angular}
  *
- * Public API:
- *   - TbxMatNotificationService          — inject and call success/error/warning/information/help
- *   - TbxMatSeverityLevelType            — severity enum (re-exported from @teqbench/tbx-mat-severity-icons)
- *   - TbxMatNotificationConfig           — full config interface for show()
- *   - TbxMatNotificationConfigArgsType   — optional config for convenience methods
- *   - TbxMatNotificationProviderConfig   — icon provider config interface
- *   - TBX_MAT_NOTIFICATION_PROVIDER_CONFIG — injection token for icon configuration
- *   - TbxMatNotificationFontIconService  — default font-based severity icon service
- *   - TbxMatNotificationSvgIconService   — default SVG-based severity icon service
+ * @remarks
+ * Wraps {@link https://material.angular.io/components/snack-bar | Angular Material's MatSnackBar}
+ * with severity-leveled methods, FIFO queuing with signal-based state, configurable
+ * duration/position, optional severity icon and close button visibility, and a pure-CSS
+ * countdown bar — no JS timers. Supports both font and SVG icons via
+ * {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG}.
  *
- * Icons are configured via TBX_MAT_NOTIFICATION_PROVIDER_CONFIG. The config
- * groups a severity icon resolver (font or SVG) and an optional close icon
- * into a single provider entry. When not provided, the component falls back
- * to hardcoded Material Symbols font ligatures.
+ * Key exports:
  *
- * Internal (not re-exported):
- *   - NotificationComponent — custom snackbar content
- *   - NotificationData      — MAT_SNACK_BAR_DATA payload
- *   - Constants             — duration min/max/default, position defaults
+ * - {@link TbxMatNotificationService} — inject and call success/error/warning/information/help.
+ * - {@link TbxMatNotificationConfig} — full config interface for show().
+ * - {@link TbxMatNotificationConfigArgsType} — optional config for convenience methods.
+ * - {@link TbxMatNotificationProviderConfig} — icon provider config interface.
+ * - {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG} — injection token for icon configuration.
+ * - {@link TbxMatNotificationFontIconService} — default font-based severity icon service.
+ * - {@link TbxMatNotificationSvgIconService} — default SVG-based severity icon service.
+ *
+ * @see {@link https://angular.dev | Angular}
+ * @see {@link https://material.angular.io | Angular Material}
+ *
+ * @packageDocumentation
  */
 
 // Types (re-exported from @teqbench/tbx-mat-severity-icons)
