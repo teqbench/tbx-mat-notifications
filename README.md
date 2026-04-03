@@ -313,10 +313,10 @@ html[data-theme='dark'] {
 
 ### TbxMatNotificationProviderConfig
 
-| Property                      | Type                                                                     | Default                           | Description                       |
-| ----------------------------- | ------------------------------------------------------------------------ | --------------------------------- | --------------------------------- |
-| `severityIconResolverService` | `ITbxMatSeverityResolver & ITbxMatIconResolver<TbxMatSeverityLevelType>` | —                                 | Severity icon resolver (required) |
-| `closeIcon`                   | `{ name: string; type: 'font' \| 'svg' }`                                | `{ name: 'close', type: 'font' }` | Dismiss button icon               |
+| Property                      | Type                                                               | Default                           | Description                       |
+| ----------------------------- | ------------------------------------------------------------------ | --------------------------------- | --------------------------------- |
+| `severityIconResolverService` | `TbxMatIconResolver & TbxMatIconResolver<TbxMatSeverityLevelType>` | —                                 | Severity icon resolver (required) |
+| `closeIcon`                   | `{ name: string; type: 'font' \| 'svg' }`                          | `{ name: 'close', type: 'font' }` | Dismiss button icon               |
 
 ### TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
 
@@ -324,11 +324,11 @@ html[data-theme='dark'] {
 
 ### TbxMatNotificationFontIconService
 
-Default font-based severity icon service. Extends `TbxMatFontIconService<TbxMatSeverityLevelType>` and implements `ITbxMatSeverityResolver`. Provides Material Symbols ligatures for each severity level. Subclass and override `initialize()` to replace any icons.
+Default font-based severity icon service. Extends `TbxMatFontIconService<TbxMatSeverityLevelType>` and implements `TbxMatIconResolver`. Provides Material Symbols ligatures for each severity level. Subclass and override `initialize()` to replace any icons.
 
 ### TbxMatNotificationSvgIconService
 
-Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSeverityLevelType>` and implements `ITbxMatSeverityResolver`. Ships with default SVG icons from the "Small Flat Vectors" collection (SVG Repo, PD license). Subclass and override `initialize()` to replace any icons.
+Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSeverityLevelType>` and implements `TbxMatIconResolver`. Ships with default SVG icons from the "Small Flat Vectors" collection (SVG Repo, PD license). Subclass and override `initialize()` to replace any icons.
 
 ## Compatibility
 

@@ -1,6 +1,6 @@
-import { type ITbxMatIconResolver, type TbxMatIconType } from '@teqbench/tbx-mat-icons';
+import { type TbxMatIconResolver, type TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import type {
-    ITbxMatSeverityResolver,
+    TbxMatSeverityResolver,
     TbxMatSeverityLevelType,
 } from '@teqbench/tbx-mat-severity-icons';
 
@@ -14,7 +14,7 @@ import type {
  * ### Properties
  *
  * - **`severityIconResolverService`** — resolves severity levels to icon identifiers. Must
- *   implement {@link ITbxMatSeverityResolver}. Use {@link TbxMatNotificationFontIconService}
+ *   implement {@link TbxMatIconResolver}. Use {@link TbxMatNotificationFontIconService}
  *   for font icons or {@link TbxMatNotificationSvgIconService} for SVG icons.
  *
  * - **`closeIcon`** (optional) — configures the dismiss button icon. When omitted,
@@ -84,8 +84,8 @@ import type {
  */
 export interface TbxMatNotificationProviderConfig {
     /** Severity icon resolver — maps severity levels to icon identifiers. */
-    readonly severityIconResolverService: ITbxMatSeverityResolver &
-        ITbxMatIconResolver<TbxMatSeverityLevelType> & {
+    readonly severityIconResolverService: TbxMatSeverityResolver &
+        TbxMatIconResolver<TbxMatSeverityLevelType> & {
             readonly iconType: TbxMatIconType;
         };
 
