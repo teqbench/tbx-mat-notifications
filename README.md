@@ -281,6 +281,94 @@ html[data-theme='dark'] {
 }
 ```
 
+## Styling Font Icons
+
+[Material Symbols ↗](https://fonts.google.com/icons) are variable fonts that expose four CSS axes via `font-variation-settings`. These axes apply to any `<mat-icon>` rendered with a Material Symbols font set. All four axes must be specified together — omitting an axis resets it to the font default.
+
+```css
+font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+```
+
+| Axis   | Range   | Default | Description                                                                                                    |
+| ------ | ------- | ------- | -------------------------------------------------------------------------------------------------------------- |
+| `FILL` | 0–1     | 0       | Outlined (0) or filled (1). Use to convey state transitions.                                                   |
+| `wght` | 100–700 | 400     | Stroke weight. Higher values produce bolder icons for visual emphasis.                                         |
+| `GRAD` | -50–200 | 0       | Grade. Fine-grained weight adjustment without changing icon size. Use -25 to reduce glare on dark backgrounds. |
+| `opsz` | 20–48   | 48      | Optical size. Adjusts stroke weight automatically at different display sizes.                                  |
+
+### Filled icons
+
+Render all notification severity icons as filled:
+
+```css
+.mat-mdc-snack-bar-container .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+```
+
+### State transition (outlined to filled)
+
+Animate the fill axis to convey a state change when the notification appears. The icon renders outlined and fills after a short delay:
+
+```css
+@keyframes tbx-icon-fill {
+    from {
+        font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+    }
+    to {
+        font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+    }
+}
+
+.mat-mdc-snack-bar-container .material-symbols-rounded {
+    animation: tbx-icon-fill 0.3s ease-in-out 0.15s forwards;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+```
+
+### Hover fill
+
+Toggle the fill axis on hover. The icon transitions between outlined and filled when the user hovers over it:
+
+```css
+.mat-mdc-snack-bar-container .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+    transition: font-variation-settings 0.3s ease-in-out;
+}
+
+.mat-mdc-snack-bar-container .material-symbols-rounded:hover {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+```
+
 ## API Reference
 
 ### TbxMatNotificationService
@@ -337,7 +425,7 @@ Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSev
 | Angular                          | >=21.0.0 |
 | Angular Material                 | >=21.0.0 |
 | @teqbench/tbx-mat-icons          | >=4.0.0  |
-| @teqbench/tbx-mat-severity-icons | >=4.0.0  |
+| @teqbench/tbx-mat-severity-icons | >=5.0.0  |
 | TypeScript                       | ~5.9.0   |
 | Node.js                          | >=24.0.0 |
 
