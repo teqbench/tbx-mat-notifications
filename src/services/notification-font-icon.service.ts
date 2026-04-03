@@ -5,10 +5,12 @@ import {
 } from '@teqbench/tbx-mat-severity-icons';
 
 /**
- * Default font-based notification icon service.
+ * Default font-based notification icon service
  *
- * Extends {@link TbxMatSeverityFontIconService} and registers Material Symbols
- * ligatures for each severity level. The inherited `resolve()` and severity
+ * @remarks
+ * Extends `TbxMatSeverityFontIconService` from `@teqbench/tbx-mat-severity-icons`
+ * and registers {@link https://fonts.google.com/icons | Material Symbols} ligatures
+ * for each severity level. The inherited `resolve()` and severity
  * methods (`success()`, `error()`, etc.) work via the registered mappings.
  *
  * ### fontSet resolution
@@ -17,20 +19,20 @@ import {
  *
  * 1. **Explicit constructor argument** — `new TbxMatNotificationFontIconService('material-symbols-sharp')`
  * 2. **`TBX_MAT_FONT_ICON_DEFAULT_FONT_SET` token** — set once in `app.config.ts`
- * 3. **`MAT_ICON_DEFAULT_OPTIONS.fontSet`** — Angular Material's global icon default
+ * 3. **`MAT_ICON_DEFAULT_OPTIONS.fontSet`** —
+ *    {@link https://material.angular.io/components/icon | Angular Material}'s global icon default
  * 4. **Error** — if none of the above provides a fontSet
  *
  * For steps 1 and 2, the consuming component must bind `[fontSet]` on
  * `<mat-icon>`. For step 3, `<mat-icon>` already uses the global default —
  * no binding needed.
  *
- * ### Examples
- *
  * @example Using with MAT_ICON_DEFAULT_OPTIONS (no explicit fontSet needed):
  * ```typescript
  * // app.config.ts
  * import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
- * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '@teqbench/tbx-mat-notifications';
+ * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationFontIconService }
+ *     from '@teqbench/tbx-mat-notifications';
  *
  * providers: [
  *     { provide: MAT_ICON_DEFAULT_OPTIONS, useValue: { fontSet: 'material-symbols-rounded' } },
@@ -41,17 +43,13 @@ import {
  *         }),
  *     },
  * ]
- *
- * // Component — no [fontSet] binding needed, <mat-icon> uses the global default:
- * // readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
- * // readonly severity = TbxMatSeverityLevelType.Success;
- * // <mat-icon>{{ config.severityIconResolverService.resolve(severity) }}</mat-icon>
  * ```
  *
  * @example Using with an explicit fontSet:
  * ```typescript
  * // app.config.ts
- * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '@teqbench/tbx-mat-notifications';
+ * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationFontIconService }
+ *     from '@teqbench/tbx-mat-notifications';
  *
  * providers: [
  *     {
@@ -61,13 +59,6 @@ import {
  *         }),
  *     },
  * ]
- *
- * // Component — must bind [fontSet] since fontSet was set explicitly:
- * // readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
- * // readonly severity = TbxMatSeverityLevelType.Success;
- * // <mat-icon [fontSet]="config.severityIconResolverService.fontSet">
- * //     {{ config.severityIconResolverService.resolve(severity) }}
- * // </mat-icon>
  * ```
  *
  * @example Using with TBX_MAT_FONT_ICON_DEFAULT_FONT_SET token:
@@ -75,7 +66,8 @@ import {
  * // app.config.ts
  * import { TBX_MAT_FONT_ICON_DEFAULT_FONT_SET, TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED }
  *     from '@teqbench/tbx-mat-icons';
- * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '@teqbench/tbx-mat-notifications';
+ * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationFontIconService }
+ *     from '@teqbench/tbx-mat-notifications';
  *
  * providers: [
  *     { provide: TBX_MAT_FONT_ICON_DEFAULT_FONT_SET, useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED },
@@ -86,14 +78,14 @@ import {
  *         }),
  *     },
  * ]
- *
- * // Component — must bind [fontSet] since fontSet was set via token:
- * // readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
- * // readonly severity = TbxMatSeverityLevelType.Success;
- * // <mat-icon [fontSet]="config.severityIconResolverService.fontSet">
- * //     {{ config.severityIconResolverService.resolve(severity) }}
- * // </mat-icon>
  * ```
+ *
+ * @category Services
+ * @since 1.0.0
+ * @related TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
+ * @related TbxMatNotificationSvgIconService
+ *
+ * @public
  */
 @Injectable()
 export class TbxMatNotificationFontIconService extends TbxMatSeverityFontIconService {
@@ -108,12 +100,16 @@ export class TbxMatNotificationFontIconService extends TbxMatSeverityFontIconSer
     }
 
     /**
-     * Register default Material Symbols ligature names for each severity level.
+     * Register default {@link https://fonts.google.com/icons | Material Symbols}
+     * ligature names for each severity level
      *
-     * These work with any Material Symbols font variant (outlined, rounded,
-     * sharp, etc.) since the ligature names are consistent across variants.
-     * Subclasses can override any of these defaults by calling `register()`
-     * with the same key and a different ligature.
+     * @remarks
+     * These work with any {@link https://fonts.google.com/icons | Material Symbols}
+     * font variant (outlined, rounded, sharp) since the ligature names are consistent
+     * across variants. Subclasses can override any of these defaults by calling
+     * `register()` with the same key and a different ligature.
+     *
+     * @internal
      */
     protected override initialize(): void {
         super.initialize();

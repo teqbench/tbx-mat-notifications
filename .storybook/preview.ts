@@ -41,6 +41,9 @@ const preview: Preview = {
                     'Notifications',
                     [
                         'Default Font Icons',
+                        'Filled Font Icons',
+                        'State Transition Font Icons',
+                        'Hover Fill Font Icons',
                         'Default SVG Icons',
                         'Custom Font Icons',
                         'Custom SVG Icons',
