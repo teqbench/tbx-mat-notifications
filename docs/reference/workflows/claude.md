@@ -7,7 +7,7 @@
 
 ## Purpose
 
-The Claude Code workflow provides AI-powered assistance directly in GitHub issues and pull requests. When a user mentions `@claude` in a comment or issue body, Claude reads the codebase, analyzes the request, and can implement features, fix bugs, review code, or create pull requests — all within the GitHub UI.
+The [Claude Code ↗](https://github.com/anthropics/claude-code) workflow provides AI-powered assistance directly in GitHub issues and pull requests. When a user mentions `@claude` in a comment or issue body, Claude reads the codebase, analyzes the request, and can implement features, fix bugs, review code, or create pull requests — all within the GitHub UI.
 
 ---
 
@@ -173,7 +173,7 @@ Claude reads the `CLAUDE.md` file in the repo root for project-specific context.
 - Branching rules and workflow expectations
 - Explicit do's and don'ts for Claude's behavior
 
-Both the GitHub Action and the Claude Code CLI read the same `CLAUDE.md`, ensuring consistent behavior across local and CI environments.
+Both the GitHub Action and the [Claude Code ↗](https://github.com/anthropics/claude-code) CLI read the same `CLAUDE.md`, ensuring consistent behavior across local and CI environments.
 
 ---
 
