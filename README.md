@@ -293,12 +293,12 @@ font-variation-settings:
     'opsz' 24;
 ```
 
-| Axis   | Range     | Default | Description                                                                                                    |
-| ------ | --------- | ------- | -------------------------------------------------------------------------------------------------------------- |
-| `FILL` | `0–1`     | 0       | Outlined (0) or filled (1). Use to convey state transitions.                                                   |
-| `wght` | `100–700` | 400     | Stroke weight. Higher values produce bolder icons for visual emphasis.                                         |
-| `GRAD` | `-50–200` | 0       | Grade. Fine-grained weight adjustment without changing icon size. Use -25 to reduce glare on dark backgrounds. |
-| `opsz` | `20–48`   | 48      | Optical size. Adjusts stroke weight automatically at different display sizes.                                  |
+| Axis   | Range   | Default | Description                                                                                                    |
+| ------ | ------- | ------- | -------------------------------------------------------------------------------------------------------------- |
+| `FILL` | 0‑1     | 0       | Outlined (0) or filled (1). Use to convey state transitions.                                                   |
+| `wght` | 100‑700 | 400     | Stroke weight. Higher values produce bolder icons for visual emphasis.                                         |
+| `GRAD` | ‑50‑200 | 0       | Grade. Fine-grained weight adjustment without changing icon size. Use -25 to reduce glare on dark backgrounds. |
+| `opsz` | 20‑48   | 48      | Optical size. Adjusts stroke weight automatically at different display sizes.                                  |
 
 ### Filled icons
 
