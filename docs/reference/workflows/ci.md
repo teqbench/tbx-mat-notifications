@@ -171,7 +171,7 @@ Compiles TypeScript to `dist/` using `tsconfig.build.json`.
 
 #### 14–18. Push Badge Data to Gist
 
-Five badges are pushed as JSON to a shared public GitHub Gist using `schneegans/dynamic-badges-action@v1.7.0`. [Shields.io](https://shields.io) reads the JSON and renders the badges dynamically. Only runs on **push events** (not PRs).
+Five badges are pushed as JSON to a shared public GitHub Gist using `schneegans/dynamic-badges-action@v1.7.0`. [Shields.io ↗](https://shields.io) reads the JSON and renders the badges dynamically. Only runs on **push events** (not PRs).
 
 | Badge        | Style         | Source                                            | Gist Filename                       |
 | ------------ | ------------- | ------------------------------------------------- | ----------------------------------- |
@@ -196,13 +196,13 @@ All badge steps run with `if: always()` so badges update even on failure. The `s
 
 ## Badge Rendering
 
-Badges are rendered by [Shields.io endpoint badges](https://shields.io/badges/endpoint-badge). The URL format is:
+Badges are rendered by [Shields.io endpoint badges ↗](https://shields.io/badges/endpoint-badge). The URL format is:
 
 ```
 https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/{GIST_OWNER}/{GIST_ID}/raw/{REPO_NAME}-{BRANCH}-{badge}.json
 ```
 
-The gist stores JSON files matching the [Shields.io endpoint schema](https://shields.io/badges/endpoint-badge):
+The gist stores JSON files matching the [Shields.io endpoint schema ↗](https://shields.io/badges/endpoint-badge):
 
 ```json
 {
@@ -214,4 +214,4 @@ The gist stores JSON files matching the [Shields.io endpoint schema](https://shi
 }
 ```
 
-Shields.io caches responses for ~5 minutes. After a CI run, badges may take a few minutes to reflect new data.
+[Shields.io ↗](https://shields.io) caches responses for ~5 minutes. After a CI run, badges may take a few minutes to reflect new data.

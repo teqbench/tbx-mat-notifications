@@ -41,7 +41,7 @@ export const NOTIFICATION_DEFAULT_DURATION_MS = 4_000;
 /**
  * Default horizontal position for snackbar notifications.
  *
- * Aligns with Material Design guidance for snackbar placement.
+ * Aligns with {@link https://m3.material.io/components/snackbar | Material Design} guidance for snackbar placement.
  * `'start'` maps to the left edge in LTR layouts, right in RTL.
  */
 export const NOTIFICATION_DEFAULT_HORIZONTAL_POSITION: MatSnackBarHorizontalPosition = 'start';
@@ -49,7 +49,7 @@ export const NOTIFICATION_DEFAULT_HORIZONTAL_POSITION: MatSnackBarHorizontalPosi
 /**
  * Default vertical position for snackbar notifications.
  *
- * Bottom placement follows Material Design guidelines — snackbars
+ * Bottom placement follows {@link https://m3.material.io/components/snackbar | Material Design} guidelines — snackbars
  * appear at the bottom of the viewport to avoid interfering with
  * primary content and navigation.
  */
