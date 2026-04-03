@@ -222,6 +222,37 @@ export const LARGE_ICON_ONLY_CSS = `
     }
 `;
 
+// ─── Font Variation Settings ────────────────────────────────────────────────
+// Material Symbols support the FILL axis (0 = outlined, 1 = filled).
+// These CSS blocks target icons inside the snackbar container.
+
+export const FILLED_CSS = `
+    .mat-mdc-snack-bar-container .material-symbols-rounded {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+`;
+
+export const STATE_TRANSITION_CSS = `
+    @keyframes tbx-icon-fill {
+        from { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        to   { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    }
+    .mat-mdc-snack-bar-container .material-symbols-rounded {
+        animation: tbx-icon-fill 0.3s ease-in-out 0.15s forwards;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+`;
+
+export const HOVER_FILL_CSS = `
+    .mat-mdc-snack-bar-container .material-symbols-rounded {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        transition: font-variation-settings 0.3s ease-in-out;
+    }
+    .mat-mdc-snack-bar-container .material-symbols-rounded:hover {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+`;
+
 export { withCustomProperties };
 
 // ─── Shared Args ─────────────────────────────────────────────────────────────

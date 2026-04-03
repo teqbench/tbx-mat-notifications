@@ -2,15 +2,14 @@ import { InjectionToken } from '@angular/core';
 import type { TbxMatNotificationProviderConfig } from '../models/notification-provider-config.model';
 
 /**
- * Injection token for notification component icon configuration.
+ * Injection token for notification component icon configuration
  *
+ * @remarks
  * **Required.** Provide in `app.config.ts` to configure the severity icon
  * resolver service and the close button icon. Use
  * {@link TbxMatNotificationFontIconService} for font icons or
  * {@link TbxMatNotificationSvgIconService} for SVG icons — both ship
  * with sensible defaults.
- *
- * ### Examples
  *
  * @example Font icons with explicit fontSet:
  * ```typescript
@@ -50,6 +49,7 @@ import type { TbxMatNotificationProviderConfig } from '../models/notification-pr
  * ```typescript
  * // app.config.ts
  * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '@teqbench/tbx-mat-notifications';
+ * // MyNotificationSvgIcons is a consumer-defined subclass of TbxMatNotificationSvgIconService
  * import { MyNotificationSvgIcons } from './my-notification-svg-icons.service';
  *
  * providers: [
@@ -64,16 +64,26 @@ import type { TbxMatNotificationProviderConfig } from '../models/notification-pr
  *
  * @example With a custom close icon:
  * ```typescript
+ * import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
+ *
  * providers: [
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
  *             severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
- *             closeIcon: { name: 'cancel', type: 'font' },
+ *             closeIcon: { name: 'cancel', type: TbxMatIconType.Font },
  *         }),
  *     },
  * ]
  * ```
+ *
+ * @category Tokens
+ * @since 1.0.0
+ * @related TbxMatNotificationProviderConfig
+ * @related TbxMatNotificationFontIconService
+ * @related TbxMatNotificationSvgIconService
+ *
+ * @public
  */
 export const TBX_MAT_NOTIFICATION_PROVIDER_CONFIG =
     new InjectionToken<TbxMatNotificationProviderConfig>('TBX_MAT_NOTIFICATION_PROVIDER_CONFIG');

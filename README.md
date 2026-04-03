@@ -2,11 +2,11 @@
 
 ![Build Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-build-status.json) ![Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-tests.json) ![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-coverage.json) ![Version](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-version.json) ![Build Number](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-build-number.json)
 
-> Opinionated notification service for Angular Material projects, built on the Material Snackbar component. Provides `TbxMatNotificationService` with severity-leveled methods (`success()`, `error()`, `warning()`, `information()`, `help()`), FIFO queuing with signal-based state, configurable duration/position, optional severity icon and close button visibility, and a pure-CSS countdown bar — no JS timers. Supports both font and SVG icons via `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG`.
+> Opinionated notification service for [Angular Material ↗](https://material.angular.io) projects, built on the [Material Snackbar ↗](https://material.angular.io/components/snack-bar) component. Provides `TbxMatNotificationService` with severity-leveled methods (`success()`, `error()`, `warning()`, `information()`, `help()`), FIFO queuing with signal-based state, configurable duration/position, optional severity icon and close button visibility, and a pure-CSS countdown bar — no JS timers. Supports both font and SVG icons via `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG`.
 
 ## Installation
 
-Configure npm to use GitHub Packages for the `@teqbench` scope:
+Configure npm to use [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) for the `@teqbench` scope:
 
 ```bash
 echo "@teqbench:registry=https://npm.pkg.github.com" >> .npmrc
@@ -20,7 +20,7 @@ npm install @teqbench/tbx-mat-notifications
 
 ### Prerequisites
 
-This package renders inside Angular Material's snackbar overlay and relies on an **active M3 theme** for typography, shape (border-radius), and interactive states (button ripples, hover effects). If no Material theme is applied, notifications will render with unstyled browser defaults.
+This package renders inside [Angular Material ↗](https://material.angular.io)'s snackbar overlay and relies on an **active [M3 ↗](https://m3.material.io) theme** for typography, shape (border-radius), and interactive states (button ripples, hover effects). If no [Material ↗](https://material.angular.io) theme is applied, notifications will render with unstyled browser defaults.
 
 Notification severity colors (success = green, error = red, etc.) are **not** tied to the theme palette — they use dedicated CSS custom properties and remain consistent regardless of which theme is active.
 
@@ -281,6 +281,94 @@ html[data-theme='dark'] {
 }
 ```
 
+## Styling Font Icons
+
+[Material Symbols ↗](https://fonts.google.com/icons) are variable fonts that expose four CSS axes via `font-variation-settings`. These axes apply to any `<mat-icon>` rendered with a Material Symbols font set. All four axes must be specified together — omitting an axis resets it to the font default.
+
+```css
+font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+```
+
+| Axis   | Range   | Default | Description                                                                                                    |
+| ------ | ------- | ------- | -------------------------------------------------------------------------------------------------------------- |
+| `FILL` | 0‑1     | 0       | Outlined (0) or filled (1). Use to convey state transitions.                                                   |
+| `wght` | 100‑700 | 400     | Stroke weight. Higher values produce bolder icons for visual emphasis.                                         |
+| `GRAD` | ‑50‑200 | 0       | Grade. Fine-grained weight adjustment without changing icon size. Use -25 to reduce glare on dark backgrounds. |
+| `opsz` | 20‑48   | 48      | Optical size. Adjusts stroke weight automatically at different display sizes.                                  |
+
+### Filled icons
+
+Render all notification severity icons as filled:
+
+```css
+.mat-mdc-snack-bar-container .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+```
+
+### State transition (outlined to filled)
+
+Animate the fill axis to convey a state change when the notification appears. The icon renders outlined and fills after a short delay:
+
+```css
+@keyframes tbx-icon-fill {
+    from {
+        font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+    }
+    to {
+        font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+    }
+}
+
+.mat-mdc-snack-bar-container .material-symbols-rounded {
+    animation: tbx-icon-fill 0.3s ease-in-out 0.15s forwards;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+```
+
+### Hover fill
+
+Toggle the fill axis on hover. The icon transitions between outlined and filled when the user hovers over it:
+
+```css
+.mat-mdc-snack-bar-container .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+    transition: font-variation-settings 0.3s ease-in-out;
+}
+
+.mat-mdc-snack-bar-container .material-symbols-rounded:hover {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+```
+
 ## API Reference
 
 ### TbxMatNotificationService
@@ -313,10 +401,10 @@ html[data-theme='dark'] {
 
 ### TbxMatNotificationProviderConfig
 
-| Property                      | Type                                                                     | Default                           | Description                       |
-| ----------------------------- | ------------------------------------------------------------------------ | --------------------------------- | --------------------------------- |
-| `severityIconResolverService` | `ITbxMatSeverityResolver & ITbxMatIconResolver<TbxMatSeverityLevelType>` | —                                 | Severity icon resolver (required) |
-| `closeIcon`                   | `{ name: string; type: 'font' \| 'svg' }`                                | `{ name: 'close', type: 'font' }` | Dismiss button icon               |
+| Property                      | Type                                                               | Default                           | Description                       |
+| ----------------------------- | ------------------------------------------------------------------ | --------------------------------- | --------------------------------- |
+| `severityIconResolverService` | `TbxMatIconResolver & TbxMatIconResolver<TbxMatSeverityLevelType>` | —                                 | Severity icon resolver (required) |
+| `closeIcon`                   | `{ name: string; type: 'font' \| 'svg' }`                          | `{ name: 'close', type: 'font' }` | Dismiss button icon               |
 
 ### TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
 
@@ -324,23 +412,28 @@ html[data-theme='dark'] {
 
 ### TbxMatNotificationFontIconService
 
-Default font-based severity icon service. Extends `TbxMatFontIconService<TbxMatSeverityLevelType>` and implements `ITbxMatSeverityResolver`. Provides Material Symbols ligatures for each severity level. Subclass and override `initialize()` to replace any icons.
+Default font-based severity icon service. Extends `TbxMatFontIconService<TbxMatSeverityLevelType>` and implements `TbxMatIconResolver`. Provides [Material Symbols ↗](https://fonts.google.com/icons) ligatures for each severity level. Subclass and override `initialize()` to replace any icons.
 
 ### TbxMatNotificationSvgIconService
 
-Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSeverityLevelType>` and implements `ITbxMatSeverityResolver`. Ships with default SVG icons from the "Small Flat Vectors" collection (SVG Repo, PD license). Subclass and override `initialize()` to replace any icons.
+Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSeverityLevelType>` and implements `TbxMatIconResolver`. Ships with default SVG icons from the "Small Flat Vectors" collection ([SVG Repo ↗](https://www.svgrepo.com/collection/small-flat-vectors/), PD license). Subclass and override `initialize()` to replace any icons.
 
 ## Compatibility
 
-| Dependency                       | Version  |
-| -------------------------------- | -------- |
-| Angular                          | >=21.0.0 |
-| Angular Material                 | >=21.0.0 |
-| @teqbench/tbx-mat-icons          | >=4.0.0  |
-| @teqbench/tbx-mat-severity-icons | >=4.0.0  |
-| TypeScript                       | ~5.9.0   |
-| Node.js                          | >=24.0.0 |
+| Dependency                                                                             | Version  |
+| -------------------------------------------------------------------------------------- | -------- |
+| [Angular ↗](https://angular.dev)                                                       | >=21.0.0 |
+| [Angular Material ↗](https://material.angular.io)                                      | >=21.0.0 |
+| [@teqbench/tbx-mat-icons](https://github.com/teqbench/tbx-mat-icons)                   | >=4.0.0  |
+| [@teqbench/tbx-mat-severity-icons](https://github.com/teqbench/tbx-mat-severity-icons) | >=5.0.0  |
+| [TypeScript ↗](https://www.typescriptlang.org)                                         | ~5.9.0   |
+| [Node.js ↗](https://nodejs.org)                                                        | >=24.0.0 |
+
+## Feedback
+
+- [Report a bug](https://github.com/teqbench/tbx-mat-notifications/issues/new?template=bug_report.md)
+- [Request a feature](https://github.com/teqbench/tbx-mat-notifications/issues/new?template=feature_request.md)
 
 ## License
 
-[Apache-2.0](LICENSE) — Copyright 2025 TeqBench
+[AGPL-3.0](LICENSE) — Copyright 2026 TeqBench

@@ -1,7 +1,7 @@
 import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 
 /**
- * Internal data payload injected into {@link NotificationComponent} via
+ * Internal data payload injected into the internal `NotificationComponent` via
  * `MAT_SNACK_BAR_DATA`.
  *
  * Not part of the public API — consumers use

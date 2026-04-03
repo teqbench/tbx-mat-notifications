@@ -60,7 +60,7 @@ Since notifications are triggered programmatically via `TbxMatNotificationServic
 src/
   components/
     notification.component.ts
-    notification.component.stories.ts   ← story file
+    notification-font-icons.stories.ts  ← story file (one per icon strategy)
     notification.component.spec.ts      ← unit tests
 ```
 

@@ -32,22 +32,32 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
 };
 
 /**
- * Application-wide notification service.
+ * Application-wide notification service
  *
- * Wraps Angular Material's MatSnackBar with typed severity levels, consistent
- * positioning, configurable duration, and a custom snackbar component that
- * displays an optional severity icon + message + optional dismiss button.
+ * @remarks
+ * Wraps {@link https://material.angular.io/components/snack-bar | Angular Material's MatSnackBar}
+ * with typed severity levels, consistent positioning, configurable duration, and a
+ * custom snackbar component that displays an optional severity icon + message +
+ * optional dismiss button.
  *
  * Notifications are queued FIFO and displayed one at a time. When the current
  * notification is dismissed (manually or by timeout), the next queued notification
- * is shown automatically. This follows Material Design guidelines — only one
- * snackbar should be visible at a time.
+ * is shown automatically. This follows
+ * {@link https://m3.material.io/components/snackbar | Material Design} guidelines —
+ * only one snackbar should be visible at a time.
  *
- * Queue state is exposed via Angular signals for reactive consumption:
+ * Queue state is exposed via {@link https://angular.dev/guide/signals | Angular signals}
+ * for reactive consumption:
  * - `isActive()` — whether a notification is currently visible
  * - `pendingCount()` — number of notifications waiting in the queue
  *
- * Usage:
+ * @usage
+ * Inject the service and call the convenience methods for each severity level.
+ * Use `show()` when full control over configuration is needed. Use `dismiss()`
+ * and `dismissAll()` to programmatically clear notifications. Bind `isActive()`
+ * and `pendingCount()` in templates or computed signals for reactive state.
+ *
+ * @example Convenience methods:
  * ```typescript
  * private readonly notify = inject(TbxMatNotificationService);
  *
@@ -58,7 +68,7 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
  * this.notify.help('Click the + button to add a new item.');
  * ```
  *
- * For full control over type, duration, position, countdown, and visibility:
+ * @example Full control via show():
  * ```typescript
  * this.notify.show({
  *     type: TbxMatSeverityLevelType.Warning,
@@ -70,7 +80,7 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
  * });
  * ```
  *
- * Multiple notifications are queued and shown sequentially:
+ * @example Queue and reactive state:
  * ```typescript
  * this.notify.success('Step 1 complete.');
  * this.notify.success('Step 2 complete.');
@@ -80,15 +90,13 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
  * this.notify.dismissAll(); // Clear current + all queued notifications.
  * ```
  *
- * Reactive state for templates and computed signals:
- * ```html
- * @if (notify.isActive()) {
- *     <span>Notification visible</span>
- * }
- * @if (notify.pendingCount() > 0) {
- *     <span class="badge">{{ notify.pendingCount() }}</span>
- * }
- * ```
+ * @category Services
+ * @since 1.0.0
+ * @related TbxMatNotificationConfig
+ * @related TbxMatNotificationConfigArgsType
+ * @related TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
+ *
+ * @public
  */
 @Injectable({ providedIn: 'root' })
 export class TbxMatNotificationService {
@@ -109,26 +117,41 @@ export class TbxMatNotificationService {
     private activeSubscription: Subscription | null = null;
 
     /**
-     * Whether a notification is currently being displayed.
-     * Reactive — usable in templates, computed(), and effect().
+     * Whether a notification is currently being displayed
+     *
+     * @remarks
+     * Reactive {@link https://angular.dev/guide/signals | Angular signal} —
+     * usable in templates, `computed()`, and `effect()`.
+     *
+     * @public
      */
     readonly isActive = signal(false);
 
     /**
-     * Number of notifications waiting in the queue (not including the active one).
-     * Reactive — usable in templates, computed(), and effect().
+     * Number of notifications waiting in the queue (not including the active one)
+     *
+     * @remarks
+     * Reactive {@link https://angular.dev/guide/signals | Angular signal} —
+     * usable in templates, `computed()`, and `effect()`.
+     *
+     * @public
      */
     readonly pendingCount = signal(0);
 
     /**
-     * Queue a notification for display.
+     * Queue a notification for display
      *
+     * @remarks
      * If no notification is currently visible, it displays immediately.
      * Otherwise, it is added to the FIFO queue and shown when all preceding
      * notifications have been dismissed.
      *
      * Duration is clamped to [NOTIFICATION_MIN_DURATION_MS, NOTIFICATION_MAX_DURATION_MS].
      * Defaults to NOTIFICATION_DEFAULT_DURATION_MS when omitted.
+     *
+     * @param config - Full notification configuration.
+     *
+     * @public
      */
     show(config: TbxMatNotificationConfig): void {
         this.queue.push(config);
@@ -140,21 +163,28 @@ export class TbxMatNotificationService {
     }
 
     /**
-     * Dismiss the currently visible notification.
+     * Dismiss the currently visible notification
+     *
+     * @remarks
      * If queued notifications remain, the next one is shown automatically
      * via the afterDismissed() subscription chain.
+     *
+     * @public
      */
     dismiss(): void {
         this.snackBar.dismiss();
     }
 
     /**
-     * Dismiss the current notification and clear the entire queue.
-     * No further queued notifications will be shown.
+     * Dismiss the current notification and clear the entire queue
      *
+     * @remarks
+     * No further queued notifications will be shown.
      * Unsubscribes from the active afterDismissed() subscription before
      * dismissing to prevent the callback from firing showNext() on a
      * cleared queue.
+     *
+     * @public
      */
     dismissAll(): void {
         this.queue.length = 0;
@@ -172,50 +202,60 @@ export class TbxMatNotificationService {
     }
 
     /**
-     * Display a success notification.
+     * Display a success notification
      *
-     * @param message The message to display to the user.
-     * @param configArgs Optional overrides for duration, position, countdown, and visibility options.
+     * @param message - The message to display to the user.
+     * @param configArgs - Optional overrides for duration, position, countdown, and visibility options.
+     *
+     * @public
      */
     success(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Success, message, ...configArgs });
     }
 
     /**
-     * Display an error notification.
+     * Display an error notification
      *
-     * @param message The message to display to the user.
-     * @param configArgs Optional overrides for duration, position, countdown, and visibility options.
+     * @param message - The message to display to the user.
+     * @param configArgs - Optional overrides for duration, position, countdown, and visibility options.
+     *
+     * @public
      */
     error(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Error, message, ...configArgs });
     }
 
     /**
-     * Display a warning notification.
+     * Display a warning notification
      *
-     * @param message The message to display to the user.
-     * @param configArgs Optional overrides for duration, position, countdown, and visibility options.
+     * @param message - The message to display to the user.
+     * @param configArgs - Optional overrides for duration, position, countdown, and visibility options.
+     *
+     * @public
      */
     warning(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Warning, message, ...configArgs });
     }
 
     /**
-     * Display an informational notification.
+     * Display an informational notification
      *
-     * @param message The message to display to the user.
-     * @param configArgs Optional overrides for duration, position, countdown, and visibility options.
+     * @param message - The message to display to the user.
+     * @param configArgs - Optional overrides for duration, position, countdown, and visibility options.
+     *
+     * @public
      */
     information(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Information, message, ...configArgs });
     }
 
     /**
-     * Display a help notification.
+     * Display a help notification
      *
-     * @param message The message to display to the user.
-     * @param configArgs Optional overrides for duration, position, countdown, and visibility options.
+     * @param message - The message to display to the user.
+     * @param configArgs - Optional overrides for duration, position, countdown, and visibility options.
+     *
+     * @public
      */
     help(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
         this.show({ type: TbxMatSeverityLevelType.Help, message, ...configArgs });
