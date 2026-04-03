@@ -144,6 +144,8 @@ When the Release PR is merged:
 
 ### `release-please-config.json`
 
+Example configuration at time of writing — the actual file is the source of truth:
+
 ```json
 {
     "release-type": "node",
@@ -171,6 +173,8 @@ Key settings:
 - **`changelog-path`** — writes changelog to the repo root.
 
 ### `.release-please-manifest.json`
+
+Example snapshot — the actual file reflects the current released version:
 
 ```json
 {

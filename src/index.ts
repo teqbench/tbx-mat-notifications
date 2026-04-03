@@ -1,5 +1,5 @@
 /**
- * Typed snackbar notifications with severity levels for {@link https://angular.dev | Angular}
+ * Typed snackbar notifications with severity levels for Angular
  *
  * @remarks
  * Wraps {@link https://material.angular.io/components/snack-bar | Angular Material's MatSnackBar}
