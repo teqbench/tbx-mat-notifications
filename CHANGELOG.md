@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v3.0.0...v4.0.0) (2026-04-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* license changed from Apache-2.0 to AGPL-3.0-only.
+
+### Bug Fixes
+
+* **deps:** resolve lockfile to correct package versions after merge ([172dac8](https://github.com/teqbench/tbx-mat-notifications/commit/172dac828632c00d9572eb787803327d8e36751b))
+* **security:** use email reporting channel for private repository ([05ec1b2](https://github.com/teqbench/tbx-mat-notifications/commit/05ec1b2169806f3f9f2dab0698b9c544cb6df603))
+
+
+### Miscellaneous Chores
+
+* switch license from Apache-2.0 to AGPL-3.0-only ([bcc339f](https://github.com/teqbench/tbx-mat-notifications/commit/bcc339f15d3ca5554fe341c8d675f0c6a443421a))
+
 ## [3.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v2.0.0...v3.0.0) (2026-03-31)
 
 
