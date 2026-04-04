@@ -4,7 +4,7 @@ import {
     TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
     TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
 } from '@teqbench/tbx-mat-icons';
-import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 import { TbxMatNotificationFontIconService } from './notification-font-icon.service';
 
 describe('TbxMatNotificationFontIconService', () => {
@@ -60,11 +60,11 @@ describe('TbxMatNotificationFontIconService', () => {
 
         describe('resolve()', () => {
             it('should resolve all severity levels', () => {
-                expect(service.resolve(TbxMatSeverityLevelType.Success)).toBe('check_circle');
-                expect(service.resolve(TbxMatSeverityLevelType.Error)).toBe('error');
-                expect(service.resolve(TbxMatSeverityLevelType.Warning)).toBe('warning_amber');
-                expect(service.resolve(TbxMatSeverityLevelType.Information)).toBe('info');
-                expect(service.resolve(TbxMatSeverityLevelType.Help)).toBe('help');
+                expect(service.resolve(TbxMatSeverityLevel.Success)).toBe('check_circle');
+                expect(service.resolve(TbxMatSeverityLevel.Error)).toBe('error');
+                expect(service.resolve(TbxMatSeverityLevel.Warning)).toBe('warning_amber');
+                expect(service.resolve(TbxMatSeverityLevel.Information)).toBe('info');
+                expect(service.resolve(TbxMatSeverityLevel.Help)).toBe('help');
             });
 
             it('should return undefined for unknown keys', () => {

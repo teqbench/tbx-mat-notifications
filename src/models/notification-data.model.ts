@@ -1,4 +1,4 @@
-import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 
 /**
  * Internal data payload injected into the internal `NotificationComponent` via
@@ -11,7 +11,7 @@ import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
  */
 export interface NotificationData {
     /** Severity level — used to resolve the icon and apply the panel class. */
-    readonly type: TbxMatSeverityLevelType;
+    readonly type: TbxMatSeverityLevel;
 
     /** Message text displayed in the snackbar body. */
     readonly message: string;

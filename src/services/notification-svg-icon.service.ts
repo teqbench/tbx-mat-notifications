@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
     TbxMatSeveritySvgIconService,
-    TbxMatSeverityLevelType,
+    TbxMatSeverityLevel,
 } from '@teqbench/tbx-mat-severity-icons';
 
 /**
@@ -60,14 +60,14 @@ const SVG_HELP =
  * ```typescript
  * import { Injectable } from '@angular/core';
  * import { TbxMatNotificationSvgIconService } from '@teqbench/tbx-mat-notifications';
- * import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+ * import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
  *
  * // MyNotificationSvgIcons is a consumer-defined subclass
  * @Injectable()
  * export class MyNotificationSvgIcons extends TbxMatNotificationSvgIconService {
  *     protected override initialize(): void {
  *         super.initialize();
- *         this.register(TbxMatSeverityLevelType.Success, '<svg>...</svg>');
+ *         this.register(TbxMatSeverityLevel.Success, '<svg>...</svg>');
  *     }
  * }
  * ```
@@ -94,10 +94,10 @@ export class TbxMatNotificationSvgIconService extends TbxMatSeveritySvgIconServi
      */
     protected override initialize(): void {
         super.initialize();
-        this.register(TbxMatSeverityLevelType.Success, SVG_SUCCESS);
-        this.register(TbxMatSeverityLevelType.Error, SVG_ERROR);
-        this.register(TbxMatSeverityLevelType.Warning, SVG_WARNING);
-        this.register(TbxMatSeverityLevelType.Information, SVG_INFORMATION);
-        this.register(TbxMatSeverityLevelType.Help, SVG_HELP);
+        this.register(TbxMatSeverityLevel.Success, SVG_SUCCESS);
+        this.register(TbxMatSeverityLevel.Error, SVG_ERROR);
+        this.register(TbxMatSeverityLevel.Warning, SVG_WARNING);
+        this.register(TbxMatSeverityLevel.Information, SVG_INFORMATION);
+        this.register(TbxMatSeverityLevel.Help, SVG_HELP);
     }
 }

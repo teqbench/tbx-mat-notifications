@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
-import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { TbxMatNotificationFontIconService } from '../services/notification-font-icon.service';
 import { TbxMatNotificationSvgIconService } from '../services/notification-svg-icon.service';
@@ -22,11 +22,11 @@ import { TbxMatNotificationService } from '../services/notification.service';
 class CustomFontIconService extends TbxMatNotificationFontIconService {
     protected override initialize(): void {
         super.initialize();
-        this.register(TbxMatSeverityLevelType.Success, 'task_alt');
-        this.register(TbxMatSeverityLevelType.Error, 'cancel');
-        this.register(TbxMatSeverityLevelType.Warning, 'warning');
-        this.register(TbxMatSeverityLevelType.Information, 'lightbulb');
-        this.register(TbxMatSeverityLevelType.Help, 'contact_support');
+        this.register(TbxMatSeverityLevel.Success, 'task_alt');
+        this.register(TbxMatSeverityLevel.Error, 'cancel');
+        this.register(TbxMatSeverityLevel.Warning, 'warning');
+        this.register(TbxMatSeverityLevel.Information, 'lightbulb');
+        this.register(TbxMatSeverityLevel.Help, 'contact_support');
     }
 }
 
@@ -54,11 +54,11 @@ const CUSTOM_SVG_HELP =
 class CustomSvgIconService extends TbxMatNotificationSvgIconService {
     protected override initialize(): void {
         super.initialize();
-        this.register(TbxMatSeverityLevelType.Success, CUSTOM_SVG_SUCCESS);
-        this.register(TbxMatSeverityLevelType.Error, CUSTOM_SVG_ERROR);
-        this.register(TbxMatSeverityLevelType.Warning, CUSTOM_SVG_WARNING);
-        this.register(TbxMatSeverityLevelType.Information, CUSTOM_SVG_INFORMATION);
-        this.register(TbxMatSeverityLevelType.Help, CUSTOM_SVG_HELP);
+        this.register(TbxMatSeverityLevel.Success, CUSTOM_SVG_SUCCESS);
+        this.register(TbxMatSeverityLevel.Error, CUSTOM_SVG_ERROR);
+        this.register(TbxMatSeverityLevel.Warning, CUSTOM_SVG_WARNING);
+        this.register(TbxMatSeverityLevel.Information, CUSTOM_SVG_INFORMATION);
+        this.register(TbxMatSeverityLevel.Help, CUSTOM_SVG_HELP);
     }
 }
 
