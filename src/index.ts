@@ -24,8 +24,10 @@
  * @packageDocumentation
  */
 
+// Enums (re-exported from @teqbench/tbx-mat-severity-icons)
+export { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+
 // Types (re-exported from @teqbench/tbx-mat-severity-icons)
-export { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
 export type { TbxMatNotificationConfigArgsType } from './types/notification-config-args.type';
 
 // Models

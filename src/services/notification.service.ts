@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 import { NotificationComponent } from '../components/notification.component';
 import { type TbxMatNotificationConfigArgsType } from '../types/notification-config-args.type';
 import { type TbxMatNotificationConfig } from '../models/notification-config.model';
@@ -23,12 +23,12 @@ import {
  * partial into their global stylesheet (snackbar overlays render
  * outside component scope).
  */
-const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
-    [TbxMatSeverityLevelType.Success]: 'tbx-mat-notification-snackbar-success',
-    [TbxMatSeverityLevelType.Error]: 'tbx-mat-notification-snackbar-error',
-    [TbxMatSeverityLevelType.Warning]: 'tbx-mat-notification-snackbar-warning',
-    [TbxMatSeverityLevelType.Information]: 'tbx-mat-notification-snackbar-info',
-    [TbxMatSeverityLevelType.Help]: 'tbx-mat-notification-snackbar-help',
+const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevel, string>> = {
+    [TbxMatSeverityLevel.Success]: 'tbx-mat-notification-snackbar-success',
+    [TbxMatSeverityLevel.Error]: 'tbx-mat-notification-snackbar-error',
+    [TbxMatSeverityLevel.Warning]: 'tbx-mat-notification-snackbar-warning',
+    [TbxMatSeverityLevel.Information]: 'tbx-mat-notification-snackbar-info',
+    [TbxMatSeverityLevel.Help]: 'tbx-mat-notification-snackbar-help',
 };
 
 /**
@@ -71,7 +71,7 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevelType, string>> = {
  * @example Full control via show():
  * ```typescript
  * this.notify.show({
- *     type: TbxMatSeverityLevelType.Warning,
+ *     type: TbxMatSeverityLevel.Warning,
  *     message: 'Unsaved changes will be lost.',
  *     duration: 6000,
  *     showCountdown: true,
@@ -210,7 +210,7 @@ export class TbxMatNotificationService {
      * @public
      */
     success(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
-        this.show({ type: TbxMatSeverityLevelType.Success, message, ...configArgs });
+        this.show({ type: TbxMatSeverityLevel.Success, message, ...configArgs });
     }
 
     /**
@@ -222,7 +222,7 @@ export class TbxMatNotificationService {
      * @public
      */
     error(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
-        this.show({ type: TbxMatSeverityLevelType.Error, message, ...configArgs });
+        this.show({ type: TbxMatSeverityLevel.Error, message, ...configArgs });
     }
 
     /**
@@ -234,7 +234,7 @@ export class TbxMatNotificationService {
      * @public
      */
     warning(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
-        this.show({ type: TbxMatSeverityLevelType.Warning, message, ...configArgs });
+        this.show({ type: TbxMatSeverityLevel.Warning, message, ...configArgs });
     }
 
     /**
@@ -246,7 +246,7 @@ export class TbxMatNotificationService {
      * @public
      */
     information(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
-        this.show({ type: TbxMatSeverityLevelType.Information, message, ...configArgs });
+        this.show({ type: TbxMatSeverityLevel.Information, message, ...configArgs });
     }
 
     /**
@@ -258,7 +258,7 @@ export class TbxMatNotificationService {
      * @public
      */
     help(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
-        this.show({ type: TbxMatSeverityLevelType.Help, message, ...configArgs });
+        this.show({ type: TbxMatSeverityLevel.Help, message, ...configArgs });
     }
 
     /**

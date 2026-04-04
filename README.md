@@ -33,7 +33,7 @@ Import the global notification styles in your application's stylesheet:
 ## Usage
 
 ```typescript
-import { TbxMatNotificationService, TbxMatSeverityLevelType } from '@teqbench/tbx-mat-notifications';
+import { TbxMatNotificationService, TbxMatSeverityLevel } from '@teqbench/tbx-mat-notifications';
 
 // Inject the service
 private readonly notify = inject(TbxMatNotificationService);
@@ -47,7 +47,7 @@ this.notify.help('Click the + button to add a new item.');
 
 // Full control via show()
 this.notify.show({
-  type: TbxMatSeverityLevelType.Warning,
+  type: TbxMatSeverityLevel.Warning,
   message: 'Unsaved changes will be lost.',
   duration: 6000,
   showCountdown: true,
@@ -145,17 +145,17 @@ Subclass `TbxMatNotificationSvgIconService` to register your own SVG markup:
 ```typescript
 import { Injectable } from '@angular/core';
 import { TbxMatNotificationSvgIconService } from '@teqbench/tbx-mat-notifications';
-import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 
 @Injectable()
 export class MyNotificationSvgIcons extends TbxMatNotificationSvgIconService {
     constructor() {
         super();
-        this.register(TbxMatSeverityLevelType.Success, '<svg>...</svg>');
-        this.register(TbxMatSeverityLevelType.Error, '<svg>...</svg>');
-        this.register(TbxMatSeverityLevelType.Warning, '<svg>...</svg>');
-        this.register(TbxMatSeverityLevelType.Information, '<svg>...</svg>');
-        this.register(TbxMatSeverityLevelType.Help, '<svg>...</svg>');
+        this.register(TbxMatSeverityLevel.Success, '<svg>...</svg>');
+        this.register(TbxMatSeverityLevel.Error, '<svg>...</svg>');
+        this.register(TbxMatSeverityLevel.Warning, '<svg>...</svg>');
+        this.register(TbxMatSeverityLevel.Information, '<svg>...</svg>');
+        this.register(TbxMatSeverityLevel.Help, '<svg>...</svg>');
     }
 }
 ```
@@ -390,7 +390,7 @@ Toggle the fill axis on hover. The icon transitions between outlined and filled 
 
 | Property             | Type                            | Default    | Description                        |
 | -------------------- | ------------------------------- | ---------- | ---------------------------------- |
-| `type`               | `TbxMatSeverityLevelType`       | —          | Severity level (required)          |
+| `type`               | `TbxMatSeverityLevel`           | —          | Severity level (required)          |
 | `message`            | `string`                        | —          | Message text (required)            |
 | `duration`           | `number`                        | 4000       | Duration in ms (clamped 1000–6000) |
 | `horizontalPosition` | `MatSnackBarHorizontalPosition` | `'start'`  | Horizontal position                |
@@ -401,10 +401,10 @@ Toggle the fill axis on hover. The icon transitions between outlined and filled 
 
 ### TbxMatNotificationProviderConfig
 
-| Property                      | Type                                                               | Default                           | Description                       |
-| ----------------------------- | ------------------------------------------------------------------ | --------------------------------- | --------------------------------- |
-| `severityIconResolverService` | `TbxMatIconResolver & TbxMatIconResolver<TbxMatSeverityLevelType>` | —                                 | Severity icon resolver (required) |
-| `closeIcon`                   | `{ name: string; type: 'font' \| 'svg' }`                          | `{ name: 'close', type: 'font' }` | Dismiss button icon               |
+| Property                      | Type                                                           | Default                           | Description                       |
+| ----------------------------- | -------------------------------------------------------------- | --------------------------------- | --------------------------------- |
+| `severityIconResolverService` | `TbxMatIconResolver & TbxMatIconResolver<TbxMatSeverityLevel>` | —                                 | Severity icon resolver (required) |
+| `closeIcon`                   | `{ name: string; type: 'font' \| 'svg' }`                      | `{ name: 'close', type: 'font' }` | Dismiss button icon               |
 
 ### TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
 
@@ -412,11 +412,11 @@ Toggle the fill axis on hover. The icon transitions between outlined and filled 
 
 ### TbxMatNotificationFontIconService
 
-Default font-based severity icon service. Extends `TbxMatFontIconService<TbxMatSeverityLevelType>` and implements `TbxMatIconResolver`. Provides [Material Symbols ↗](https://fonts.google.com/icons) ligatures for each severity level. Subclass and override `initialize()` to replace any icons.
+Default font-based severity icon service. Extends `TbxMatFontIconService<TbxMatSeverityLevel>` and implements `TbxMatIconResolver`. Provides [Material Symbols ↗](https://fonts.google.com/icons) ligatures for each severity level. Subclass and override `initialize()` to replace any icons.
 
 ### TbxMatNotificationSvgIconService
 
-Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSeverityLevelType>` and implements `TbxMatIconResolver`. Ships with default SVG icons from the "Small Flat Vectors" collection ([SVG Repo ↗](https://www.svgrepo.com/collection/small-flat-vectors/), PD license). Subclass and override `initialize()` to replace any icons.
+Default SVG-based severity icon service. Extends `TbxMatSvgIconService<TbxMatSeverityLevel>` and implements `TbxMatIconResolver`. Ships with default SVG icons from the "Small Flat Vectors" collection ([SVG Repo ↗](https://www.svgrepo.com/collection/small-flat-vectors/), PD license). Subclass and override `initialize()` to replace any icons.
 
 ## Compatibility
 

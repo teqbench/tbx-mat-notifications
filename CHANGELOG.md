@@ -56,10 +56,10 @@
 ### ⚠ BREAKING CHANGES
 
 * warn() renamed to warning(), info() renamed to information().
-* TbxSeverityLevelType re-export renamed to TbxMatSeverityLevelType.
-* TBX_MAT_NOTIFICATION_ICON_SERVICE and TbxMatNotificationIconService removed. Use TBX_MAT_NOTIFICATION_PROVIDER_CONFIG with TbxMatNotificationFontIconService or TbxMatNotificationSvgIconService. TbxMatSeverityLevelType renamed to TbxSeverityLevelType.
+* TbxSeverityLevelType re-export renamed to TbxMatSeverityLevel.
+* TBX_MAT_NOTIFICATION_ICON_SERVICE and TbxMatNotificationIconService removed. Use TBX_MAT_NOTIFICATION_PROVIDER_CONFIG with TbxMatNotificationFontIconService or TbxMatNotificationSvgIconService. TbxMatSeverityLevel renamed to TbxSeverityLevelType.
 * All public API symbols are renamed with TbxMat/TBX_MAT_ prefix.
-* **icons:** SeverityLevelType re-export is now TbxMatSeverityLevelType.
+* **icons:** SeverityLevelType re-export is now TbxMatSeverityLevel.
 
 ### Features
 
