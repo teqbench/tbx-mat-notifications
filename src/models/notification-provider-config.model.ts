@@ -1,8 +1,5 @@
 import { type TbxMatIconResolver, type TbxMatIconType } from '@teqbench/tbx-mat-icons';
-import type {
-    TbxMatSeverityResolver,
-    TbxMatSeverityLevelType,
-} from '@teqbench/tbx-mat-severity-icons';
+import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 
 /**
  * Configuration for the notification component's injectable dependencies
@@ -101,7 +98,7 @@ export interface TbxMatNotificationProviderConfig {
      * @public
      */
     readonly severityIconResolverService: TbxMatSeverityResolver &
-        TbxMatIconResolver<TbxMatSeverityLevelType> & {
+        TbxMatIconResolver<TbxMatSeverityLevel> & {
             readonly iconType: TbxMatIconType;
         };
 

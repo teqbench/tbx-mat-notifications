@@ -2,7 +2,7 @@ import type {
     MatSnackBarHorizontalPosition,
     MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 
 /**
  * Configuration for a single notification
@@ -21,12 +21,12 @@ import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
  *
  * @example Full control via show():
  * ```typescript
- * import { TbxMatNotificationService, TbxMatSeverityLevelType } from '@teqbench/tbx-mat-notifications';
+ * import { TbxMatNotificationService, TbxMatSeverityLevel } from '@teqbench/tbx-mat-notifications';
  *
  * private readonly notify = inject(TbxMatNotificationService);
  *
  * this.notify.show({
- *     type: TbxMatSeverityLevelType.Warning,
+ *     type: TbxMatSeverityLevel.Warning,
  *     message: 'Unsaved changes will be lost.',
  *     duration: 6000,
  *     showCountdown: true,
@@ -49,7 +49,7 @@ import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
  *
  * @category Models
  * @since 1.0.0
- * @related TbxMatNotificationConfigArgsType
+ * @related TbxMatNotificationConfigArgs
  * @related TbxMatNotificationService
  *
  * @public
@@ -60,7 +60,7 @@ export interface TbxMatNotificationConfig {
      *
      * @public
      */
-    readonly type: TbxMatSeverityLevelType;
+    readonly type: TbxMatSeverityLevel;
 
     /**
      * Message text displayed in the snackbar body

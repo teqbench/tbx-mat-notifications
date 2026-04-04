@@ -36,4 +36,4 @@ import { type TbxMatNotificationConfig } from '../models/notification-config.mod
  *
  * @public
  */
-export type TbxMatNotificationConfigArgsType = Omit<TbxMatNotificationConfig, 'type' | 'message'>;
+export type TbxMatNotificationConfigArgs = Omit<TbxMatNotificationConfig, 'type' | 'message'>;

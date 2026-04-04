@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
     TbxMatSeverityFontIconService,
-    TbxMatSeverityLevelType,
+    TbxMatSeverityLevel,
 } from '@teqbench/tbx-mat-severity-icons';
 
 /**
@@ -113,10 +113,10 @@ export class TbxMatNotificationFontIconService extends TbxMatSeverityFontIconSer
      */
     protected override initialize(): void {
         super.initialize();
-        this.register(TbxMatSeverityLevelType.Success, 'check_circle');
-        this.register(TbxMatSeverityLevelType.Error, 'error');
-        this.register(TbxMatSeverityLevelType.Warning, 'warning_amber');
-        this.register(TbxMatSeverityLevelType.Information, 'info');
-        this.register(TbxMatSeverityLevelType.Help, 'help');
+        this.register(TbxMatSeverityLevel.Success, 'check_circle');
+        this.register(TbxMatSeverityLevel.Error, 'error');
+        this.register(TbxMatSeverityLevel.Warning, 'warning_amber');
+        this.register(TbxMatSeverityLevel.Information, 'info');
+        this.register(TbxMatSeverityLevel.Help, 'help');
     }
 }

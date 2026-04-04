@@ -4,7 +4,7 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { By } from '@angular/platform-browser';
-import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 import {
     TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
     TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
@@ -54,7 +54,7 @@ function createFixture(data: NotificationData): ComponentFixture<NotificationCom
 /** Helper to build NotificationData with sensible defaults. */
 function buildData(overrides: Partial<NotificationData> = {}): NotificationData {
     return {
-        type: TbxMatSeverityLevelType.Information,
+        type: TbxMatSeverityLevel.Information,
         message: 'Test',
         dismiss: vi.fn(),
         duration: NOTIFICATION_DEFAULT_DURATION_MS,
@@ -107,11 +107,11 @@ const svgResolverStub = {
     help: () => 'help',
     resolve: (name: string) => {
         const map: Record<string, string> = {
-            [TbxMatSeverityLevelType.Success]: 'success',
-            [TbxMatSeverityLevelType.Error]: 'error',
-            [TbxMatSeverityLevelType.Warning]: 'warning',
-            [TbxMatSeverityLevelType.Information]: 'information',
-            [TbxMatSeverityLevelType.Help]: 'help',
+            [TbxMatSeverityLevel.Success]: 'success',
+            [TbxMatSeverityLevel.Error]: 'error',
+            [TbxMatSeverityLevel.Warning]: 'warning',
+            [TbxMatSeverityLevel.Information]: 'information',
+            [TbxMatSeverityLevel.Help]: 'help',
         };
         return map[name];
     },
@@ -141,12 +141,12 @@ function createFixtureWithSvgResolver(
 
 describe('NotificationComponent', () => {
     describe('icon mapping via TBX_MAT_NOTIFICATION_PROVIDER_CONFIG', () => {
-        const cases: Array<[TbxMatSeverityLevelType, string]> = [
-            [TbxMatSeverityLevelType.Success, 'check_circle'],
-            [TbxMatSeverityLevelType.Error, 'error'],
-            [TbxMatSeverityLevelType.Warning, 'warning_amber'],
-            [TbxMatSeverityLevelType.Information, 'info'],
-            [TbxMatSeverityLevelType.Help, 'help'],
+        const cases: Array<[TbxMatSeverityLevel, string]> = [
+            [TbxMatSeverityLevel.Success, 'check_circle'],
+            [TbxMatSeverityLevel.Error, 'error'],
+            [TbxMatSeverityLevel.Warning, 'warning_amber'],
+            [TbxMatSeverityLevel.Information, 'info'],
+            [TbxMatSeverityLevel.Help, 'help'],
         ];
 
         for (const [type, expectedIcon] of cases) {
@@ -164,7 +164,7 @@ describe('NotificationComponent', () => {
     describe('SVG icon rendering via TBX_MAT_NOTIFICATION_PROVIDER_CONFIG', () => {
         it('should render svgIcon binding when resolver has no fontSet', () => {
             const fixture = createFixtureWithSvgResolver(
-                buildData({ type: TbxMatSeverityLevelType.Success })
+                buildData({ type: TbxMatSeverityLevel.Success })
             );
 
             const icon = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-icon'));
@@ -173,7 +173,7 @@ describe('NotificationComponent', () => {
 
         it('should return null from severityIconFont when resolver has no fontSet', () => {
             const fixture = createFixtureWithSvgResolver(
-                buildData({ type: TbxMatSeverityLevelType.Success })
+                buildData({ type: TbxMatSeverityLevel.Success })
             );
 
             const component = fixture.componentInstance;
@@ -182,7 +182,7 @@ describe('NotificationComponent', () => {
 
         it('should not render font ligature text when using SVG resolver', () => {
             const fixture = createFixtureWithSvgResolver(
-                buildData({ type: TbxMatSeverityLevelType.Error })
+                buildData({ type: TbxMatSeverityLevel.Error })
             );
 
             const icon = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-icon'));
