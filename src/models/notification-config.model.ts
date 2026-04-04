@@ -49,7 +49,7 @@ import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
  *
  * @category Models
  * @since 1.0.0
- * @related TbxMatNotificationConfigArgsType
+ * @related TbxMatNotificationConfigArgs
  * @related TbxMatNotificationService
  *
  * @public

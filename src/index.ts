@@ -12,7 +12,7 @@
  *
  * - {@link TbxMatNotificationService} — inject and call success/error/warning/information/help.
  * - {@link TbxMatNotificationConfig} — full config interface for show().
- * - {@link TbxMatNotificationConfigArgsType} — optional config for convenience methods.
+ * - {@link TbxMatNotificationConfigArgs} — optional config for convenience methods.
  * - {@link TbxMatNotificationProviderConfig} — icon provider config interface.
  * - {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG} — injection token for icon configuration.
  * - {@link TbxMatNotificationFontIconService} — default font-based severity icon service.
@@ -28,7 +28,7 @@
 export { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 
 // Types (re-exported from @teqbench/tbx-mat-severity-icons)
-export type { TbxMatNotificationConfigArgsType } from './types/notification-config-args.type';
+export type { TbxMatNotificationConfigArgs } from './types/notification-config-args.type';
 
 // Models
 export type { TbxMatNotificationConfig } from './models/notification-config.model';

@@ -3,7 +3,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 import { NotificationComponent } from '../components/notification.component';
-import { type TbxMatNotificationConfigArgsType } from '../types/notification-config-args.type';
+import { type TbxMatNotificationConfigArgs } from '../types/notification-config-args.type';
 import { type TbxMatNotificationConfig } from '../models/notification-config.model';
 import { type NotificationData } from '../models/notification-data.model';
 import {
@@ -93,7 +93,7 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevel, string>> = {
  * @category Services
  * @since 1.0.0
  * @related TbxMatNotificationConfig
- * @related TbxMatNotificationConfigArgsType
+ * @related TbxMatNotificationConfigArgs
  * @related TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
  *
  * @public
@@ -209,7 +209,7 @@ export class TbxMatNotificationService {
      *
      * @public
      */
-    success(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
+    success(message: string, configArgs?: TbxMatNotificationConfigArgs): void {
         this.show({ type: TbxMatSeverityLevel.Success, message, ...configArgs });
     }
 
@@ -221,7 +221,7 @@ export class TbxMatNotificationService {
      *
      * @public
      */
-    error(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
+    error(message: string, configArgs?: TbxMatNotificationConfigArgs): void {
         this.show({ type: TbxMatSeverityLevel.Error, message, ...configArgs });
     }
 
@@ -233,7 +233,7 @@ export class TbxMatNotificationService {
      *
      * @public
      */
-    warning(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
+    warning(message: string, configArgs?: TbxMatNotificationConfigArgs): void {
         this.show({ type: TbxMatSeverityLevel.Warning, message, ...configArgs });
     }
 
@@ -245,7 +245,7 @@ export class TbxMatNotificationService {
      *
      * @public
      */
-    information(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
+    information(message: string, configArgs?: TbxMatNotificationConfigArgs): void {
         this.show({ type: TbxMatSeverityLevel.Information, message, ...configArgs });
     }
 
@@ -257,7 +257,7 @@ export class TbxMatNotificationService {
      *
      * @public
      */
-    help(message: string, configArgs?: TbxMatNotificationConfigArgsType): void {
+    help(message: string, configArgs?: TbxMatNotificationConfigArgs): void {
         this.show({ type: TbxMatSeverityLevel.Help, message, ...configArgs });
     }
 
