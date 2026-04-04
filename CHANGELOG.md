@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v4.0.0...v5.0.0) (2026-04-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* Exported type TbxMatNotificationConfigArgsType is now TbxMatNotificationConfigArgs.
+* **icons:** Re-exported TbxMatSeverityLevelType is now TbxMatSeverityLevel.
+
+### Code Refactoring
+
+* **icons:** rename TbxMatSeverityLevelType to TbxMatSeverityLevel ([62634be](https://github.com/teqbench/tbx-mat-notifications/commit/62634be577af3041d4bf37069799d757c3fba4a5))
+* rename TbxMatNotificationConfigArgsType to TbxMatNotificationConfigArgs ([38a3d21](https://github.com/teqbench/tbx-mat-notifications/commit/38a3d21803c7842bf8c5ce39373d264bf69297cc))
+
 ## [4.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v3.0.0...v4.0.0) (2026-04-03)
 
 
