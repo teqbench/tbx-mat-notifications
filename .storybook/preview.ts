@@ -48,6 +48,7 @@ const preview: Preview = {
                         'Custom Font Icons',
                         'Custom SVG Icons',
                         'Visibility',
+                        'Action Button',
                     ],
                 ],
             },
