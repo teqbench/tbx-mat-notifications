@@ -25,6 +25,7 @@
  * - {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG} — injection token for provider configuration.
  * - {@link TbxMatNotificationSeverityFontIconService} — default font-based severity icon service.
  * - {@link TbxMatNotificationSeveritySvgIconService} — default SVG-based severity icon service.
+ * - {@link TbxMatNotificationActionButtonAppearance} — button appearance type (MatButtonAppearance | 'icon').
  * - {@link TbxMatNotificationCloseFontIconService} — default font-based close icon service.
  * - {@link TbxMatNotificationComponent} — snackbar content component (exported for typing).
  *

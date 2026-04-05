@@ -378,7 +378,7 @@ Returned synchronously from all service methods.
 | [Angular ↗](https://angular.dev)                                                       | >=21.0.0 |
 | [Angular Material ↗](https://material.angular.dev)                                     | >=21.0.0 |
 | [@teqbench/tbx-mat-icons](https://github.com/teqbench/tbx-mat-icons)                   | >=4.0.0  |
-| [@teqbench/tbx-mat-severity-icons](https://github.com/teqbench/tbx-mat-severity-icons) | >=5.0.0  |
+| [@teqbench/tbx-mat-severity-icons](https://github.com/teqbench/tbx-mat-severity-icons) | >=6.0.0  |
 | [TypeScript ↗](https://www.typescriptlang.org)                                         | ~5.9.0   |
 | [Node.js ↗](https://nodejs.org)                                                        | >=24.0.0 |
 
