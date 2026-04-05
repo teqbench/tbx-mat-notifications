@@ -13,7 +13,7 @@ import {
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { TbxMatNotificationSeverityFontIconService } from '../services/notification-severity-font-icon.service';
 import { TbxMatNotificationComponent } from './notification.component';
-import { type NotificationData } from '../models/notification-data.model';
+import { type NotificationDataDto } from '../models/notification-data-dto.model';
 import { NOTIFICATION_DEFAULT_DURATION_MS } from '../constants/notification.constants';
 
 const DUMMY_SVG = '<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>';
@@ -28,7 +28,7 @@ function registerDummySvgIcons(...names: string[]): void {
 }
 
 /** Create a fixture with the font icon provider config. */
-function createFixture(data: NotificationData): ComponentFixture<TbxMatNotificationComponent> {
+function createFixture(data: NotificationDataDto): ComponentFixture<TbxMatNotificationComponent> {
     TestBed.configureTestingModule({
         imports: [TbxMatNotificationComponent],
         providers: [
@@ -51,24 +51,28 @@ function createFixture(data: NotificationData): ComponentFixture<TbxMatNotificat
     return fixture;
 }
 
-/** Helper to build NotificationData with sensible defaults. */
-function buildData(overrides: Partial<NotificationData> = {}): NotificationData {
+/** Helper to build NotificationDataDto with sensible defaults. */
+function buildData(overrides: Partial<NotificationDataDto> = {}): NotificationDataDto {
     return {
         type: TbxMatSeverityLevel.Information,
         message: 'Test',
-        dismiss: vi.fn(),
+        dismissByClose: vi.fn(),
+        dismissByAction: vi.fn(),
         duration: NOTIFICATION_DEFAULT_DURATION_MS,
         showCountdown: false,
         showSeverityIcon: true,
         showCloseButton: true,
+        closeIconResolverService: {
+            iconType: TbxMatIconType.Font,
+            resolve: () => 'close',
+        },
         ...overrides,
     };
 }
 
-/** Create a fixture with a custom close icon config. */
+/** Create a fixture with a custom close icon resolver on the DTO. */
 function createFixtureWithCloseIcon(
-    data: NotificationData,
-    closeIcon: { name: string; type: TbxMatIconType }
+    data: NotificationDataDto
 ): ComponentFixture<TbxMatNotificationComponent> {
     TestBed.configureTestingModule({
         imports: [TbxMatNotificationComponent],
@@ -82,14 +86,16 @@ function createFixtureWithCloseIcon(
                 provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                 useFactory: () => ({
                     severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
-                    closeIcon,
                 }),
             },
         ],
     });
 
-    if (closeIcon.type === TbxMatIconType.Svg) {
-        registerDummySvgIcons(closeIcon.name);
+    if (data.closeIconResolverService.iconType === TbxMatIconType.Svg) {
+        const iconName = data.closeIconResolverService.resolve('close');
+        if (iconName) {
+            registerDummySvgIcons(iconName);
+        }
     }
 
     const fixture = TestBed.createComponent(TbxMatNotificationComponent);
@@ -119,7 +125,7 @@ const svgResolverStub = {
 
 /** Create a fixture with an SVG-based resolver config. */
 function createFixtureWithSvgResolver(
-    data: NotificationData
+    data: NotificationDataDto
 ): ComponentFixture<TbxMatNotificationComponent> {
     TestBed.configureTestingModule({
         imports: [TbxMatNotificationComponent],
@@ -200,30 +206,42 @@ describe('TbxMatNotificationComponent', () => {
         });
 
         it('should use a custom font close icon when configured', () => {
-            const fixture = createFixtureWithCloseIcon(buildData(), {
-                name: 'cancel',
-                type: TbxMatIconType.Font,
-            });
+            const fixture = createFixtureWithCloseIcon(
+                buildData({
+                    closeIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => 'cancel',
+                    },
+                })
+            );
 
             const closeIcon = fixture.debugElement.query(By.css('button[matIconButton] mat-icon'));
             expect(closeIcon.nativeElement.textContent.trim()).toBe('cancel');
         });
 
         it('should use an SVG close icon when configured', () => {
-            const fixture = createFixtureWithCloseIcon(buildData(), {
-                name: 'my-close-svg',
-                type: TbxMatIconType.Svg,
-            });
+            const fixture = createFixtureWithCloseIcon(
+                buildData({
+                    closeIconResolverService: {
+                        iconType: TbxMatIconType.Svg,
+                        resolve: () => 'my-close-svg',
+                    },
+                })
+            );
 
             const closeIcon = fixture.debugElement.query(By.css('button[matIconButton] mat-icon'));
             expect(closeIcon.nativeElement.getAttribute('data-mat-icon-name')).toBe('my-close-svg');
         });
 
         it('should return null from closeIconFont when close icon is SVG', () => {
-            const fixture = createFixtureWithCloseIcon(buildData(), {
-                name: 'my-close-svg',
-                type: TbxMatIconType.Svg,
-            });
+            const fixture = createFixtureWithCloseIcon(
+                buildData({
+                    closeIconResolverService: {
+                        iconType: TbxMatIconType.Svg,
+                        resolve: () => 'my-close-svg',
+                    },
+                })
+            );
 
             const component = fixture.componentInstance;
             expect(component.closeIconFont()).toBeNull();
@@ -240,14 +258,14 @@ describe('TbxMatNotificationComponent', () => {
     });
 
     describe('dismiss button', () => {
-        it('should call dismiss when the close button is clicked', () => {
-            const dismiss = vi.fn();
-            const fixture = createFixture(buildData({ dismiss }));
+        it('should call dismissByClose when the close button is clicked', () => {
+            const dismissByClose = vi.fn();
+            const fixture = createFixture(buildData({ dismissByClose }));
 
             const closeButton = fixture.debugElement.query(By.css('button[matIconButton]'));
             closeButton.nativeElement.click();
 
-            expect(dismiss).toHaveBeenCalledOnce();
+            expect(dismissByClose).toHaveBeenCalledOnce();
         });
 
         it('should have an accessible aria-label', () => {

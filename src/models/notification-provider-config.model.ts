@@ -1,13 +1,15 @@
 import { type TbxMatIconResolver, type TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 
+import { type TbxMatNotificationProviderActionConfig } from './notification-provider-action-config.model';
+
 /**
  * Configuration for the notification component's injectable dependencies
  *
  * @remarks
  * Provided via the {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG} injection token
- * in `app.config.ts`. Groups all notification icon customization into a single
- * provider entry.
+ * in `app.config.ts`. Groups all notification icon customization and action
+ * button defaults into a single provider entry.
  *
  * ### Properties
  *
@@ -16,8 +18,15 @@ import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-
  *   {@link TbxMatNotificationSeverityFontIconService} for font icons or
  *   {@link TbxMatNotificationSeveritySvgIconService} for SVG icons.
  *
- * - **`closeIcon`** (optional) — configures the dismiss button icon. When omitted,
- *   defaults to the `close` {@link https://fonts.google.com/icons | Material Symbols} font ligature.
+ * - **`closeIconResolverService`** (optional) — resolves the close button icon.
+ *   When omitted, the package provides a default font-based resolver
+ *   ({@link TbxMatNotificationCloseFontIconService}) that registers the `'close'`
+ *   {@link https://fonts.google.com/icons | Material Symbols} ligature.
+ *
+ * - **`actionConfig`** (optional) — application-wide defaults for action button
+ *   appearance, icon position, and icon resolver. See
+ *   {@link TbxMatNotificationProviderActionConfig}. When omitted, defaults
+ *   apply per-notification.
  *
  * @example Font icons with explicit fontSet:
  * ```typescript
@@ -35,49 +44,23 @@ import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-
  * ]
  * ```
  *
- * @example Font icons with MAT_ICON_DEFAULT_OPTIONS (no explicit fontSet):
+ * @example With custom close icon and action defaults:
  * ```typescript
  * // app.config.ts
- * import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
  * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationSeverityFontIconService }
  *     from '@teqbench/tbx-mat-notifications';
  *
  * providers: [
- *     { provide: MAT_ICON_DEFAULT_OPTIONS, useValue: { fontSet: 'material-symbols-rounded' } },
- *     {
- *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
- *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
- *         }),
- *     },
- * ]
- * ```
- *
- * @example With a custom close icon:
- * ```typescript
- * import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
- *
- * providers: [
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
  *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
- *             closeIcon: { name: 'cancel', type: TbxMatIconType.Font },
- *         }),
- *     },
- * ]
- * ```
- *
- * @example With an SVG close icon:
- * ```typescript
- * import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
- *
- * providers: [
- *     {
- *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
- *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
- *             closeIcon: { name: 'my-close-icon', type: TbxMatIconType.Svg },
+ *             closeIconResolverService: new MyCloseIconService('material-symbols-rounded'),
+ *             actionConfig: {
+ *                 actionButtonType: 'tonal',
+ *                 iconPosition: TbxMatNotificationIconPosition.Before,
+ *                 actionIconResolverService: new MyActionIconService(),
+ *             },
  *         }),
  *     },
  * ]
@@ -88,6 +71,8 @@ import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-
  * @related TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
  * @related TbxMatNotificationSeverityFontIconService
  * @related TbxMatNotificationSeveritySvgIconService
+ * @related TbxMatNotificationCloseFontIconService
+ * @related TbxMatNotificationProviderActionConfig
  *
  * @public
  */
@@ -103,18 +88,32 @@ export interface TbxMatNotificationProviderConfig {
         };
 
     /**
-     * Close/dismiss button icon configuration
+     * Close button icon resolver — resolves the close/dismiss button icon
      *
      * @remarks
-     * - `name` — the icon identifier (font ligature or registered svgIcon name)
-     * - `type` — `'font'` for font ligature, `'svg'` for registered svgIcon
-     *
-     * Defaults to `{ name: 'close', type: 'font' }` when omitted.
+     * Must implement `TbxMatIconResolver<string>` and expose `iconType`.
+     * When omitted, the package provides a default font-based resolver
+     * ({@link TbxMatNotificationCloseFontIconService}) that registers the
+     * `'close'` {@link https://fonts.google.com/icons | Material Symbols}
+     * ligature. Consumers who want SVG close icons must provide a custom
+     * resolver — no default SVG close icon service is provided.
      *
      * @public
      */
-    readonly closeIcon?: {
-        readonly name: string;
-        readonly type: TbxMatIconType;
+    readonly closeIconResolverService?: TbxMatIconResolver<string> & {
+        readonly iconType: TbxMatIconType;
     };
+
+    /**
+     * Application-wide defaults for action button appearance and icon resolution
+     *
+     * @remarks
+     * Per-notification {@link TbxMatNotificationAction} properties override
+     * these defaults. When omitted entirely, action buttons use the
+     * package defaults (`'text'` appearance,
+     * `TbxMatNotificationIconPosition.Before`).
+     *
+     * @public
+     */
+    readonly actionConfig?: TbxMatNotificationProviderActionConfig;
 }

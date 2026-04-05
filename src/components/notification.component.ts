@@ -9,10 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
-import { type NotificationData } from '../models/notification-data.model';
+import { type NotificationDataDto } from '../models/notification-data-dto.model';
 
 /** Default close icon when closeIcon is omitted from the provider config. */
-const DEFAULT_CLOSE_ICON = { name: 'close', type: TbxMatIconType.Font };
 
 /**
  * Custom snackbar content component for typed notifications.
@@ -95,7 +94,7 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: TbxMatIconType.Font };
                 <button
                     matIconButton
                     matSnackBarAction
-                    (click)="data.dismiss()"
+                    (click)="data.dismissByClose()"
                     aria-label="Dismiss notification"
                 >
                     @let closeSvg = closeIconSvg();
@@ -141,7 +140,7 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: TbxMatIconType.Font };
     `,
 })
 export class TbxMatNotificationComponent {
-    readonly data = inject<NotificationData>(MAT_SNACK_BAR_DATA);
+    readonly data = inject<NotificationDataDto>(MAT_SNACK_BAR_DATA);
     private readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
 
     /**
@@ -170,13 +169,19 @@ export class TbxMatNotificationComponent {
 
     /** Close icon font ligature. `null` when the close icon is SVG-based. */
     readonly closeIconFont = computed(() => {
-        const icon = this.config.closeIcon ?? DEFAULT_CLOSE_ICON;
-        return icon.type === TbxMatIconType.Font ? icon.name : null;
+        const resolver = this.data.closeIconResolverService;
+        if (resolver.iconType !== TbxMatIconType.Font) {
+            return null;
+        }
+        return resolver.resolve('close') ?? null;
     });
 
     /** Close icon svgIcon name. `null` when the close icon is font-based. */
     readonly closeIconSvg = computed(() => {
-        const icon = this.config.closeIcon ?? DEFAULT_CLOSE_ICON;
-        return icon.type === TbxMatIconType.Svg ? icon.name : null;
+        const resolver = this.data.closeIconResolverService;
+        if (resolver.iconType !== TbxMatIconType.Svg) {
+            return null;
+        }
+        return resolver.resolve('close') ?? null;
     });
 }

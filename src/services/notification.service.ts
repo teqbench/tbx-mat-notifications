@@ -5,11 +5,11 @@ import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 import { TbxMatNotificationComponent } from '../components/notification.component';
 import { type TbxMatNotificationConfigArgs } from '../types/notification-config-args.type';
 import { type TbxMatNotificationConfig } from '../models/notification-config.model';
-import { type NotificationData } from '../models/notification-data.model';
+import { type NotificationDataDto } from '../models/notification-data-dto.model';
+import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
+import { TbxMatNotificationCloseFontIconService } from './notification-close-font-icon.service';
 import {
     NOTIFICATION_DEFAULT_DURATION_MS,
-    NOTIFICATION_DEFAULT_HORIZONTAL_POSITION,
-    NOTIFICATION_DEFAULT_VERTICAL_POSITION,
     NOTIFICATION_MAX_DURATION_MS,
     NOTIFICATION_MIN_DURATION_MS,
 } from '../constants/notification.constants';
@@ -101,6 +101,8 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevel, string>> = {
 @Injectable({ providedIn: 'root' })
 export class TbxMatNotificationService {
     private readonly snackBar = inject(MatSnackBar);
+    private readonly providerConfig = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
+    private readonly defaultCloseIconService = new TbxMatNotificationCloseFontIconService();
 
     /**
      * FIFO queue of pending notifications. When a notification is dismissed,
@@ -278,21 +280,22 @@ export class TbxMatNotificationService {
         this.isActive.set(true);
         const duration = this.clampDuration(config.duration);
 
-        const data: NotificationData = {
+        const data: NotificationDataDto = {
             type: config.type,
             message: config.message,
-            dismiss: () => this.snackBar.dismiss(),
+            dismissByClose: () => this.snackBar.dismiss(),
+            dismissByAction: () => this.snackBar.dismiss(),
             duration,
             showCountdown: config.showCountdown ?? false,
             showSeverityIcon: config.showSeverityIcon ?? true,
             showCloseButton: config.showCloseButton ?? true,
+            closeIconResolverService:
+                this.providerConfig.closeIconResolverService ?? this.defaultCloseIconService,
         };
 
-        const snackBarConfig: MatSnackBarConfig<NotificationData> = {
+        const snackBarConfig: MatSnackBarConfig<NotificationDataDto> = {
+            ...config.snackBarConfig,
             duration,
-            horizontalPosition:
-                config.horizontalPosition ?? NOTIFICATION_DEFAULT_HORIZONTAL_POSITION,
-            verticalPosition: config.verticalPosition ?? NOTIFICATION_DEFAULT_VERTICAL_POSITION,
             panelClass: PANEL_CLASS_MAP[config.type],
             data,
         };

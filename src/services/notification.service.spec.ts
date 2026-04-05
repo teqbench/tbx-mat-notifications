@@ -3,8 +3,14 @@ import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import {
+    TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
+    TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
+} from '@teqbench/tbx-mat-icons';
 import { TbxMatNotificationService } from './notification.service';
+import { TbxMatNotificationSeverityFontIconService } from './notification-severity-font-icon.service';
 import { TbxMatNotificationComponent } from '../components/notification.component';
+import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import {
     NOTIFICATION_DEFAULT_DURATION_MS,
     NOTIFICATION_MAX_DURATION_MS,
@@ -37,7 +43,21 @@ describe('TbxMatNotificationService', () => {
         };
 
         TestBed.configureTestingModule({
-            providers: [TbxMatNotificationService, { provide: MatSnackBar, useValue: snackBarSpy }],
+            providers: [
+                TbxMatNotificationService,
+                { provide: MatSnackBar, useValue: snackBarSpy },
+                {
+                    provide: TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
+                    useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
+                },
+                {
+                    provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+                    useFactory: () => ({
+                        severityIconResolverService:
+                            new TbxMatNotificationSeverityFontIconService(),
+                    }),
+                },
+            ],
         });
 
         service = TestBed.inject(TbxMatNotificationService);
@@ -59,17 +79,6 @@ describe('TbxMatNotificationService', () => {
                     }),
                 })
             );
-        });
-
-        it('should position snackbar at bottom-start', () => {
-            service.show({
-                type: TbxMatSeverityLevel.Information,
-                message: 'Hello',
-            });
-
-            const config = snackBarSpy.openFromComponent.mock.calls[0][1];
-            expect(config.horizontalPosition).toBe('start');
-            expect(config.verticalPosition).toBe('bottom');
         });
 
         it('should apply the correct panel class for each type', () => {
@@ -141,14 +150,14 @@ describe('TbxMatNotificationService', () => {
             expect(config.duration).toBe(NOTIFICATION_MAX_DURATION_MS);
         });
 
-        it('should provide a dismiss callback in the data', () => {
+        it('should provide dismissByClose and dismissByAction callbacks in the data', () => {
             service.show({
                 type: TbxMatSeverityLevel.Success,
                 message: 'Done',
             });
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
-            config.data.dismiss();
+            config.data.dismissByClose();
 
             expect(snackBarSpy.dismiss).toHaveBeenCalled();
         });
