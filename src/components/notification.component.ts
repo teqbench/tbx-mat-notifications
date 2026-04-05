@@ -18,7 +18,7 @@ import { TbxMatNotificationIconPosition } from '../enums/notification-icon-posit
  * @remarks
  * Rendered inside {@link https://material.angular.dev/components/snack-bar/api | MatSnackBar}
  * via `openFromComponent()`. Receives its data through `MAT_SNACK_BAR_DATA`
- * injection token as a {@link NotificationDataDto}.
+ * injection token as an internal DTO.
  *
  * ### Template element order
  *
@@ -43,7 +43,15 @@ import { TbxMatNotificationIconPosition } from '../enums/notification-icon-posit
  * `duration <= 0` has no visible effect — an indefinite notification
  * has no countdown to display.
  *
+ * @example Rendered internally by TbxMatNotificationService:
+ * ```typescript
+ * // Consumers do not instantiate this component directly.
+ * // It is rendered via MatSnackBar.openFromComponent() by the service.
+ * void this.notificationService.success('Item saved.');
+ * ```
+ *
  * @category Components
+ * @displayName Notification Component
  * @since 1.0.0
  * @related TbxMatNotificationService
  *

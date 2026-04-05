@@ -36,6 +36,7 @@ import { type TbxMatNotificationActionButtonAppearance } from '../types/notifica
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
  *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
+ *             // MyActionIconService is a hypothetical consumer-defined icon resolver
  *             actionConfig: {
  *                 actionButtonType: 'tonal',
  *                 iconPosition: TbxMatNotificationIconPosition.Before,

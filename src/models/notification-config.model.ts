@@ -170,8 +170,8 @@ export interface TbxMatNotificationConfig {
      * with its own API (e.g., `horizontalPosition`, `verticalPosition`,
      * `politeness`, `announcementMessage`, `direction`, `viewContainerRef`).
      *
-     * `data` is excluded because it is used internally to pass the
-     * {@link NotificationDataDto} to the component. `duration` is excluded
+     * `data` is excluded because it is used internally to pass a DTO
+     * to the component. `duration` is excluded
      * because the notification package applies its own duration logic
      * (indefinite, default).
      *

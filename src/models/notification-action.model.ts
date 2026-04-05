@@ -52,6 +52,7 @@ import { type TbxMatNotificationActionButtonAppearance } from '../types/notifica
  * @example Icon-only action button:
  * ```typescript
  * // label serves as the aria-label for accessibility
+ * // myIconService is a hypothetical consumer-defined icon resolver
  * this.notificationService.error('Upload failed', {
  *     action: {
  *         label: 'Retry',
@@ -64,6 +65,7 @@ import { type TbxMatNotificationActionButtonAppearance } from '../types/notifica
  *
  * @example Tonal button with icon:
  * ```typescript
+ * // myIconService is a hypothetical consumer-defined icon resolver
  * this.notificationService.warning('Connection lost', {
  *     action: {
  *         label: 'Retry',

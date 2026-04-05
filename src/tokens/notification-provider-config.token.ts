@@ -62,16 +62,15 @@ import type { TbxMatNotificationProviderConfig } from '../models/notification-pr
  * ]
  * ```
  *
- * @example With a custom close icon:
+ * @example With a custom close icon resolver:
  * ```typescript
- * import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
- *
  * providers: [
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+ *         // MyCloseIconService is a hypothetical consumer-defined close icon resolver
  *         useFactory: () => ({
  *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
- *             closeIcon: { name: 'cancel', type: TbxMatIconType.Font },
+ *             closeIconResolverService: new MyCloseIconService('material-symbols-rounded'),
  *         }),
  *     },
  * ]

@@ -53,6 +53,7 @@ import { type TbxMatNotificationProviderActionConfig } from './notification-prov
  * providers: [
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+ *         // MyCloseIconService and MyActionIconService are hypothetical consumer-defined services
  *         useFactory: () => ({
  *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
  *             closeIconResolverService: new MyCloseIconService('material-symbols-rounded'),
