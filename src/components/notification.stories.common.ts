@@ -165,7 +165,10 @@ export function withCustomSvgIconsAndSvgClose() {
 
                     return {
                         severityIconResolverService: new CustomSvgIconService(),
-                        closeIcon: { name: CLOSE_ICON_NAME, type: TbxMatIconType.Svg },
+                        closeIconResolverService: {
+                            iconType: TbxMatIconType.Svg,
+                            resolve: () => CLOSE_ICON_NAME,
+                        },
                     };
                 },
             },
@@ -374,8 +377,10 @@ export class NotificationHarnessComponent {
             showCountdown,
             showSeverityIcon: this.showSeverityIcon(),
             showCloseButton: this.showCloseButton(),
-            horizontalPosition: this.horizontalPosition(),
-            verticalPosition: this.verticalPosition(),
+            snackBarConfig: {
+                horizontalPosition: this.horizontalPosition(),
+                verticalPosition: this.verticalPosition(),
+            },
         });
     }
 
@@ -384,8 +389,10 @@ export class NotificationHarnessComponent {
             showCountdown: true,
             showSeverityIcon: this.showSeverityIcon(),
             showCloseButton: this.showCloseButton(),
-            horizontalPosition: this.horizontalPosition(),
-            verticalPosition: this.verticalPosition(),
+            snackBarConfig: {
+                horizontalPosition: this.horizontalPosition(),
+                verticalPosition: this.verticalPosition(),
+            },
         };
 
         this.notify.success('Step 1: Operation completed successfully.', args);

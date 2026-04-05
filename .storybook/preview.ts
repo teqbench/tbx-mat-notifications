@@ -3,7 +3,7 @@ import { applicationConfig } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../src/tokens/notification-provider-config.token';
-import { TbxMatNotificationFontIconService } from '../src/services/notification-font-icon.service';
+import { TbxMatNotificationSeverityFontIconService } from '../src/services/notification-severity-font-icon.service';
 
 // M3 prebuilt theme — provides typography, shape, and state-layer tokens.
 // Without a theme, snackbar text, border-radius, and button ripples fall
@@ -26,7 +26,7 @@ const preview: Preview = {
                 {
                     provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                     useFactory: () => ({
-                        severityIconResolverService: new TbxMatNotificationFontIconService(
+                        severityIconResolverService: new TbxMatNotificationSeverityFontIconService(
                             'material-symbols-rounded'
                         ),
                     }),

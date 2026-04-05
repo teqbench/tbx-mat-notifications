@@ -54,10 +54,19 @@ html {
 /* Each panel class overrides:
  *   snack-bar — container and text colors
  *   icon-button — close button and icon-only action button icon color
- *   button — text/filled/outlined/tonal/elevated action button label and icon color
+ *
+ * Action button (mat-button) text color inherits from the snackbar
+ * supporting-text-color via the --mat-text-button-label-text-color and
+ * --mat-text-button-icon-color custom properties set on each panel class.
+ * This avoids mat.button-overrides() which requires a Sass environment
+ * that matches Angular's internal compilation (Storybook's Vite/Sass
+ * pipeline is incompatible with the current-selector-or-root mixin).
  */
 
 .tbx-mat-notification-snackbar-success {
+    --mat-text-button-label-text-color: var(--tbx-mat-notification-success-text);
+    --mat-text-button-icon-color: var(--tbx-mat-notification-success-text);
+
     @include mat.snack-bar-overrides(
         (
             container-color: var(--tbx-mat-notification-success-background),
@@ -70,16 +79,12 @@ html {
             icon-color: var(--tbx-mat-notification-success-text),
         )
     );
-
-    @include mat.button-overrides(
-        (
-            label-text-color: var(--tbx-mat-notification-success-text),
-            icon-color: var(--tbx-mat-notification-success-text),
-        )
-    );
 }
 
 .tbx-mat-notification-snackbar-error {
+    --mat-text-button-label-text-color: var(--tbx-mat-notification-error-text);
+    --mat-text-button-icon-color: var(--tbx-mat-notification-error-text);
+
     @include mat.snack-bar-overrides(
         (
             container-color: var(--tbx-mat-notification-error-background),
@@ -92,16 +97,12 @@ html {
             icon-color: var(--tbx-mat-notification-error-text),
         )
     );
-
-    @include mat.button-overrides(
-        (
-            label-text-color: var(--tbx-mat-notification-error-text),
-            icon-color: var(--tbx-mat-notification-error-text),
-        )
-    );
 }
 
 .tbx-mat-notification-snackbar-warning {
+    --mat-text-button-label-text-color: var(--tbx-mat-notification-warning-text);
+    --mat-text-button-icon-color: var(--tbx-mat-notification-warning-text);
+
     @include mat.snack-bar-overrides(
         (
             container-color: var(--tbx-mat-notification-warning-background),
@@ -114,16 +115,12 @@ html {
             icon-color: var(--tbx-mat-notification-warning-text),
         )
     );
-
-    @include mat.button-overrides(
-        (
-            label-text-color: var(--tbx-mat-notification-warning-text),
-            icon-color: var(--tbx-mat-notification-warning-text),
-        )
-    );
 }
 
 .tbx-mat-notification-snackbar-info {
+    --mat-text-button-label-text-color: var(--tbx-mat-notification-information-text);
+    --mat-text-button-icon-color: var(--tbx-mat-notification-information-text);
+
     @include mat.snack-bar-overrides(
         (
             container-color: var(--tbx-mat-notification-information-background),
@@ -136,16 +133,12 @@ html {
             icon-color: var(--tbx-mat-notification-information-text),
         )
     );
-
-    @include mat.button-overrides(
-        (
-            label-text-color: var(--tbx-mat-notification-information-text),
-            icon-color: var(--tbx-mat-notification-information-text),
-        )
-    );
 }
 
 .tbx-mat-notification-snackbar-help {
+    --mat-text-button-label-text-color: var(--tbx-mat-notification-help-text);
+    --mat-text-button-icon-color: var(--tbx-mat-notification-help-text);
+
     @include mat.snack-bar-overrides(
         (
             container-color: var(--tbx-mat-notification-help-background),
@@ -155,13 +148,6 @@ html {
 
     @include mat.icon-button-overrides(
         (
-            icon-color: var(--tbx-mat-notification-help-text),
-        )
-    );
-
-    @include mat.button-overrides(
-        (
-            label-text-color: var(--tbx-mat-notification-help-text),
             icon-color: var(--tbx-mat-notification-help-text),
         )
     );
