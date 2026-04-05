@@ -1,5 +1,5 @@
 /**
- * Typed snackbar notifications with severity levels for Angular
+ * Typed snackbar notifications with severity levels for {@link https://angular.dev | Angular}
  *
  * @remarks
  * An opinionated thin layer around
