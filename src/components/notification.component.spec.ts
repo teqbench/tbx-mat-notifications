@@ -548,5 +548,63 @@ describe('TbxMatNotificationComponent', () => {
             expect(icon).not.toBeNull();
             expect(icon.nativeElement.textContent.trim()).toBe('open_in_new');
         });
+
+        it('should return null from closeIconFont when resolver returns undefined', () => {
+            const fixture = createFixture(
+                buildData({
+                    closeIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => undefined as unknown as string,
+                    },
+                })
+            );
+
+            expect(fixture.componentInstance.closeIconFont()).toBeNull();
+        });
+
+        it('should return null from closeIconSvg when resolver returns undefined', () => {
+            const fixture = createFixture(
+                buildData({
+                    closeIconResolverService: {
+                        iconType: TbxMatIconType.Svg,
+                        resolve: () => undefined as unknown as string,
+                    },
+                })
+            );
+
+            expect(fixture.componentInstance.closeIconSvg()).toBeNull();
+        });
+
+        it('should return null from actionIconFont when resolver returns undefined', () => {
+            const fixture = createFixture(
+                buildData({
+                    actionLabel: 'Retry',
+                    actionButtonType: 'icon',
+                    actionIconName: 'refresh',
+                    actionIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => undefined as unknown as string,
+                    },
+                })
+            );
+
+            expect(fixture.componentInstance.actionIconFont()).toBeNull();
+        });
+
+        it('should return null from actionIconSvg when resolver returns undefined', () => {
+            const fixture = createFixture(
+                buildData({
+                    actionLabel: 'Retry',
+                    actionButtonType: 'icon',
+                    actionIconName: 'refresh',
+                    actionIconResolverService: {
+                        iconType: TbxMatIconType.Svg,
+                        resolve: () => undefined as unknown as string,
+                    },
+                })
+            );
+
+            expect(fixture.componentInstance.actionIconSvg()).toBeNull();
+        });
     });
 });

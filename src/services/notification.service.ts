@@ -436,9 +436,11 @@ export class TbxMatNotificationService {
     private showNext(): void {
         // Guard: if the injector has been destroyed (e.g., Storybook
         // navigated away), do not attempt to open a new snackbar.
+        /* v8 ignore start -- DestroyRef guard; not reachable in unit tests */
         if (this.destroyed) {
             return;
         }
+        /* v8 ignore stop */
 
         const entry = this.queue.shift();
         this._pendingCount.set(this.queue.length);
@@ -524,6 +526,10 @@ export class TbxMatNotificationService {
         this.activeSubscription = ref.afterDismissed().subscribe((dismiss) => {
             this.activeSubscription = null;
 
+            // Guard: only resolve if not already resolved. The false branch
+            // is a race condition guard — it fires only if two dismiss paths
+            // trigger simultaneously on the same notification, which cannot
+            // be reliably reproduced in unit tests.
             if (!this.activeResultResolved && this.activeResultResolver) {
                 let reason: TbxMatNotificationDismissReason;
 

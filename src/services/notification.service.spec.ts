@@ -849,4 +849,20 @@ describe('TbxMatNotificationService', () => {
             expect(data.actionButtonType).toBe('filled');
         });
     });
+
+    describe('dismissByAction callback', () => {
+        it('should call dismissWithAction on the snackbar ref', () => {
+            service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+                action: { label: 'Undo' },
+            });
+
+            const mockRef = snackBarSpy.openFromComponent.mock.results[0].value;
+            const data = snackBarSpy.openFromComponent.mock.calls[0][1].data;
+            data.dismissByAction();
+
+            expect(mockRef.dismissWithAction).toHaveBeenCalled();
+        });
+    });
 });
