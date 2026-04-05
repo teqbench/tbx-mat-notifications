@@ -23,7 +23,7 @@ export default meta;
 type Story = StoryObj<NotificationHarnessComponent>;
 
 const CATEGORY_DESCRIPTION =
-    'Uses TbxMatNotificationSvgIconService with its built-in default SVG icons ' +
+    'Uses TbxMatNotificationSeveritySvgIconService with its built-in default SVG icons ' +
     'from the "Small Flat Vectors" collection (SVG Repo, PD license).';
 
 export const Default: Story = {

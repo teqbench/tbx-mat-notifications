@@ -30,8 +30,8 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: TbxMatIconType.Font };
  * injection token, which is required. The config's
  * `severityIconResolverService` maps severity levels to icon identifiers
  * (font ligatures or svgIcon names). Both
- * {@link TbxMatNotificationFontIconService} and
- * {@link TbxMatNotificationSvgIconService} ship with sensible defaults.
+ * {@link TbxMatNotificationSeverityFontIconService} and
+ * {@link TbxMatNotificationSeveritySvgIconService} ship with sensible defaults.
  *
  * The close/dismiss button is shown by default (`data.showCloseButton === true`)
  * and can be hidden per-notification via {@link TbxMatNotificationConfig.showCloseButton}.
@@ -65,7 +65,7 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: TbxMatIconType.Font };
  */
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
-    selector: 'tbx-mat-notification-snackbar',
+    selector: 'tbx-mat-notification-component',
     imports: [
         MatSnackBarLabel,
         MatSnackBarActions,
@@ -140,7 +140,7 @@ const DEFAULT_CLOSE_ICON = { name: 'close', type: TbxMatIconType.Font };
         }
     `,
 })
-export class NotificationComponent {
+export class TbxMatNotificationComponent {
     readonly data = inject<NotificationData>(MAT_SNACK_BAR_DATA);
     private readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
 

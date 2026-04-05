@@ -23,7 +23,7 @@ export default meta;
 type Story = StoryObj<NotificationHarnessComponent>;
 
 const CATEGORY_DESCRIPTION =
-    'Uses TbxMatNotificationFontIconService with its default Material Symbols ligatures: ' +
+    'Uses TbxMatNotificationSeverityFontIconService with its default Material Symbols ligatures: ' +
     'check_circle, error, warning_amber, info, help.';
 
 export const Default: Story = {

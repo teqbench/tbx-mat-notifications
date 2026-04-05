@@ -13,8 +13,8 @@ import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-
  *
  * - **`severityIconResolverService`** — resolves severity levels to icon identifiers. Must
  *   implement `TbxMatIconResolver` from `@teqbench/tbx-mat-icons`. Use
- *   {@link TbxMatNotificationFontIconService} for font icons or
- *   {@link TbxMatNotificationSvgIconService} for SVG icons.
+ *   {@link TbxMatNotificationSeverityFontIconService} for font icons or
+ *   {@link TbxMatNotificationSeveritySvgIconService} for SVG icons.
  *
  * - **`closeIcon`** (optional) — configures the dismiss button icon. When omitted,
  *   defaults to the `close` {@link https://fonts.google.com/icons | Material Symbols} font ligature.
@@ -22,14 +22,14 @@ import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-
  * @example Font icons with explicit fontSet:
  * ```typescript
  * // app.config.ts
- * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationFontIconService }
+ * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationSeverityFontIconService }
  *     from '@teqbench/tbx-mat-notifications';
  *
  * providers: [
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
+ *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
  *         }),
  *     },
  * ]
@@ -39,7 +39,7 @@ import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-
  * ```typescript
  * // app.config.ts
  * import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
- * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationFontIconService }
+ * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationSeverityFontIconService }
  *     from '@teqbench/tbx-mat-notifications';
  *
  * providers: [
@@ -47,7 +47,7 @@ import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationFontIconService(),
+ *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
  *         }),
  *     },
  * ]
@@ -61,7 +61,7 @@ import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
+ *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
  *             closeIcon: { name: 'cancel', type: TbxMatIconType.Font },
  *         }),
  *     },
@@ -76,7 +76,7 @@ import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
+ *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
  *             closeIcon: { name: 'my-close-icon', type: TbxMatIconType.Svg },
  *         }),
  *     },
@@ -86,8 +86,8 @@ import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-
  * @category Models
  * @since 1.0.0
  * @related TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
- * @related TbxMatNotificationFontIconService
- * @related TbxMatNotificationSvgIconService
+ * @related TbxMatNotificationSeverityFontIconService
+ * @related TbxMatNotificationSeveritySvgIconService
  *
  * @public
  */

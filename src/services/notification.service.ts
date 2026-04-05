@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
-import { NotificationComponent } from '../components/notification.component';
+import { TbxMatNotificationComponent } from '../components/notification.component';
 import { type TbxMatNotificationConfigArgs } from '../types/notification-config-args.type';
 import { type TbxMatNotificationConfig } from '../models/notification-config.model';
 import { type NotificationData } from '../models/notification-data.model';
@@ -297,7 +297,7 @@ export class TbxMatNotificationService {
             data,
         };
 
-        const ref = this.snackBar.openFromComponent(NotificationComponent, snackBarConfig);
+        const ref = this.snackBar.openFromComponent(TbxMatNotificationComponent, snackBarConfig);
 
         this.activeSubscription = ref.afterDismissed().subscribe(() => {
             this.activeSubscription = null;

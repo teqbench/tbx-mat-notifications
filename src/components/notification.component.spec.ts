@@ -11,8 +11,8 @@ import {
     TbxMatIconType,
 } from '@teqbench/tbx-mat-icons';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
-import { TbxMatNotificationFontIconService } from '../services/notification-font-icon.service';
-import { NotificationComponent } from './notification.component';
+import { TbxMatNotificationSeverityFontIconService } from '../services/notification-severity-font-icon.service';
+import { TbxMatNotificationComponent } from './notification.component';
 import { type NotificationData } from '../models/notification-data.model';
 import { NOTIFICATION_DEFAULT_DURATION_MS } from '../constants/notification.constants';
 
@@ -28,9 +28,9 @@ function registerDummySvgIcons(...names: string[]): void {
 }
 
 /** Create a fixture with the font icon provider config. */
-function createFixture(data: NotificationData): ComponentFixture<NotificationComponent> {
+function createFixture(data: NotificationData): ComponentFixture<TbxMatNotificationComponent> {
     TestBed.configureTestingModule({
-        imports: [NotificationComponent],
+        imports: [TbxMatNotificationComponent],
         providers: [
             { provide: MAT_SNACK_BAR_DATA, useValue: data },
             {
@@ -40,13 +40,13 @@ function createFixture(data: NotificationData): ComponentFixture<NotificationCom
             {
                 provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                 useFactory: () => ({
-                    severityIconResolverService: new TbxMatNotificationFontIconService(),
+                    severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
                 }),
             },
         ],
     });
 
-    const fixture = TestBed.createComponent(NotificationComponent);
+    const fixture = TestBed.createComponent(TbxMatNotificationComponent);
     fixture.detectChanges();
     return fixture;
 }
@@ -69,9 +69,9 @@ function buildData(overrides: Partial<NotificationData> = {}): NotificationData 
 function createFixtureWithCloseIcon(
     data: NotificationData,
     closeIcon: { name: string; type: TbxMatIconType }
-): ComponentFixture<NotificationComponent> {
+): ComponentFixture<TbxMatNotificationComponent> {
     TestBed.configureTestingModule({
-        imports: [NotificationComponent],
+        imports: [TbxMatNotificationComponent],
         providers: [
             { provide: MAT_SNACK_BAR_DATA, useValue: data },
             {
@@ -81,7 +81,7 @@ function createFixtureWithCloseIcon(
             {
                 provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                 useFactory: () => ({
-                    severityIconResolverService: new TbxMatNotificationFontIconService(),
+                    severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
                     closeIcon,
                 }),
             },
@@ -92,7 +92,7 @@ function createFixtureWithCloseIcon(
         registerDummySvgIcons(closeIcon.name);
     }
 
-    const fixture = TestBed.createComponent(NotificationComponent);
+    const fixture = TestBed.createComponent(TbxMatNotificationComponent);
     fixture.detectChanges();
     return fixture;
 }
@@ -120,9 +120,9 @@ const svgResolverStub = {
 /** Create a fixture with an SVG-based resolver config. */
 function createFixtureWithSvgResolver(
     data: NotificationData
-): ComponentFixture<NotificationComponent> {
+): ComponentFixture<TbxMatNotificationComponent> {
     TestBed.configureTestingModule({
-        imports: [NotificationComponent],
+        imports: [TbxMatNotificationComponent],
         providers: [
             { provide: MAT_SNACK_BAR_DATA, useValue: data },
             {
@@ -134,12 +134,12 @@ function createFixtureWithSvgResolver(
 
     registerDummySvgIcons('success', 'error', 'warning', 'information', 'help');
 
-    const fixture = TestBed.createComponent(NotificationComponent);
+    const fixture = TestBed.createComponent(TbxMatNotificationComponent);
     fixture.detectChanges();
     return fixture;
 }
 
-describe('NotificationComponent', () => {
+describe('TbxMatNotificationComponent', () => {
     describe('icon mapping via TBX_MAT_NOTIFICATION_PROVIDER_CONFIG', () => {
         const cases: Array<[TbxMatSeverityLevel, string]> = [
             [TbxMatSeverityLevel.Success, 'check_circle'],

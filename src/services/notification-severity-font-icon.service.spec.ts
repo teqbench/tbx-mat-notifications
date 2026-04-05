@@ -5,11 +5,11 @@ import {
     TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
 } from '@teqbench/tbx-mat-icons';
 import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
-import { TbxMatNotificationFontIconService } from './notification-font-icon.service';
+import { TbxMatNotificationSeverityFontIconService } from './notification-severity-font-icon.service';
 
-describe('TbxMatNotificationFontIconService', () => {
+describe('TbxMatNotificationSeverityFontIconService', () => {
     describe('with TBX_MAT_FONT_ICON_DEFAULT_FONT_SET token', () => {
-        let service: TbxMatNotificationFontIconService;
+        let service: TbxMatNotificationSeverityFontIconService;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
@@ -19,13 +19,13 @@ describe('TbxMatNotificationFontIconService', () => {
                         useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
                     },
                     {
-                        provide: TbxMatNotificationFontIconService,
-                        useFactory: () => new TbxMatNotificationFontIconService(),
+                        provide: TbxMatNotificationSeverityFontIconService,
+                        useFactory: () => new TbxMatNotificationSeverityFontIconService(),
                     },
                 ],
             });
 
-            service = TestBed.inject(TbxMatNotificationFontIconService);
+            service = TestBed.inject(TbxMatNotificationSeverityFontIconService);
         });
 
         it('should be created', () => {
@@ -74,20 +74,22 @@ describe('TbxMatNotificationFontIconService', () => {
     });
 
     describe('with explicit fontSet via constructor', () => {
-        let service: TbxMatNotificationFontIconService;
+        let service: TbxMatNotificationSeverityFontIconService;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
                 providers: [
                     {
-                        provide: TbxMatNotificationFontIconService,
+                        provide: TbxMatNotificationSeverityFontIconService,
                         useFactory: () =>
-                            new TbxMatNotificationFontIconService('material-symbols-outlined'),
+                            new TbxMatNotificationSeverityFontIconService(
+                                'material-symbols-outlined'
+                            ),
                     },
                 ],
             });
 
-            service = TestBed.inject(TbxMatNotificationFontIconService);
+            service = TestBed.inject(TbxMatNotificationSeverityFontIconService);
         });
 
         it('should use the explicitly provided fontSet', () => {

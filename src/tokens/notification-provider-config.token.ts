@@ -7,21 +7,21 @@ import type { TbxMatNotificationProviderConfig } from '../models/notification-pr
  * @remarks
  * **Required.** Provide in `app.config.ts` to configure the severity icon
  * resolver service and the close button icon. Use
- * {@link TbxMatNotificationFontIconService} for font icons or
- * {@link TbxMatNotificationSvgIconService} for SVG icons — both ship
+ * {@link TbxMatNotificationSeverityFontIconService} for font icons or
+ * {@link TbxMatNotificationSeveritySvgIconService} for SVG icons — both ship
  * with sensible defaults.
  *
  * @example Font icons with explicit fontSet:
  * ```typescript
  * // app.config.ts
- * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationFontIconService }
+ * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationSeverityFontIconService }
  *     from '@teqbench/tbx-mat-notifications';
  *
  * providers: [
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
+ *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
  *         }),
  *     },
  * ]
@@ -31,7 +31,7 @@ import type { TbxMatNotificationProviderConfig } from '../models/notification-pr
  * ```typescript
  * // app.config.ts
  * import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
- * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationFontIconService }
+ * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationSeverityFontIconService }
  *     from '@teqbench/tbx-mat-notifications';
  *
  * providers: [
@@ -39,7 +39,7 @@ import type { TbxMatNotificationProviderConfig } from '../models/notification-pr
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationFontIconService(),
+ *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
  *         }),
  *     },
  * ]
@@ -49,7 +49,7 @@ import type { TbxMatNotificationProviderConfig } from '../models/notification-pr
  * ```typescript
  * // app.config.ts
  * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '@teqbench/tbx-mat-notifications';
- * // MyNotificationSvgIcons is a consumer-defined subclass of TbxMatNotificationSvgIconService
+ * // MyNotificationSvgIcons is a consumer-defined subclass of TbxMatNotificationSeveritySvgIconService
  * import { MyNotificationSvgIcons } from './my-notification-svg-icons.service';
  *
  * providers: [
@@ -70,7 +70,7 @@ import type { TbxMatNotificationProviderConfig } from '../models/notification-pr
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
+ *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
  *             closeIcon: { name: 'cancel', type: TbxMatIconType.Font },
  *         }),
  *     },
@@ -80,8 +80,8 @@ import type { TbxMatNotificationProviderConfig } from '../models/notification-pr
  * @category Tokens
  * @since 1.0.0
  * @related TbxMatNotificationProviderConfig
- * @related TbxMatNotificationFontIconService
- * @related TbxMatNotificationSvgIconService
+ * @related TbxMatNotificationSeverityFontIconService
+ * @related TbxMatNotificationSeveritySvgIconService
  *
  * @public
  */

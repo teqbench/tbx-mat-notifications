@@ -15,8 +15,8 @@
  * - {@link TbxMatNotificationConfigArgs} — optional config for convenience methods.
  * - {@link TbxMatNotificationProviderConfig} — icon provider config interface.
  * - {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG} — injection token for icon configuration.
- * - {@link TbxMatNotificationFontIconService} — default font-based severity icon service.
- * - {@link TbxMatNotificationSvgIconService} — default SVG-based severity icon service.
+ * - {@link TbxMatNotificationSeverityFontIconService} — default font-based severity icon service.
+ * - {@link TbxMatNotificationSeveritySvgIconService} — default SVG-based severity icon service.
  *
  * @see {@link https://angular.dev | Angular}
  * @see {@link https://material.angular.io | Angular Material}
@@ -39,5 +39,5 @@ export { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from './tokens/notification-prov
 
 // Services
 export { TbxMatNotificationService } from './services/notification.service';
-export { TbxMatNotificationFontIconService } from './services/notification-font-icon.service';
-export { TbxMatNotificationSvgIconService } from './services/notification-svg-icon.service';
+export { TbxMatNotificationSeverityFontIconService } from './services/notification-severity-font-icon.service';
+export { TbxMatNotificationSeveritySvgIconService } from './services/notification-severity-svg-icon.service';

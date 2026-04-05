@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 import { TbxMatNotificationService } from './notification.service';
-import { NotificationComponent } from '../components/notification.component';
+import { TbxMatNotificationComponent } from '../components/notification.component';
 import {
     NOTIFICATION_DEFAULT_DURATION_MS,
     NOTIFICATION_MAX_DURATION_MS,
@@ -44,14 +44,14 @@ describe('TbxMatNotificationService', () => {
     });
 
     describe('show()', () => {
-        it('should open snackbar with NotificationComponent', () => {
+        it('should open snackbar with TbxMatNotificationComponent', () => {
             service.show({
                 type: TbxMatSeverityLevel.Success,
                 message: 'Saved',
             });
 
             expect(snackBarSpy.openFromComponent).toHaveBeenCalledWith(
-                NotificationComponent,
+                TbxMatNotificationComponent,
                 expect.objectContaining({
                     data: expect.objectContaining({
                         type: TbxMatSeverityLevel.Success,

@@ -11,15 +11,15 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
-import { TbxMatNotificationFontIconService } from '../services/notification-font-icon.service';
-import { TbxMatNotificationSvgIconService } from '../services/notification-svg-icon.service';
+import { TbxMatNotificationSeverityFontIconService } from '../services/notification-severity-font-icon.service';
+import { TbxMatNotificationSeveritySvgIconService } from '../services/notification-severity-svg-icon.service';
 import { TbxMatNotificationService } from '../services/notification.service';
 
 // ─── Custom Font Icon Service ────────────────────────────────────────────────
 // Uses alternative Material Symbols ligatures to demonstrate icon overrides.
 
 @Injectable()
-class CustomFontIconService extends TbxMatNotificationFontIconService {
+class CustomFontIconService extends TbxMatNotificationSeverityFontIconService {
     protected override initialize(): void {
         super.initialize();
         this.register(TbxMatSeverityLevel.Success, 'task_alt');
@@ -51,7 +51,7 @@ const CUSTOM_SVG_HELP =
     '<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g><circle style="fill:#1FCFC1;" cx="256.551" cy="470.479" r="31.323"/><path style="fill:#1FCFC1;" d="M256,401.786c-17.34,0-31.395-14.057-31.395-31.395v-97.04c0-17.34,14.057-31.395,31.395-31.395c46.584,0,84.482-37.898,84.482-84.482S302.584,72.991,256,72.991s-84.482,37.898-84.482,84.482c0,17.34-14.057,31.395-31.395,31.395s-31.395-14.057-31.395-31.395C108.727,76.266,174.793,10.199,256,10.199s147.273,66.066,147.273,147.273c0,70.437-49.702,129.482-115.878,143.906v69.013C287.395,387.731,273.34,401.786,256,401.786z"/></g><g><path style="fill:#4D4D4D;" d="M256.55,512c-22.895,0-41.522-18.627-41.522-41.522s18.627-41.522,41.522-41.522s41.522,18.627,41.522,41.522S279.445,512,256.55,512z"/><path style="fill:#4D4D4D;" d="M256,411.986c-22.935,0-41.594-18.659-41.594-41.594V273.35c0-22.935,18.659-41.594,41.594-41.594c40.96,0,74.284-33.323,74.284-74.284S296.96,83.189,256,83.189s-74.284,33.323-74.284,74.284c0,22.935-18.659,41.594-41.594,41.594s-41.594-18.659-41.594-41.594C98.527,70.642,169.169,0,256,0s157.473,70.642,157.473,157.473c0,36.106-12.579,71.41-35.42,99.404c-20.756,25.44-49.086,43.867-80.458,52.489v61.025C297.594,393.327,278.935,411.986,256,411.986z"/></g></svg>';
 
 @Injectable()
-class CustomSvgIconService extends TbxMatNotificationSvgIconService {
+class CustomSvgIconService extends TbxMatNotificationSeveritySvgIconService {
     protected override initialize(): void {
         super.initialize();
         this.register(TbxMatSeverityLevel.Success, CUSTOM_SVG_SUCCESS);
@@ -84,7 +84,7 @@ export function withDefaultFontIcons() {
             {
                 provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                 useFactory: () => ({
-                    severityIconResolverService: new TbxMatNotificationFontIconService(),
+                    severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
                 }),
             },
         ],
@@ -120,7 +120,7 @@ export function withDefaultSvgIcons() {
             {
                 provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                 useFactory: () => ({
-                    severityIconResolverService: new TbxMatNotificationSvgIconService(),
+                    severityIconResolverService: new TbxMatNotificationSeveritySvgIconService(),
                 }),
             },
         ],

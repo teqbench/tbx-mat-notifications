@@ -128,7 +128,7 @@ html {
 
 /* ─── Countdown Bar ─────────────────────────────────────────────────────────
  *
- * The countdown element is rendered by NotificationComponent but
+ * The countdown element is rendered by TbxMatNotificationComponent but
  * positioned globally because it must break out of the component's content
  * padding to span the full width of the snackbar surface. Global CSS can
  * reach into the component; component-scoped CSS cannot reach up to the
