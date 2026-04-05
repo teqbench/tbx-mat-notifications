@@ -149,6 +149,26 @@ export class TbxMatNotificationService {
     private activeResultResolver: ((result: TbxMatNotificationResult) => void) | null = null;
 
     /**
+     * Guards against double-resolution of the active result promise.
+     * Multiple code paths can trigger dismissal (action click, close click,
+     * timeout, programmatic). Only the first path resolves the promise.
+     */
+    private activeResultResolved = false;
+
+    /**
+     * Set by dismissByClose() before calling snackBar.dismiss().
+     * Read by the afterDismissed() handler to distinguish close from timeout.
+     */
+    private closeFlag = false;
+
+    /**
+     * Set by dismiss() before calling snackBar.dismiss().
+     * Read by the afterDismissed() handler to distinguish programmatic
+     * dismiss from timeout.
+     */
+    private programmaticDismissCurrentFlag = false;
+
+    /**
      * Whether a notification is currently being displayed
      *
      * @remarks
@@ -227,6 +247,7 @@ export class TbxMatNotificationService {
      * @public
      */
     dismiss(): void {
+        this.programmaticDismissCurrentFlag = true;
         this.snackBar.dismiss();
     }
 
@@ -260,11 +281,12 @@ export class TbxMatNotificationService {
         }
 
         // Resolve the active notification's result promise.
-        if (this.activeResultResolver) {
+        if (this.activeResultResolver && !this.activeResultResolved) {
             this.activeResultResolver({
                 dismissReason: TbxMatNotificationDismissReason.ProgrammaticDismissAll,
             });
             this.activeResultResolver = null;
+            this.activeResultResolved = true;
         }
 
         this.snackBar.dismiss();
@@ -361,13 +383,32 @@ export class TbxMatNotificationService {
 
         this.isActive.set(true);
         this.activeResultResolver = resolveResult;
+        this.activeResultResolved = false;
+        this.closeFlag = false;
+        this.programmaticDismissCurrentFlag = false;
         const duration = this.resolveDuration(config.duration);
+
+        // snackBarRef is assigned after openFromComponent() — the DTO
+        // callbacks capture it via closure so they can call the correct
+        // dismiss method on the actual ref instance.
+        let snackBarRef: import('@angular/material/snack-bar').MatSnackBarRef<unknown> | null =
+            null;
 
         const data: NotificationDataDto = {
             type: config.type,
             message: config.message,
-            dismissByClose: () => this.snackBar.dismiss(),
-            dismissByAction: () => this.snackBar.dismiss(),
+            // Close button: sets flag, then dismisses. The afterDismissed()
+            // handler reads the flag to resolve with Close.
+            dismissByClose: () => {
+                this.closeFlag = true;
+                snackBarRef?.dismiss();
+            },
+            // Action button: calls dismissWithAction() so
+            // MatSnackBarDismiss.dismissedByAction is true. The
+            // afterDismissed() handler reads this to resolve with Action.
+            dismissByAction: () => {
+                snackBarRef?.dismissWithAction();
+            },
             duration,
             showCountdown: config.showCountdown ?? false,
             showSeverityIcon: config.showSeverityIcon ?? true,
@@ -384,21 +425,36 @@ export class TbxMatNotificationService {
         };
 
         const ref = this.snackBar.openFromComponent(TbxMatNotificationComponent, snackBarConfig);
+        snackBarRef = ref;
 
         // Resolve the snackBarRef promise — notification is now displayed.
         resolveSnackBarRef(ref);
 
-        this.activeSubscription = ref.afterDismissed().subscribe(() => {
+        // afterDismissed() fires exactly once when the snackbar closes,
+        // regardless of cause. The dismiss reason is determined by:
+        //   1. dismissedByAction === true → Action (user clicked action button)
+        //   2. closeFlag === true → Close (user clicked close button)
+        //   3. programmaticDismissCurrentFlag === true → ProgrammaticDismissCurrent
+        //   4. none of the above → Timeout (auto-dismissed by duration)
+        this.activeSubscription = ref.afterDismissed().subscribe((dismiss) => {
             this.activeSubscription = null;
 
-            // Resolve the result promise with Timeout as the default reason.
-            // Full dismiss reason tracking (Action, Close, ProgrammaticDismissCurrent)
-            // will be implemented in #67b.
-            if (this.activeResultResolver) {
-                this.activeResultResolver({
-                    dismissReason: TbxMatNotificationDismissReason.Timeout,
-                });
+            if (!this.activeResultResolved && this.activeResultResolver) {
+                let reason: TbxMatNotificationDismissReason;
+
+                if (dismiss.dismissedByAction) {
+                    reason = TbxMatNotificationDismissReason.Action;
+                } else if (this.closeFlag) {
+                    reason = TbxMatNotificationDismissReason.Close;
+                } else if (this.programmaticDismissCurrentFlag) {
+                    reason = TbxMatNotificationDismissReason.ProgrammaticDismissCurrent;
+                } else {
+                    reason = TbxMatNotificationDismissReason.Timeout;
+                }
+
+                this.activeResultResolver({ dismissReason: reason });
                 this.activeResultResolver = null;
+                this.activeResultResolved = true;
             }
 
             this.showNext();

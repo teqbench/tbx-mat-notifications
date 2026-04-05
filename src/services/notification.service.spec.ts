@@ -23,17 +23,20 @@ describe('TbxMatNotificationService', () => {
     /**
      * Subject that simulates MatSnackBarRef.afterDismissed().
      * Each call to openFromComponent returns a ref with this subject.
-     * Call afterDismissed$.next() to simulate the snackbar being dismissed,
-     * which triggers the queue to advance to the next notification.
+     * Call `afterDismissed$.next()` with `dismissedByAction: false` to
+     * simulate dismissal by timeout or close. Use `dismissedByAction: true`
+     * to simulate action button dismissal.
      */
-    let afterDismissed$: Subject<void>;
+    let afterDismissed$: Subject<{ dismissedByAction: boolean }>;
 
     beforeEach(() => {
-        afterDismissed$ = new Subject<void>();
+        afterDismissed$ = new Subject<{ dismissedByAction: boolean }>();
 
         snackBarSpy = {
             openFromComponent: vi.fn().mockReturnValue({
                 afterDismissed: () => afterDismissed$.asObservable(),
+                dismiss: vi.fn(),
+                dismissWithAction: vi.fn(),
             }),
             dismiss: vi.fn(),
         };
@@ -90,10 +93,12 @@ describe('TbxMatNotificationService', () => {
                 snackBarSpy.openFromComponent.mockClear();
 
                 // Dismiss previous so the next show() fires immediately
-                afterDismissed$.next();
-                afterDismissed$ = new Subject<void>();
+                afterDismissed$.next({ dismissedByAction: false });
+                afterDismissed$ = new Subject<{ dismissedByAction: boolean }>();
                 snackBarSpy.openFromComponent.mockReturnValue({
                     afterDismissed: () => afterDismissed$.asObservable(),
+                    dismiss: vi.fn(),
+                    dismissWithAction: vi.fn(),
                 });
 
                 service.show({ type, message: 'test' });
@@ -152,10 +157,11 @@ describe('TbxMatNotificationService', () => {
                 message: 'Done',
             });
 
+            const mockRef = snackBarSpy.openFromComponent.mock.results[0].value;
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
             config.data.dismissByClose();
 
-            expect(snackBarSpy.dismiss).toHaveBeenCalled();
+            expect(mockRef.dismiss).toHaveBeenCalled();
         });
 
         it('should pass resolved duration in data for countdown animation', () => {
@@ -291,7 +297,7 @@ describe('TbxMatNotificationService', () => {
             service.show({ type: TbxMatSeverityLevel.Error, message: 'Second' });
 
             // Simulate first notification dismissed
-            afterDismissed$.next();
+            afterDismissed$.next({ dismissedByAction: false });
 
             expect(snackBarSpy.openFromComponent).toHaveBeenCalledTimes(2);
             expect(snackBarSpy.openFromComponent.mock.calls[1][1].data.message).toBe('Second');
@@ -303,19 +309,21 @@ describe('TbxMatNotificationService', () => {
             service.show({ type: TbxMatSeverityLevel.Warning, message: 'Third' });
 
             // Set up fresh subject for the second notification BEFORE dismissing the first
-            const secondDismissed$ = new Subject<void>();
+            const secondDismissed$ = new Subject<{ dismissedByAction: boolean }>();
             snackBarSpy.openFromComponent.mockReturnValue({
                 afterDismissed: () => secondDismissed$.asObservable(),
+                dismiss: vi.fn(),
+                dismissWithAction: vi.fn(),
             });
 
             // Dismiss first → second shows (using the mock we just set up)
-            afterDismissed$.next();
+            afterDismissed$.next({ dismissedByAction: false });
 
             expect(snackBarSpy.openFromComponent).toHaveBeenCalledTimes(2);
             expect(snackBarSpy.openFromComponent.mock.calls[1][1].data.message).toBe('Second');
 
             // Dismiss second → third shows
-            secondDismissed$.next();
+            secondDismissed$.next({ dismissedByAction: false });
 
             expect(snackBarSpy.openFromComponent).toHaveBeenCalledTimes(3);
             expect(snackBarSpy.openFromComponent.mock.calls[2][1].data.message).toBe('Third');
@@ -337,10 +345,10 @@ describe('TbxMatNotificationService', () => {
 
         it('should accept new notifications after queue drains', () => {
             service.show({ type: TbxMatSeverityLevel.Success, message: 'First' });
-            afterDismissed$.next();
+            afterDismissed$.next({ dismissedByAction: false });
 
             // Queue is empty, service should accept new notifications
-            afterDismissed$ = new Subject<void>();
+            afterDismissed$ = new Subject<{ dismissedByAction: boolean }>();
             snackBarSpy.openFromComponent.mockReturnValue({
                 afterDismissed: () => afterDismissed$.asObservable(),
             });
@@ -365,7 +373,7 @@ describe('TbxMatNotificationService', () => {
 
             service.dismiss();
             // Simulate dismiss completing
-            afterDismissed$.next();
+            afterDismissed$.next({ dismissedByAction: false });
 
             expect(snackBarSpy.openFromComponent).toHaveBeenCalledTimes(2);
             expect(snackBarSpy.openFromComponent.mock.calls[1][1].data.message).toBe('Second');
@@ -399,7 +407,7 @@ describe('TbxMatNotificationService', () => {
             service.dismissAll();
 
             // Reset mock for clean assertion
-            afterDismissed$ = new Subject<void>();
+            afterDismissed$ = new Subject<{ dismissedByAction: boolean }>();
             snackBarSpy.openFromComponent.mockClear();
             snackBarSpy.openFromComponent.mockReturnValue({
                 afterDismissed: () => afterDismissed$.asObservable(),
