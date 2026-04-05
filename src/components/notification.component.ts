@@ -10,57 +10,44 @@ import { MatIconModule } from '@angular/material/icon';
 import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { type NotificationDataDto } from '../models/notification-data-dto.model';
-
-/** Default close icon when closeIcon is omitted from the provider config. */
+import { TbxMatNotificationIconPosition } from '../enums/notification-icon-position.enum';
 
 /**
- * Custom snackbar content component for typed notifications.
+ * Custom snackbar content component for typed notifications
  *
- * Rendered inside MatSnackBar via openFromComponent(). Receives its data
- * through MAT_SNACK_BAR_DATA injection token. The component displays an
- * optional severity icon, message text, and an optional dismiss button.
+ * @remarks
+ * Rendered inside {@link https://material.angular.dev/components/snack-bar/api | MatSnackBar}
+ * via `openFromComponent()`. Receives its data through `MAT_SNACK_BAR_DATA`
+ * injection token as a {@link NotificationDataDto}.
  *
- * ### Icon resolution
+ * ### Template element order
  *
- * The severity icon is shown by default (`data.showSeverityIcon === true`)
- * and can be hidden per-notification via {@link TbxMatNotificationConfig.showSeverityIcon}.
+ * severity icon | message | action button | close button
  *
- * Icons are resolved via the {@link TBX_MAT_NOTIFICATION_PROVIDER_CONFIG}
- * injection token, which is required. The config's
- * `severityIconResolverService` maps severity levels to icon identifiers
- * (font ligatures or svgIcon names). Both
- * {@link TbxMatNotificationSeverityFontIconService} and
- * {@link TbxMatNotificationSeveritySvgIconService} ship with sensible defaults.
+ * All elements are optional except the message. The action button and
+ * close button both render within `matSnackBarActions` and use the
+ * `matSnackBarAction` directive.
  *
- * The close/dismiss button is shown by default (`data.showCloseButton === true`)
- * and can be hidden per-notification via {@link TbxMatNotificationConfig.showCloseButton}.
- * When hidden, the notification is dismissed only by the duration timeout or
- * programmatically via `dismiss()` / `dismissAll()`.
+ * ### Action button rendering
  *
- * The close button icon is configured via `config.closeIcon`. When
- * omitted, it defaults to the `close` font ligature.
- *
- * Both severity icons and the close icon support font and SVG rendering.
- * The component detects the icon type from the config and renders the
- * appropriate `<mat-icon>` binding (`fontSet` + ligature for font icons,
- * `svgIcon` for SVG icons).
+ * When `data.actionLabel` is set, the component renders an action button.
+ * The button appearance is determined by `data.actionButtonType`:
+ * - `'text'` / `'filled'` / `'elevated'` / `'outlined'` / `'tonal'` —
+ *   renders `mat-button` with `[appearance]` binding and optional icon.
+ * - `'icon'` — renders `mat-icon-button` with `aria-label` from `data.actionLabel`.
  *
  * ### Countdown bar
  *
- * Optionally renders a countdown progress bar along the bottom edge that
- * shrinks from full width to zero over the notification's duration. The
- * animation is pure CSS (no JavaScript timers) — the resolved duration
- * is passed as a CSS animation-duration via style binding, keeping the
- * countdown perfectly in sync with MatSnackBar's auto-dismiss timer.
+ * Renders only when `data.showCountdown` is `true` AND `data.duration`
+ * is positive (not indefinite). Setting `showCountdown: true` with
+ * `duration <= 0` has no visible effect — an indefinite notification
+ * has no countdown to display.
  *
- * ### Styling
+ * @category Components
+ * @since 1.0.0
+ * @related TbxMatNotificationService
  *
- * Styling uses M3 tokens applied via panel classes on the MatSnackBar
- * container (set by TbxMatNotificationService). The component itself only
- * handles layout — color comes from the panel class.
- *
- * This component is internal to the notification system. Consumers use
- * TbxMatNotificationService, never this component directly.
+ * @public
  */
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -89,24 +76,74 @@ import { type NotificationDataDto } from '../models/notification-data-dto.model'
             }
             <span>{{ data.message }}</span>
         </div>
-        @if (data.showCloseButton) {
+        @if (data.actionLabel || data.showCloseButton) {
             <div matSnackBarActions class="tbx-mat-notification-snackbar-actions">
-                <button
-                    matIconButton
-                    matSnackBarAction
-                    (click)="data.dismissByClose()"
-                    aria-label="Dismiss notification"
-                >
-                    @let closeSvg = closeIconSvg();
-                    @if (closeSvg) {
-                        <mat-icon [svgIcon]="closeSvg"></mat-icon>
+                @if (data.actionLabel) {
+                    @if (data.actionButtonType === 'icon') {
+                        <button
+                            mat-icon-button
+                            matSnackBarAction
+                            (click)="data.dismissByAction()"
+                            [attr.aria-label]="data.actionLabel"
+                        >
+                            @let actionSvg = actionIconSvg();
+                            @if (actionSvg) {
+                                <mat-icon [svgIcon]="actionSvg"></mat-icon>
+                            } @else {
+                                <mat-icon>{{ actionIconFont() }}</mat-icon>
+                            }
+                        </button>
                     } @else {
-                        <mat-icon>{{ closeIconFont() }}</mat-icon>
+                        <button
+                            mat-button
+                            matSnackBarAction
+                            [appearance]="data.actionButtonType ?? 'text'"
+                            (click)="data.dismissByAction()"
+                        >
+                            @if (
+                                data.actionIconName &&
+                                data.actionIconPosition === iconPositionBefore
+                            ) {
+                                @let actionSvgBefore = actionIconSvg();
+                                @if (actionSvgBefore) {
+                                    <mat-icon [svgIcon]="actionSvgBefore"></mat-icon>
+                                } @else {
+                                    <mat-icon>{{ actionIconFont() }}</mat-icon>
+                                }
+                            }
+                            {{ data.actionLabel }}
+                            @if (
+                                data.actionIconName && data.actionIconPosition === iconPositionAfter
+                            ) {
+                                @let actionSvgAfter = actionIconSvg();
+                                @if (actionSvgAfter) {
+                                    <mat-icon [svgIcon]="actionSvgAfter"></mat-icon>
+                                } @else {
+                                    <mat-icon>{{ actionIconFont() }}</mat-icon>
+                                }
+                            }
+                        </button>
                     }
-                </button>
+                }
+                @if (data.showCloseButton) {
+                    <button
+                        mat-icon-button
+                        matSnackBarAction
+                        class="tbx-mat-notification-close-button"
+                        (click)="data.dismissByClose()"
+                        aria-label="Dismiss notification"
+                    >
+                        @let closeSvg = closeIconSvg();
+                        @if (closeSvg) {
+                            <mat-icon [svgIcon]="closeSvg"></mat-icon>
+                        } @else {
+                            <mat-icon>{{ closeIconFont() }}</mat-icon>
+                        }
+                    </button>
+                }
             </div>
         }
-        @if (data.showCountdown) {
+        @if (data.showCountdown && data.duration > 0) {
             <div
                 class="tbx-mat-notification-snackbar-countdown"
                 [style.animation-duration.ms]="data.duration"
@@ -128,6 +165,9 @@ import { type NotificationDataDto } from '../models/notification-data-dto.model'
         }
 
         .tbx-mat-notification-snackbar-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--tbx-mat-notification-actions-gap, 0.5rem);
             padding-left: var(--tbx-mat-notification-actions-padding, 1rem);
         }
 
@@ -142,6 +182,11 @@ import { type NotificationDataDto } from '../models/notification-data-dto.model'
 export class TbxMatNotificationComponent {
     readonly data = inject<NotificationDataDto>(MAT_SNACK_BAR_DATA);
     private readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
+
+    /** Enum value exposed for template comparison. */
+    protected readonly iconPositionBefore = TbxMatNotificationIconPosition.Before;
+    /** Enum value exposed for template comparison. */
+    protected readonly iconPositionAfter = TbxMatNotificationIconPosition.After;
 
     /**
      * Resolved severity icon for font rendering.
@@ -183,5 +228,25 @@ export class TbxMatNotificationComponent {
             return null;
         }
         return resolver.resolve('close') ?? null;
+    });
+
+    /** Action icon font ligature. `null` when the action icon is SVG-based or not configured. */
+    readonly actionIconFont = computed(() => {
+        const resolver = this.data.actionIconResolverService;
+        const iconName = this.data.actionIconName;
+        if (!resolver || !iconName || resolver.iconType !== TbxMatIconType.Font) {
+            return null;
+        }
+        return resolver.resolve(iconName) ?? null;
+    });
+
+    /** Action icon svgIcon name. `null` when the action icon is font-based or not configured. */
+    readonly actionIconSvg = computed(() => {
+        const resolver = this.data.actionIconResolverService;
+        const iconName = this.data.actionIconName;
+        if (!resolver || !iconName || resolver.iconType !== TbxMatIconType.Svg) {
+            return null;
+        }
+        return resolver.resolve(iconName) ?? null;
     });
 }
