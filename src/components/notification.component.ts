@@ -64,10 +64,12 @@ interface ResolvedIcon {
  * span rather than a flex sibling of it.
  *
  * To satisfy the projection selectors, labeled action buttons render
- * `mat-icon` directly in the template as an unconditional child of the
- * button — one button element per icon position (leading, trailing, none).
- * The `@if` for font/SVG branching inside each button does NOT break
- * projection because both branches produce a `mat-icon` element, and
+ * `mat-icon` directly in the template as a child of the button. The
+ * icon position and font/SVG branching use `@if` / `@else if` chains
+ * with no `@else` fallback — when no condition matches, nothing renders
+ * and the button has no icon children. This avoids the `@if`/`@else`
+ * problem where the `@else` branch would always render an unwanted icon.
+ * Both branches of the font/SVG `@if` produce a `mat-icon` element, so
  * Angular resolves the projection slot based on element tag + attributes.
  *
  * Icon-only buttons (`mat-icon-button`), severity icons, and close icons
@@ -132,51 +134,29 @@ interface ResolvedIcon {
                         <button mat-icon-button matSnackBarAction (click)="data.dismissByAction()" [attr.aria-label]="data.actionLabel">
                             <ng-container *ngTemplateOutlet="tbxNgIconTemplate; context: { icon: actionIcon() }"></ng-container>
                         </button>
-                    } @else if (data.actionIconPosition === 'before') {
-                        <!-- Labeled button with leading icon.
-
-                             Three separate button elements (leading icon, trailing
-                             icon, no icon) are required because Angular Material's
-                             button uses ng-content select="mat-icon:not([iconPositionEnd])"
-                             for the leading slot and ng-content select="mat-icon[iconPositionEnd]"
-                             for the trailing slot. These selectors only match mat-icon
-                             elements that are direct template children of the button —
-                             ngTemplateOutlet and ng-container wrappers break the match,
-                             causing the icon to fall into the label span instead of the
-                             icon slot (misaligning icon and text).
-
-                             The @if for font/SVG branching inside each button works
-                             because both branches produce a mat-icon direct child and
-                             Angular resolves projection based on element tag + attributes. -->
-                        <button matSnackBarAction class="tbx-mat-notification-action-button" [matButton]="data.actionButtonType ?? 'text'" (click)="data.dismissByAction()">
-                            @if (actionIcon().isSvg) {
-                                <mat-icon [svgIcon]="actionIcon().name" aria-hidden="true"></mat-icon>
-                            } @else {
-                                <mat-icon aria-hidden="true">{{ actionIcon().name }}</mat-icon>
-                            }
-
-                            {{ data.actionLabel }}
-                        </button>
-                    } @else if (data.actionIconPosition === 'after') {
-                        <!-- Labeled button with trailing icon.
-                             See leading icon comment above for why separate
-                             button elements are needed. iconPositionEnd routes
-                             the mat-icon to the trailing content projection slot. -->
-                        <button matSnackBarAction class="tbx-mat-notification-action-button" [matButton]="data.actionButtonType ?? 'text'" (click)="data.dismissByAction()">
-                            {{ data.actionLabel }}
-
-                            @if (actionIcon().isSvg) {
-                                <mat-icon iconPositionEnd [svgIcon]="actionIcon().name" aria-hidden="true"></mat-icon>
-                            } @else {
-                                <mat-icon iconPositionEnd aria-hidden="true">
-                                    {{ actionIcon().name }}
-                                </mat-icon>
-                            }
-                        </button>
                     } @else {
-                        <!-- Labeled button without icon -->
+                        <!-- icon is null when no actionIconResolverService or
+                             actionIconName is configured. The service only sets
+                             actionIconPosition when an icon is configured, so
+                             the position check alone would guard against null
+                             in practice. The explicit icon && guard is defensive —
+                             it prevents rendering an empty mat-icon if a future
+                             code path sets actionIconPosition without an icon. -->
+                        @let icon = actionIcon();
                         <button matSnackBarAction class="tbx-mat-notification-action-button" [matButton]="data.actionButtonType ?? 'text'" (click)="data.dismissByAction()">
+                            @if (data.actionIconPosition === 'before' && icon && icon?.isSvg) {
+                                <mat-icon [svgIcon]="icon?.name" aria-hidden="true"></mat-icon>
+                            } @else if (data.actionIconPosition === 'before' && icon && !icon?.isSvg) {
+                                <mat-icon aria-hidden="true">{{ icon?.name }}</mat-icon>
+                            }
+
                             {{ data.actionLabel }}
+
+                            @if (data.actionIconPosition === 'after' && icon && icon?.isSvg) {
+                                <mat-icon iconPositionEnd [svgIcon]="icon?.name" aria-hidden="true"></mat-icon>
+                            } @else if (data.actionIconPosition === 'after' && icon && !icon?.isSvg) {
+                                <mat-icon iconPositionEnd aria-hidden="true">{{ icon?.name }}</mat-icon>
+                            }
                         </button>
                     }
                 }
