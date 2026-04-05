@@ -6,12 +6,14 @@ import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 import {
     TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
     TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
+    TbxMatIconType,
 } from '@teqbench/tbx-mat-icons';
 import { TbxMatNotificationService } from './notification.service';
 import { TbxMatNotificationSeverityFontIconService } from './notification-severity-font-icon.service';
 import { TbxMatNotificationComponent } from '../components/notification.component';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { NOTIFICATION_DEFAULT_DURATION_MS } from '../constants/notification.constants';
+import { TbxMatNotificationDismissReason } from '../enums/notification-dismiss-reason.enum';
 
 describe('TbxMatNotificationService', () => {
     let service: TbxMatNotificationService;
@@ -351,6 +353,8 @@ describe('TbxMatNotificationService', () => {
             afterDismissed$ = new Subject<{ dismissedByAction: boolean }>();
             snackBarSpy.openFromComponent.mockReturnValue({
                 afterDismissed: () => afterDismissed$.asObservable(),
+                dismiss: vi.fn(),
+                dismissWithAction: vi.fn(),
             });
 
             service.show({ type: TbxMatSeverityLevel.Error, message: 'New' });
@@ -411,6 +415,8 @@ describe('TbxMatNotificationService', () => {
             snackBarSpy.openFromComponent.mockClear();
             snackBarSpy.openFromComponent.mockReturnValue({
                 afterDismissed: () => afterDismissed$.asObservable(),
+                dismiss: vi.fn(),
+                dismissWithAction: vi.fn(),
             });
 
             service.show({ type: TbxMatSeverityLevel.Help, message: 'Fresh' });
@@ -472,6 +478,291 @@ describe('TbxMatNotificationService', () => {
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
             expect(config.duration).toBe(2000);
+        });
+    });
+
+    describe('TbxMatNotificationRef return type', () => {
+        it('should return a ref with the consumer config', () => {
+            const inputConfig = {
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+            };
+            const ref = service.show(inputConfig);
+
+            expect(ref.config).toBe(inputConfig);
+        });
+
+        it('should resolve snackBarRef when notification displays', async () => {
+            const ref = service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+            });
+
+            const snackBarRef = await ref.snackBarRef;
+            expect(snackBarRef).toBeTruthy();
+            expect(snackBarRef).toBe(snackBarSpy.openFromComponent.mock.results[0].value);
+        });
+
+        it('should resolve snackBarRef with null when cleared by dismissAll', async () => {
+            // Show first to make service active
+            service.show({ type: TbxMatSeverityLevel.Success, message: 'First' });
+
+            // Queue second (not yet displayed)
+            const ref = service.show({
+                type: TbxMatSeverityLevel.Error,
+                message: 'Queued',
+            });
+
+            service.dismissAll();
+
+            const snackBarRef = await ref.snackBarRef;
+            expect(snackBarRef).toBeNull();
+        });
+
+        it('should return ref from convenience methods', () => {
+            const ref = service.success('Test');
+
+            expect(ref).toBeDefined();
+            expect(ref.config.type).toBe(TbxMatSeverityLevel.Success);
+            expect(ref.config.message).toBe('Test');
+        });
+    });
+
+    describe('dismiss reasons', () => {
+        it('should resolve with Timeout when auto-dismissed by duration', async () => {
+            const ref = service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+            });
+
+            afterDismissed$.next({ dismissedByAction: false });
+
+            const result = await ref.result;
+            expect(result.dismissReason).toBe(TbxMatNotificationDismissReason.Timeout);
+        });
+
+        it('should resolve with Action when action button is clicked', async () => {
+            const ref = service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+            });
+
+            afterDismissed$.next({ dismissedByAction: true });
+
+            const result = await ref.result;
+            expect(result.dismissReason).toBe(TbxMatNotificationDismissReason.Action);
+        });
+
+        it('should resolve with Close when close button is clicked', async () => {
+            const ref = service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+            });
+
+            // Simulate close button click via the DTO callback
+            const data = snackBarSpy.openFromComponent.mock.calls[0][1].data;
+            data.dismissByClose();
+
+            afterDismissed$.next({ dismissedByAction: false });
+
+            const result = await ref.result;
+            expect(result.dismissReason).toBe(TbxMatNotificationDismissReason.Close);
+        });
+
+        it('should resolve with ProgrammaticDismissCurrent when dismiss() is called', async () => {
+            const ref = service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+            });
+
+            service.dismiss();
+            afterDismissed$.next({ dismissedByAction: false });
+
+            const result = await ref.result;
+            expect(result.dismissReason).toBe(
+                TbxMatNotificationDismissReason.ProgrammaticDismissCurrent
+            );
+        });
+
+        it('should resolve with ProgrammaticDismissAll for active notification', async () => {
+            const ref = service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+            });
+
+            service.dismissAll();
+
+            const result = await ref.result;
+            expect(result.dismissReason).toBe(
+                TbxMatNotificationDismissReason.ProgrammaticDismissAll
+            );
+        });
+
+        it('should resolve with ProgrammaticDismissAll for queued notifications', async () => {
+            service.show({ type: TbxMatSeverityLevel.Success, message: 'First' });
+            const ref2 = service.show({
+                type: TbxMatSeverityLevel.Error,
+                message: 'Second',
+            });
+            const ref3 = service.show({
+                type: TbxMatSeverityLevel.Warning,
+                message: 'Third',
+            });
+
+            service.dismissAll();
+
+            const result2 = await ref2.result;
+            const result3 = await ref3.result;
+            expect(result2.dismissReason).toBe(
+                TbxMatNotificationDismissReason.ProgrammaticDismissAll
+            );
+            expect(result3.dismissReason).toBe(
+                TbxMatNotificationDismissReason.ProgrammaticDismissAll
+            );
+        });
+    });
+
+    describe('snackBarConfig passthrough', () => {
+        it('should pass through native config properties', () => {
+            service.show({
+                type: TbxMatSeverityLevel.Information,
+                message: 'Test',
+                snackBarConfig: {
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                },
+            });
+
+            const config = snackBarSpy.openFromComponent.mock.calls[0][1];
+            expect(config.horizontalPosition).toBe('center');
+            expect(config.verticalPosition).toBe('top');
+        });
+
+        it('should merge consumer panelClass with severity class', () => {
+            service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+                snackBarConfig: {
+                    panelClass: 'my-custom-class',
+                },
+            });
+
+            const config = snackBarSpy.openFromComponent.mock.calls[0][1];
+            expect(config.panelClass).toContain('tbx-mat-notification-snackbar-success');
+            expect(config.panelClass).toContain('my-custom-class');
+        });
+
+        it('should merge consumer panelClass array with severity class', () => {
+            service.show({
+                type: TbxMatSeverityLevel.Error,
+                message: 'Test',
+                snackBarConfig: {
+                    panelClass: ['class-a', 'class-b'],
+                },
+            });
+
+            const config = snackBarSpy.openFromComponent.mock.calls[0][1];
+            expect(config.panelClass).toContain('tbx-mat-notification-snackbar-error');
+            expect(config.panelClass).toContain('class-a');
+            expect(config.panelClass).toContain('class-b');
+        });
+    });
+
+    describe('action resolution', () => {
+        it('should set action fields on DTO when action is provided', () => {
+            service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Deleted',
+                action: { label: 'Undo' },
+            });
+
+            const data = snackBarSpy.openFromComponent.mock.calls[0][1].data;
+            expect(data.actionLabel).toBe('Undo');
+            expect(data.actionButtonType).toBe('text');
+        });
+
+        it('should not set action fields when no action is provided', () => {
+            service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Saved',
+            });
+
+            const data = snackBarSpy.openFromComponent.mock.calls[0][1].data;
+            expect(data.actionLabel).toBeUndefined();
+        });
+
+        it('should fallback icon button type to text when iconName is missing', () => {
+            service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+                action: { label: 'Retry', actionButtonType: 'icon' },
+            });
+
+            const data = snackBarSpy.openFromComponent.mock.calls[0][1].data;
+            expect(data.actionButtonType).toBe('text');
+        });
+
+        it('should not include action icon fields for text buttons with iconName', () => {
+            service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+                action: {
+                    label: 'Retry',
+                    iconName: 'refresh',
+                    actionButtonType: 'text',
+                },
+            });
+
+            const data = snackBarSpy.openFromComponent.mock.calls[0][1].data;
+            expect(data.actionButtonType).toBe('text');
+            expect(data.actionIconName).toBeUndefined();
+        });
+
+        it('should log error and skip action when icon resolver is missing', () => {
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+            service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+                action: {
+                    label: 'Retry',
+                    iconName: 'refresh',
+                    actionButtonType: 'icon',
+                    actionIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => 'refresh',
+                    },
+                },
+            });
+
+            // With resolver provided, action should be set
+            const data1 = snackBarSpy.openFromComponent.mock.calls[0][1].data;
+            expect(data1.actionLabel).toBe('Retry');
+
+            // Without resolver, action should be skipped
+            afterDismissed$.next({ dismissedByAction: false });
+            afterDismissed$ = new Subject<{ dismissedByAction: boolean }>();
+            snackBarSpy.openFromComponent.mockReturnValue({
+                afterDismissed: () => afterDismissed$.asObservable(),
+                dismiss: vi.fn(),
+                dismissWithAction: vi.fn(),
+            });
+
+            service.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test2',
+                action: {
+                    label: 'Retry',
+                    iconName: 'refresh',
+                    actionButtonType: 'filled',
+                },
+            });
+
+            expect(consoleSpy).toHaveBeenCalled();
+            const data2 = snackBarSpy.openFromComponent.mock.calls[1][1].data;
+            expect(data2.actionLabel).toBeUndefined();
+
+            consoleSpy.mockRestore();
         });
     });
 });
