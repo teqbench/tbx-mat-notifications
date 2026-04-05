@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
@@ -138,6 +138,15 @@ export class TbxMatNotificationService {
     private readonly snackBar = inject(MatSnackBar);
     private readonly providerConfig = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
     private readonly defaultCloseIconService = new TbxMatNotificationCloseFontIconService();
+    private destroyed = false;
+
+    constructor() {
+        inject(DestroyRef).onDestroy(() => {
+            this.destroyed = true;
+            this.activeSubscription?.unsubscribe();
+            this.activeSubscription = null;
+        });
+    }
 
     /**
      * FIFO queue of pending notifications. Each entry pairs the consumer
@@ -425,6 +434,12 @@ export class TbxMatNotificationService {
      * resolves the promise — subsequent paths are no-ops.
      */
     private showNext(): void {
+        // Guard: if the injector has been destroyed (e.g., Storybook
+        // navigated away), do not attempt to open a new snackbar.
+        if (this.destroyed) {
+            return;
+        }
+
         const entry = this.queue.shift();
         this._pendingCount.set(this.queue.length);
 
