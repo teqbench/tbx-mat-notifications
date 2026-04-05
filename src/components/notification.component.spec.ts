@@ -476,7 +476,7 @@ describe('TbxMatNotificationComponent', () => {
 
             const actionButton = fixture.debugElement.query(By.css('.tbx-mat-notification-action-button'));
             expect(actionButton).not.toBeNull();
-            const icon = actionButton.query(By.css('mat-icon[iconPositionEnd]'));
+            const icon = actionButton.query(By.css('mat-icon'));
             expect(icon).not.toBeNull();
             expect(icon.nativeElement.textContent.trim()).toBe('open_in_new');
         });

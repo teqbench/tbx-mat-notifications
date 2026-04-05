@@ -136,26 +136,19 @@ interface ResolvedIcon {
                         </button>
                     } @else {
                         <!-- icon is null when no actionIconResolverService or
-                             actionIconName is configured. The service only sets
-                             actionIconPosition when an icon is configured, so
-                             the position check alone would guard against null
-                             in practice. The explicit icon && guard is defensive —
-                             it prevents rendering an empty mat-icon if a future
-                             code path sets actionIconPosition without an icon. -->
+                             actionIconName is configured. The shared tbxNgIconTemplate
+                             guards against null internally (@if (icon)), so the
+                             position check alone is sufficient here. -->
                         @let icon = actionIcon();
                         <button matSnackBarAction class="tbx-mat-notification-action-button" [matButton]="data.actionButtonType ?? 'text'" (click)="data.dismissByAction()">
-                            @if (data.actionIconPosition === 'before' && icon && icon?.isSvg) {
-                                <mat-icon [svgIcon]="icon?.name" aria-hidden="true"></mat-icon>
-                            } @else if (data.actionIconPosition === 'before' && icon && !icon?.isSvg) {
-                                <mat-icon aria-hidden="true">{{ icon?.name }}</mat-icon>
+                            @if (data.actionIconPosition === 'before') {
+                                <ng-container ngProjectAs="mat-icon:not([iconPositionEnd])" *ngTemplateOutlet="tbxNgIconTemplate; context: { icon: icon }"></ng-container>
                             }
 
                             {{ data.actionLabel }}
 
-                            @if (data.actionIconPosition === 'after' && icon && icon?.isSvg) {
-                                <mat-icon iconPositionEnd [svgIcon]="icon?.name" aria-hidden="true"></mat-icon>
-                            } @else if (data.actionIconPosition === 'after' && icon && !icon?.isSvg) {
-                                <mat-icon iconPositionEnd aria-hidden="true">{{ icon?.name }}</mat-icon>
+                            @if (data.actionIconPosition === 'after') {
+                                <ng-container ngProjectAs="mat-icon[iconPositionEnd]" *ngTemplateOutlet="tbxNgIconTemplate; context: { icon: icon }"></ng-container>
                             }
                         </button>
                     }
