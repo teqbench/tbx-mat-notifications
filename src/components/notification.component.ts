@@ -44,10 +44,12 @@ interface ResolvedIcon {
  * severity, action, and close — each backed by a resolver service that
  * determines whether to render a font ligature or an SVG icon.
  *
- * Most icon sites use a shared `ng-template` (`#tbxNgIconTemplate`) via
- * `ngTemplateOutlet` to eliminate font/SVG branching duplication. However,
- * **labeled action button icons cannot use `ngTemplateOutlet`** due to an
- * {@link https://angular.dev | Angular} content projection constraint:
+ * A shared `ng-template` (`#tbxNgIconTemplate`) handles the font vs SVG
+ * branching for all icon sites. Each call site passes a `ResolvedIcon`
+ * via `ngTemplateOutlet` context. The template guards against `null`
+ * internally, so call sites do not need their own null checks.
+ *
+ * ### Content projection and `ngProjectAs`
  *
  * {@link https://material.angular.dev/components/button/api | Angular Material}'s
  * button component uses `ng-content select` to project `mat-icon` elements
@@ -55,26 +57,26 @@ interface ResolvedIcon {
  * - `mat-icon:not([iconPositionEnd])` — leading slot (before the label)
  * - `mat-icon[iconPositionEnd]` — trailing slot (after the label)
  *
- * Content projection selectors match against **direct template children**
- * of the host element. When `mat-icon` is rendered via `ngTemplateOutlet`
- * or wrapped in `ng-container`, Angular sees `ng-container` — not
- * `mat-icon` — as the direct child, and the icon falls into the default
- * `<ng-content>` slot (`.mdc-button__label`) instead of the icon slot.
- * This breaks icon/text alignment because the icon is inside the label
- * span rather than a flex sibling of it.
+ * When `mat-icon` is rendered via `ngTemplateOutlet` inside an
+ * `ng-container`, {@link https://angular.dev | Angular}'s projection
+ * matching sees `ng-container` — not `mat-icon` — as the direct child
+ * of the button. The icon falls into the default `<ng-content>` slot
+ * (`.mdc-button__label`) instead of the icon slot, breaking alignment.
  *
- * To satisfy the projection selectors, labeled action buttons render
- * `mat-icon` directly in the template as a child of the button. The
- * icon position and font/SVG branching use `@if` / `@else if` chains
- * with no `@else` fallback — when no condition matches, nothing renders
- * and the button has no icon children. This avoids the `@if`/`@else`
- * problem where the `@else` branch would always render an unwanted icon.
- * Both branches of the font/SVG `@if` produce a `mat-icon` element, so
- * Angular resolves the projection slot based on element tag + attributes.
+ * The `ngProjectAs` attribute on `ng-container` solves this. It tells
+ * Angular's projection matching (`isSelectorInSelectorList` in the
+ * runtime) to treat the `ng-container` as if it were the specified
+ * selector. The match is **exact** — the parsed `ngProjectAs` value
+ * must match the parsed `ng-content select` value element-by-element:
+ * - `ngProjectAs="mat-icon:not([iconPositionEnd])"` — matches the
+ *   leading slot selector exactly
+ * - `ngProjectAs="mat-icon[iconPositionEnd]"` — matches the trailing
+ *   slot selector exactly
  *
- * Icon-only buttons (`mat-icon-button`), severity icons, and close icons
- * do not rely on button content projection slots, so they use the shared
- * `ngTemplateOutlet` pattern.
+ * A plain `ngProjectAs="mat-icon"` does NOT match the leading slot
+ * because the slot selector is `mat-icon:not([iconPositionEnd])` —
+ * the parsed arrays have different lengths and `isSelectorInSelectorList`
+ * requires exact element-by-element equality.
  *
  * ### Countdown bar
  *
@@ -135,10 +137,14 @@ interface ResolvedIcon {
                             <ng-container *ngTemplateOutlet="tbxNgIconTemplate; context: { icon: actionIcon() }"></ng-container>
                         </button>
                     } @else {
-                        <!-- icon is null when no actionIconResolverService or
-                             actionIconName is configured. The shared tbxNgIconTemplate
-                             guards against null internally (@if (icon)), so the
-                             position check alone is sufficient here. -->
+                        <!-- Labeled action button with optional leading/trailing icon.
+                             ngProjectAs on ng-container tells Angular's content
+                             projection to match the exact button slot selector:
+                             - "mat-icon:not([iconPositionEnd])" for leading
+                             - "mat-icon[iconPositionEnd]" for trailing
+                             The shared tbxNgIconTemplate guards against null
+                             icon internally, so the position check alone is
+                             sufficient here. -->
                         @let icon = actionIcon();
                         <button matSnackBarAction class="tbx-mat-notification-action-button" [matButton]="data.actionButtonType ?? 'text'" (click)="data.dismissByAction()">
                             @if (data.actionIconPosition === 'before') {
