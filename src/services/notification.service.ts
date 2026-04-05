@@ -11,7 +11,13 @@ import { type NotificationDataDto } from '../models/notification-data-dto.model'
 import { TbxMatNotificationDismissReason } from '../enums/notification-dismiss-reason.enum';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { TbxMatNotificationCloseFontIconService } from './notification-close-font-icon.service';
-import { NOTIFICATION_DEFAULT_DURATION_MS } from '../constants/notification.constants';
+import {
+    NOTIFICATION_DEFAULT_DURATION_MS,
+    NOTIFICATION_DEFAULT_ACTION_BUTTON_TYPE,
+    NOTIFICATION_DEFAULT_ICON_POSITION,
+} from '../constants/notification.constants';
+import { type TbxMatNotificationAction } from '../models/notification-action.model';
+import { type TbxMatNotificationActionButtonAppearance } from '../types/notification-action-button-appearance.type';
 
 /**
  * Panel CSS class mapping for each notification severity level.
@@ -394,6 +400,9 @@ export class TbxMatNotificationService {
         let snackBarRef: import('@angular/material/snack-bar').MatSnackBarRef<unknown> | null =
             null;
 
+        // Resolve action config using cascade and fallback rules.
+        const resolvedAction = this.resolveAction(config.action);
+
         const data: NotificationDataDto = {
             type: config.type,
             message: config.message,
@@ -415,6 +424,7 @@ export class TbxMatNotificationService {
             showCloseButton: config.showCloseButton ?? true,
             closeIconResolverService:
                 this.providerConfig.closeIconResolverService ?? this.defaultCloseIconService,
+            ...resolvedAction,
         };
 
         // Merge consumer panelClass with the severity panel class.
@@ -485,5 +495,89 @@ export class TbxMatNotificationService {
         }
 
         return duration <= 0 ? 0 : duration;
+    }
+
+    /**
+     * Resolve action configuration from per-notification, provider, and
+     * defaults. Returns the resolved action fields for the DTO, or
+     * undefined if no action is configured or the configuration is invalid.
+     *
+     * Resolution cascade (per property):
+     *   per-notification → provider actionConfig → package default
+     *
+     * Fallback rules:
+     *   - actionButtonType 'icon' but no iconName → fallback to 'text'
+     *   - actionButtonType 'text' with iconName → icon ignored
+     *   - iconName provided and button type uses icons, but no resolver → log error, skip action
+     */
+    private resolveAction(
+        action: TbxMatNotificationAction | undefined
+    ):
+        | Pick<
+              NotificationDataDto,
+              | 'actionLabel'
+              | 'actionButtonType'
+              | 'actionIconName'
+              | 'actionIconPosition'
+              | 'actionIconResolverService'
+          >
+        | undefined {
+        if (!action) {
+            return undefined;
+        }
+
+        const providerAction = this.providerConfig.actionConfig;
+
+        // Resolve button type: per-notification → provider → default
+        let resolvedButtonType: TbxMatNotificationActionButtonAppearance =
+            action.actionButtonType ??
+            providerAction?.actionButtonType ??
+            NOTIFICATION_DEFAULT_ACTION_BUTTON_TYPE;
+
+        const hasIcon = !!action.iconName;
+
+        // Fallback: 'icon' without iconName → 'text'
+        if (resolvedButtonType === 'icon' && !hasIcon) {
+            resolvedButtonType = 'text';
+        }
+
+        // Determine if this button type renders an icon
+        const buttonUsesIcon =
+            resolvedButtonType === 'icon' || (resolvedButtonType !== 'text' && hasIcon);
+
+        if (buttonUsesIcon && hasIcon) {
+            // Resolve icon resolver: per-notification → provider → none
+            const resolver =
+                action.actionIconResolverService ?? providerAction?.actionIconResolverService;
+
+            if (!resolver) {
+                console.error(
+                    `[TbxMatNotificationService] Action icon '${action.iconName}' requires an ` +
+                        `actionIconResolverService but none was provided (neither per-notification ` +
+                        `nor via provider actionConfig). Action will not be displayed.`
+                );
+                return undefined;
+            }
+
+            // Resolve icon position: per-notification → provider → default
+            const resolvedIconPosition =
+                action.iconPosition ??
+                providerAction?.iconPosition ??
+                NOTIFICATION_DEFAULT_ICON_POSITION;
+
+            return {
+                actionLabel: action.label,
+                actionButtonType: resolvedButtonType,
+                actionIconName: action.iconName,
+                actionIconPosition: resolvedIconPosition,
+                actionIconResolverService: resolver,
+            };
+        }
+
+        // Text button or button without icon — no resolver needed
+        return {
+            actionLabel: action.label,
+            actionButtonType: resolvedButtonType,
+        };
     }
 }
