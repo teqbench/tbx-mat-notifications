@@ -27,12 +27,10 @@ export const NOTIFICATION_DEFAULT_DURATION_MS = 10_000;
  * snackbars are the lowest-priority notification surface, so `'text'`
  * (lowest emphasis) is the appropriate default.
  */
-export const NOTIFICATION_DEFAULT_ACTION_BUTTON_TYPE: TbxMatNotificationActionButtonAppearance =
-    'text';
+export const NOTIFICATION_DEFAULT_ACTION_BUTTON_TYPE: TbxMatNotificationActionButtonAppearance = 'text';
 
 /**
  * Default icon position relative to the action button label when
  * not specified at the provider level or per-notification.
  */
-export const NOTIFICATION_DEFAULT_ICON_POSITION: TbxMatNotificationIconPosition =
-    TbxMatNotificationIconPosition.Before;
+export const NOTIFICATION_DEFAULT_ICON_POSITION: TbxMatNotificationIconPosition = TbxMatNotificationIconPosition.Before;

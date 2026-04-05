@@ -26,8 +26,7 @@ const actionFontIconResolver = {
 
 // Bolt/lightning icon — visually distinct from any Material Symbols ligature.
 // Source: Material Design Icons (Apache 2.0)
-const SVG_BOLT =
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.51c.4 0 .62.19.4.66C12.97 17.55 11 21 11 21z"/></svg>';
+const SVG_BOLT = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.51c.4 0 .62.19.4.66C12.97 17.55 11 21 11 21z"/></svg>';
 
 const ACTION_SVG_ICON_NAME = 'action-bolt-svg';
 
@@ -64,9 +63,7 @@ const actionSvgIconResolver = {
             <div class="button-group">
                 <button mat-flat-button (click)="fireIconBeforeAction()">Icon Before Label</button>
                 <button mat-flat-button (click)="fireIconAfterAction()">Icon After Label</button>
-                <button mat-flat-button (click)="fireSvgIconBeforeAction()">
-                    SVG Icon Before Label
-                </button>
+                <button mat-flat-button (click)="fireSvgIconBeforeAction()">SVG Icon Before Label</button>
             </div>
 
             <h3>Action + Close Combinations</h3>
@@ -77,9 +74,7 @@ const actionSvgIconResolver = {
 
             <h3>Countdown + Action</h3>
             <div class="button-group">
-                <button mat-flat-button (click)="fireCountdownWithAction()">
-                    Countdown + Text Action
-                </button>
+                <button mat-flat-button (click)="fireCountdownWithAction()">Countdown + Text Action</button>
             </div>
 
             <h3>Indefinite Duration</h3>
@@ -310,8 +305,7 @@ function withProviders() {
                 useFactory: () => {
                     registerActionSvgIcon();
                     return {
-                        severityIconResolverService:
-                            new TbxMatNotificationSeverityFontIconService(),
+                        severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
                     };
                 },
             },
@@ -332,8 +326,7 @@ function withProviderActionDefaults() {
                 useFactory: () => {
                     registerActionSvgIcon();
                     return {
-                        severityIconResolverService:
-                            new TbxMatNotificationSeverityFontIconService(),
+                        severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
                         actionConfig: {
                             actionButtonType: 'tonal' as const,
                             iconPosition: TbxMatNotificationIconPosition.Before,
@@ -359,11 +352,7 @@ type Story = StoryObj<ActionButtonHarnessComponent>;
 
 export const Default: Story = {
     args: {
-        description:
-            'Demonstrates all action button variants: appearances (text, tonal, filled, ' +
-            'outlined, elevated), icon-only, icon + label (before/after), action + close ' +
-            'combinations, countdown + action, and indefinite duration. The "Last dismiss ' +
-            'reason" shows the TbxMatNotificationDismissReason returned by the result promise.',
+        description: 'Demonstrates all action button variants: appearances (text, tonal, filled, ' + 'outlined, elevated), icon-only, icon + label (before/after), action + close ' + 'combinations, countdown + action, and indefinite duration. The "Last dismiss ' + 'reason" shows the TbxMatNotificationDismissReason returned by the result promise.',
     },
     decorators: [withProviders()],
 };
@@ -371,12 +360,7 @@ export const Default: Story = {
 export const ProviderDefaults: Story = {
     name: 'Provider-Level Defaults',
     args: {
-        description:
-            'Provider config sets application-wide action defaults: actionButtonType "tonal", ' +
-            'iconPosition Before, and a font icon resolver. Buttons that do not override ' +
-            'actionButtonType inherit tonal from the provider (e.g., the Text button renders ' +
-            'as tonal). Per-notification overrides still take precedence (Filled, Outlined, ' +
-            'Elevated). Icon buttons use the provider resolver as fallback.',
+        description: 'Provider config sets application-wide action defaults: actionButtonType "tonal", ' + 'iconPosition Before, and a font icon resolver. Buttons that do not override ' + 'actionButtonType inherit tonal from the provider (e.g., the Text button renders ' + 'as tonal). Per-notification overrides still take precedence (Filled, Outlined, ' + 'Elevated). Icon buttons use the provider resolver as fallback.',
     },
     decorators: [withProviderActionDefaults()],
 };

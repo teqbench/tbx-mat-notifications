@@ -1,16 +1,17 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import {
-    MatSnackBarLabel,
-    MatSnackBarActions,
-    MatSnackBarAction,
-    MAT_SNACK_BAR_DATA,
-} from '@angular/material/snack-bar';
+import { MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { type NotificationDataDto } from '../models/notification-data-dto.model';
-import { TbxMatNotificationIconPosition } from '../enums/notification-icon-position.enum';
+
+/** Resolved icon ready for template rendering. */
+interface ResolvedIcon {
+    readonly name: string;
+    readonly isSvg: boolean;
+}
 
 /**
  * Custom snackbar content component for typed notifications
@@ -33,8 +34,45 @@ import { TbxMatNotificationIconPosition } from '../enums/notification-icon-posit
  * When `data.actionLabel` is set, the component renders an action button.
  * The button appearance is determined by `data.actionButtonType`:
  * - `'text'` / `'filled'` / `'elevated'` / `'outlined'` / `'tonal'` —
- *   renders `mat-button` with `[appearance]` binding and optional icon.
+ *   renders `mat-button` with `[matButton]` input binding and optional icon.
  * - `'icon'` — renders `mat-icon-button` with `aria-label` from `data.actionLabel`.
+ *
+ * ### Icon rendering
+ *
+ * Icons are resolved to a `ResolvedIcon` (`{ name, isSvg }`) via computed
+ * signals and a shared `resolveIcon()` helper. Three icon categories exist:
+ * severity, action, and close — each backed by a resolver service that
+ * determines whether to render a font ligature or an SVG icon.
+ *
+ * Most icon sites use a shared `ng-template` (`#tbxNgIconTemplate`) via
+ * `ngTemplateOutlet` to eliminate font/SVG branching duplication. However,
+ * **labeled action button icons cannot use `ngTemplateOutlet`** due to an
+ * {@link https://angular.dev | Angular} content projection constraint:
+ *
+ * {@link https://material.angular.dev/components/button/api | Angular Material}'s
+ * button component uses `ng-content select` to project `mat-icon` elements
+ * into leading and trailing slots:
+ * - `mat-icon:not([iconPositionEnd])` — leading slot (before the label)
+ * - `mat-icon[iconPositionEnd]` — trailing slot (after the label)
+ *
+ * Content projection selectors match against **direct template children**
+ * of the host element. When `mat-icon` is rendered via `ngTemplateOutlet`
+ * or wrapped in `ng-container`, Angular sees `ng-container` — not
+ * `mat-icon` — as the direct child, and the icon falls into the default
+ * `<ng-content>` slot (`.mdc-button__label`) instead of the icon slot.
+ * This breaks icon/text alignment because the icon is inside the label
+ * span rather than a flex sibling of it.
+ *
+ * To satisfy the projection selectors, labeled action buttons render
+ * `mat-icon` directly in the template as an unconditional child of the
+ * button — one button element per icon position (leading, trailing, none).
+ * The `@if` for font/SVG branching inside each button does NOT break
+ * projection because both branches produce a `mat-icon` element, and
+ * Angular resolves the projection slot based on element tag + attributes.
+ *
+ * Icon-only buttons (`mat-icon-button`), severity icons, and close icons
+ * do not rely on button content projection slots, so they use the shared
+ * `ngTemplateOutlet` pattern.
  *
  * ### Countdown bar
  *
@@ -60,28 +98,30 @@ import { TbxMatNotificationIconPosition } from '../enums/notification-icon-posit
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'tbx-mat-notification-component',
-    imports: [
-        MatSnackBarLabel,
-        MatSnackBarActions,
-        MatSnackBarAction,
-        MatButtonModule,
-        MatIconModule,
-    ],
+    imports: [NgTemplateOutlet, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction, MatButtonModule, MatIconModule],
     template: `
+        <!-- Shared icon template — handles font ligature vs SVG branching -->
+        <ng-template #tbxNgIconTemplate let-icon="icon" let-class="class">
+            @if (icon) {
+                @if (icon.isSvg) {
+                    <mat-icon [svgIcon]="icon.name" [class]="class" aria-hidden="true"></mat-icon>
+                } @else {
+                    <mat-icon [class]="class" aria-hidden="true">{{ icon.name }}</mat-icon>
+                }
+            }
+        </ng-template>
+
         <div matSnackBarLabel class="tbx-mat-notification-snackbar-label">
             @if (data.showSeverityIcon) {
-                @let severitySvg = severityIconSvg();
-                @if (severitySvg) {
-                    <mat-icon
-                        class="tbx-mat-notification-snackbar-icon"
-                        [svgIcon]="severitySvg"
-                        aria-hidden="true"
-                    ></mat-icon>
-                } @else {
-                    <mat-icon class="tbx-mat-notification-snackbar-icon" aria-hidden="true">{{
-                        severityIconFont()
-                    }}</mat-icon>
-                }
+                <ng-container
+                    *ngTemplateOutlet="
+                        tbxNgIconTemplate;
+                        context: {
+                            icon: severityIcon(),
+                            class: 'tbx-mat-notification-snackbar-icon',
+                        }
+                    "
+                ></ng-container>
             }
             <span>{{ data.message }}</span>
         </div>
@@ -89,80 +129,66 @@ import { TbxMatNotificationIconPosition } from '../enums/notification-icon-posit
             <div matSnackBarActions class="tbx-mat-notification-snackbar-actions">
                 @if (data.actionLabel) {
                     @if (data.actionButtonType === 'icon') {
-                        <button
-                            mat-icon-button
-                            matSnackBarAction
-                            (click)="data.dismissByAction()"
-                            [attr.aria-label]="data.actionLabel"
-                        >
-                            @let actionSvg = actionIconSvg();
-                            @if (actionSvg) {
-                                <mat-icon [svgIcon]="actionSvg"></mat-icon>
+                        <button mat-icon-button matSnackBarAction (click)="data.dismissByAction()" [attr.aria-label]="data.actionLabel">
+                            <ng-container *ngTemplateOutlet="tbxNgIconTemplate; context: { icon: actionIcon() }"></ng-container>
+                        </button>
+                    } @else if (data.actionIconPosition === 'before') {
+                        <!-- Labeled button with leading icon.
+
+                             Three separate button elements (leading icon, trailing
+                             icon, no icon) are required because Angular Material's
+                             button uses ng-content select="mat-icon:not([iconPositionEnd])"
+                             for the leading slot and ng-content select="mat-icon[iconPositionEnd]"
+                             for the trailing slot. These selectors only match mat-icon
+                             elements that are direct template children of the button —
+                             ngTemplateOutlet and ng-container wrappers break the match,
+                             causing the icon to fall into the label span instead of the
+                             icon slot (misaligning icon and text).
+
+                             The @if for font/SVG branching inside each button works
+                             because both branches produce a mat-icon direct child and
+                             Angular resolves projection based on element tag + attributes. -->
+                        <button matSnackBarAction class="tbx-mat-notification-action-button" [matButton]="data.actionButtonType ?? 'text'" (click)="data.dismissByAction()">
+                            @if (actionIcon().isSvg) {
+                                <mat-icon [svgIcon]="actionIcon().name" aria-hidden="true"></mat-icon>
                             } @else {
-                                <mat-icon>{{ actionIconFont() }}</mat-icon>
+                                <mat-icon aria-hidden="true">{{ actionIcon().name }}</mat-icon>
+                            }
+
+                            {{ data.actionLabel }}
+                        </button>
+                    } @else if (data.actionIconPosition === 'after') {
+                        <!-- Labeled button with trailing icon.
+                             See leading icon comment above for why separate
+                             button elements are needed. iconPositionEnd routes
+                             the mat-icon to the trailing content projection slot. -->
+                        <button matSnackBarAction class="tbx-mat-notification-action-button" [matButton]="data.actionButtonType ?? 'text'" (click)="data.dismissByAction()">
+                            {{ data.actionLabel }}
+
+                            @if (actionIcon().isSvg) {
+                                <mat-icon iconPositionEnd [svgIcon]="actionIcon().name" aria-hidden="true"></mat-icon>
+                            } @else {
+                                <mat-icon iconPositionEnd aria-hidden="true">
+                                    {{ actionIcon().name }}
+                                </mat-icon>
                             }
                         </button>
                     } @else {
-                        <button
-                            matSnackBarAction
-                            class="tbx-mat-notification-action-button"
-                            [matButton]="data.actionButtonType ?? 'text'"
-                            (click)="data.dismissByAction()"
-                        >
-                            @if (
-                                data.actionIconName &&
-                                data.actionIconPosition === iconPositionBefore
-                            ) {
-                                @let actionSvgBefore = actionIconSvg();
-                                @if (actionSvgBefore) {
-                                    <mat-icon
-                                        [svgIcon]="actionSvgBefore"
-                                        aria-hidden="true"
-                                    ></mat-icon>
-                                } @else {
-                                    <mat-icon aria-hidden="true">{{ actionIconFont() }}</mat-icon>
-                                }
-                            }
+                        <!-- Labeled button without icon -->
+                        <button matSnackBarAction class="tbx-mat-notification-action-button" [matButton]="data.actionButtonType ?? 'text'" (click)="data.dismissByAction()">
                             {{ data.actionLabel }}
-                            @if (
-                                data.actionIconName && data.actionIconPosition === iconPositionAfter
-                            ) {
-                                @let actionSvgAfter = actionIconSvg();
-                                @if (actionSvgAfter) {
-                                    <mat-icon
-                                        [svgIcon]="actionSvgAfter"
-                                        aria-hidden="true"
-                                    ></mat-icon>
-                                } @else {
-                                    <mat-icon aria-hidden="true">{{ actionIconFont() }}</mat-icon>
-                                }
-                            }
                         </button>
                     }
                 }
                 @if (data.showCloseButton) {
-                    <button
-                        mat-icon-button
-                        matSnackBarAction
-                        class="tbx-mat-notification-close-button"
-                        (click)="data.dismissByClose()"
-                        aria-label="Dismiss notification"
-                    >
-                        @let closeSvg = closeIconSvg();
-                        @if (closeSvg) {
-                            <mat-icon [svgIcon]="closeSvg"></mat-icon>
-                        } @else {
-                            <mat-icon>{{ closeIconFont() }}</mat-icon>
-                        }
+                    <button mat-icon-button matSnackBarAction class="tbx-mat-notification-close-button" (click)="data.dismissByClose()" aria-label="Dismiss notification">
+                        <ng-container *ngTemplateOutlet="tbxNgIconTemplate; context: { icon: closeIcon() }"></ng-container>
                     </button>
                 }
             </div>
         }
         @if (data.showCountdown && data.duration > 0) {
-            <div
-                class="tbx-mat-notification-snackbar-countdown"
-                [style.animation-duration.ms]="data.duration"
-            ></div>
+            <div class="tbx-mat-notification-snackbar-countdown" [style.animation-duration.ms]="data.duration"></div>
         }
     `,
     styles: `
@@ -198,70 +224,28 @@ export class TbxMatNotificationComponent {
     readonly data = inject<NotificationDataDto>(MAT_SNACK_BAR_DATA);
     private readonly config = inject(TBX_MAT_NOTIFICATION_PROVIDER_CONFIG);
 
-    /** Enum value exposed for template comparison. */
-    protected readonly iconPositionBefore = TbxMatNotificationIconPosition.Before;
-    /** Enum value exposed for template comparison. */
-    protected readonly iconPositionAfter = TbxMatNotificationIconPosition.After;
+    /** Resolved severity icon — font ligature or SVG name. */
+    readonly severityIcon = computed(() => this.resolveIcon(this.config.severityIconResolverService, this.data.type));
+
+    /** Resolved close button icon — font ligature or SVG name. */
+    readonly closeIcon = computed(() => this.resolveIcon(this.data.closeIconResolverService, 'close'));
+
+    /** Resolved action button icon — font ligature or SVG name. */
+    readonly actionIcon = computed(() => this.resolveIcon(this.data.actionIconResolverService, this.data.actionIconName));
 
     /**
-     * Resolved severity icon for font rendering.
-     * Returns the ligature string when the icon is font-based, `null` when SVG.
+     * Resolve an icon from a resolver service.
+     * Returns the icon name and rendering mode, or `null` if the
+     * resolver is absent, the key is absent, or resolution fails.
      */
-    readonly severityIconFont = computed(() => {
-        const resolved = this.config.severityIconResolverService.resolve(this.data.type);
-        if (!resolved || this.config.severityIconResolverService.iconType !== TbxMatIconType.Font) {
+    private resolveIcon(resolver: { readonly iconType: TbxMatIconType; resolve(key: string): string | undefined } | undefined, key: string | undefined): ResolvedIcon | null {
+        if (!resolver || !key) {
             return null;
         }
-        return resolved;
-    });
-
-    /**
-     * Resolved severity icon for SVG rendering.
-     * Returns the svgIcon name when the icon is SVG-based, `null` when font.
-     */
-    readonly severityIconSvg = computed(() => {
-        const resolved = this.config.severityIconResolverService.resolve(this.data.type);
-        if (!resolved || this.config.severityIconResolverService.iconType !== TbxMatIconType.Svg) {
+        const name = resolver.resolve(key);
+        if (!name) {
             return null;
         }
-        return resolved;
-    });
-
-    /** Close icon font ligature. `null` when the close icon is SVG-based. */
-    readonly closeIconFont = computed(() => {
-        const resolver = this.data.closeIconResolverService;
-        if (resolver.iconType !== TbxMatIconType.Font) {
-            return null;
-        }
-        return resolver.resolve('close') ?? null;
-    });
-
-    /** Close icon svgIcon name. `null` when the close icon is font-based. */
-    readonly closeIconSvg = computed(() => {
-        const resolver = this.data.closeIconResolverService;
-        if (resolver.iconType !== TbxMatIconType.Svg) {
-            return null;
-        }
-        return resolver.resolve('close') ?? null;
-    });
-
-    /** Action icon font ligature. `null` when the action icon is SVG-based or not configured. */
-    readonly actionIconFont = computed(() => {
-        const resolver = this.data.actionIconResolverService;
-        const iconName = this.data.actionIconName;
-        if (!resolver || !iconName || resolver.iconType !== TbxMatIconType.Font) {
-            return null;
-        }
-        return resolver.resolve(iconName) ?? null;
-    });
-
-    /** Action icon svgIcon name. `null` when the action icon is font-based or not configured. */
-    readonly actionIconSvg = computed(() => {
-        const resolver = this.data.actionIconResolverService;
-        const iconName = this.data.actionIconName;
-        if (!resolver || !iconName || resolver.iconType !== TbxMatIconType.Svg) {
-            return null;
-        }
-        return resolver.resolve(iconName) ?? null;
-    });
+        return { name, isSvg: resolver.iconType === TbxMatIconType.Svg };
+    }
 }

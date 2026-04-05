@@ -3,11 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
-import {
-    TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
-    TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
-    TbxMatIconType,
-} from '@teqbench/tbx-mat-icons';
+import { TBX_MAT_FONT_ICON_DEFAULT_FONT_SET, TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED, TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import { TbxMatNotificationService } from './notification.service';
 import { TbxMatNotificationSeverityFontIconService } from './notification-severity-font-icon.service';
 import { TbxMatNotificationComponent } from '../components/notification.component';
@@ -54,8 +50,7 @@ describe('TbxMatNotificationService', () => {
                 {
                     provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                     useFactory: () => ({
-                        severityIconResolverService:
-                            new TbxMatNotificationSeverityFontIconService(),
+                        severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
                     }),
                 },
             ],
@@ -579,9 +574,7 @@ describe('TbxMatNotificationService', () => {
             afterDismissed$.next({ dismissedByAction: false });
 
             const result = await ref.result;
-            expect(result.dismissReason).toBe(
-                TbxMatNotificationDismissReason.ProgrammaticDismissCurrent
-            );
+            expect(result.dismissReason).toBe(TbxMatNotificationDismissReason.ProgrammaticDismissCurrent);
         });
 
         it('should resolve with ProgrammaticDismissAll for active notification', async () => {
@@ -593,9 +586,7 @@ describe('TbxMatNotificationService', () => {
             service.dismissAll();
 
             const result = await ref.result;
-            expect(result.dismissReason).toBe(
-                TbxMatNotificationDismissReason.ProgrammaticDismissAll
-            );
+            expect(result.dismissReason).toBe(TbxMatNotificationDismissReason.ProgrammaticDismissAll);
         });
 
         it('should resolve with ProgrammaticDismissAll for queued notifications', async () => {
@@ -613,12 +604,8 @@ describe('TbxMatNotificationService', () => {
 
             const result2 = await ref2.result;
             const result3 = await ref3.result;
-            expect(result2.dismissReason).toBe(
-                TbxMatNotificationDismissReason.ProgrammaticDismissAll
-            );
-            expect(result3.dismissReason).toBe(
-                TbxMatNotificationDismissReason.ProgrammaticDismissAll
-            );
+            expect(result2.dismissReason).toBe(TbxMatNotificationDismissReason.ProgrammaticDismissAll);
+            expect(result3.dismissReason).toBe(TbxMatNotificationDismissReason.ProgrammaticDismissAll);
         });
     });
 
@@ -787,8 +774,7 @@ describe('TbxMatNotificationService', () => {
                     {
                         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                         useFactory: () => ({
-                            severityIconResolverService:
-                                new TbxMatNotificationSeverityFontIconService(),
+                            severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
                             actionConfig: {
                                 actionButtonType: 'tonal' as const,
                             },
@@ -828,8 +814,7 @@ describe('TbxMatNotificationService', () => {
                     {
                         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                         useFactory: () => ({
-                            severityIconResolverService:
-                                new TbxMatNotificationSeverityFontIconService(),
+                            severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
                             actionConfig: {
                                 actionButtonType: 'tonal' as const,
                             },

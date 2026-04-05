@@ -84,5 +84,4 @@ import type { TbxMatNotificationProviderConfig } from '../models/notification-pr
  *
  * @public
  */
-export const TBX_MAT_NOTIFICATION_PROVIDER_CONFIG =
-    new InjectionToken<TbxMatNotificationProviderConfig>('TBX_MAT_NOTIFICATION_PROVIDER_CONFIG');
+export const TBX_MAT_NOTIFICATION_PROVIDER_CONFIG = new InjectionToken<TbxMatNotificationProviderConfig>('TBX_MAT_NOTIFICATION_PROVIDER_CONFIG');

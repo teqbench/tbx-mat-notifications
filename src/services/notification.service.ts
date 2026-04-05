@@ -11,11 +11,7 @@ import { type NotificationDataDto } from '../models/notification-data-dto.model'
 import { TbxMatNotificationDismissReason } from '../enums/notification-dismiss-reason.enum';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { TbxMatNotificationCloseFontIconService } from './notification-close-font-icon.service';
-import {
-    NOTIFICATION_DEFAULT_DURATION_MS,
-    NOTIFICATION_DEFAULT_ACTION_BUTTON_TYPE,
-    NOTIFICATION_DEFAULT_ICON_POSITION,
-} from '../constants/notification.constants';
+import { NOTIFICATION_DEFAULT_DURATION_MS, NOTIFICATION_DEFAULT_ACTION_BUTTON_TYPE, NOTIFICATION_DEFAULT_ICON_POSITION } from '../constants/notification.constants';
 import { type TbxMatNotificationAction } from '../models/notification-action.model';
 import { type TbxMatNotificationActionButtonAppearance } from '../types/notification-action-button-appearance.type';
 
@@ -44,9 +40,7 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevel, string>> = {
  */
 interface QueueEntry {
     readonly config: TbxMatNotificationConfig;
-    readonly resolveSnackBarRef: (
-        ref: import('@angular/material/snack-bar').MatSnackBarRef<unknown> | null
-    ) => void;
+    readonly resolveSnackBarRef: (ref: import('@angular/material/snack-bar').MatSnackBarRef<unknown> | null) => void;
     readonly resolveResult: (result: TbxMatNotificationResult) => void;
 }
 
@@ -232,9 +226,7 @@ export class TbxMatNotificationService {
         let resolveSnackBarRef!: QueueEntry['resolveSnackBarRef'];
         let resolveResult!: QueueEntry['resolveResult'];
 
-        const snackBarRefPromise = new Promise<
-            import('@angular/material/snack-bar').MatSnackBarRef<unknown> | null
-        >((resolve) => {
+        const snackBarRefPromise = new Promise<import('@angular/material/snack-bar').MatSnackBarRef<unknown> | null>((resolve) => {
             resolveSnackBarRef = resolve;
         });
 
@@ -462,8 +454,7 @@ export class TbxMatNotificationService {
         // snackBarRef is assigned after openFromComponent() — the DTO
         // callbacks capture it via closure so they can call the correct
         // dismiss method on the actual ref instance.
-        let snackBarRef: import('@angular/material/snack-bar').MatSnackBarRef<unknown> | null =
-            null;
+        let snackBarRef: import('@angular/material/snack-bar').MatSnackBarRef<unknown> | null = null;
 
         // Resolve action config using cascade and fallback rules.
         const resolvedAction = this.resolveAction(config.action);
@@ -487,22 +478,14 @@ export class TbxMatNotificationService {
             showCountdown: config.showCountdown ?? false,
             showSeverityIcon: config.showSeverityIcon ?? true,
             showCloseButton: config.showCloseButton ?? true,
-            closeIconResolverService:
-                this.providerConfig.closeIconResolverService ?? this.defaultCloseIconService,
+            closeIconResolverService: this.providerConfig.closeIconResolverService ?? this.defaultCloseIconService,
             ...resolvedAction,
         };
 
         // Merge consumer panelClass with the severity panel class.
         // Consumer classes are appended, not replaced.
         const consumerPanelClass = config.snackBarConfig?.panelClass;
-        const mergedPanelClass: string[] = [
-            PANEL_CLASS_MAP[config.type],
-            ...(Array.isArray(consumerPanelClass)
-                ? consumerPanelClass
-                : consumerPanelClass
-                  ? [consumerPanelClass]
-                  : []),
-        ];
+        const mergedPanelClass: string[] = [PANEL_CLASS_MAP[config.type], ...(Array.isArray(consumerPanelClass) ? consumerPanelClass : consumerPanelClass ? [consumerPanelClass] : [])];
 
         const snackBarConfig: MatSnackBarConfig<NotificationDataDto> = {
             ...config.snackBarConfig,
@@ -579,18 +562,7 @@ export class TbxMatNotificationService {
      *   - actionButtonType 'text' with iconName → icon ignored
      *   - iconName provided and button type uses icons, but no resolver → log error, skip action
      */
-    private resolveAction(
-        action: TbxMatNotificationAction | undefined
-    ):
-        | Pick<
-              NotificationDataDto,
-              | 'actionLabel'
-              | 'actionButtonType'
-              | 'actionIconName'
-              | 'actionIconPosition'
-              | 'actionIconResolverService'
-          >
-        | undefined {
+    private resolveAction(action: TbxMatNotificationAction | undefined): Pick<NotificationDataDto, 'actionLabel' | 'actionButtonType' | 'actionIconName' | 'actionIconPosition' | 'actionIconResolverService'> | undefined {
         if (!action) {
             return undefined;
         }
@@ -598,10 +570,7 @@ export class TbxMatNotificationService {
         const providerAction = this.providerConfig.actionConfig;
 
         // Resolve button type: per-notification → provider → default
-        let resolvedButtonType: TbxMatNotificationActionButtonAppearance =
-            action.actionButtonType ??
-            providerAction?.actionButtonType ??
-            NOTIFICATION_DEFAULT_ACTION_BUTTON_TYPE;
+        let resolvedButtonType: TbxMatNotificationActionButtonAppearance = action.actionButtonType ?? providerAction?.actionButtonType ?? NOTIFICATION_DEFAULT_ACTION_BUTTON_TYPE;
 
         const hasIcon = !!action.iconName;
 
@@ -611,28 +580,19 @@ export class TbxMatNotificationService {
         }
 
         // Determine if this button type renders an icon
-        const buttonUsesIcon =
-            resolvedButtonType === 'icon' || (resolvedButtonType !== 'text' && hasIcon);
+        const buttonUsesIcon = resolvedButtonType === 'icon' || (resolvedButtonType !== 'text' && hasIcon);
 
         if (buttonUsesIcon && hasIcon) {
             // Resolve icon resolver: per-notification → provider → none
-            const resolver =
-                action.actionIconResolverService ?? providerAction?.actionIconResolverService;
+            const resolver = action.actionIconResolverService ?? providerAction?.actionIconResolverService;
 
             if (!resolver) {
-                console.error(
-                    `[TbxMatNotificationService] Action icon '${action.iconName}' requires an ` +
-                        `actionIconResolverService but none was provided (neither per-notification ` +
-                        `nor via provider actionConfig). Action will not be displayed.`
-                );
+                console.error(`[TbxMatNotificationService] Action icon '${action.iconName}' requires an ` + `actionIconResolverService but none was provided (neither per-notification ` + `nor via provider actionConfig). Action will not be displayed.`);
                 return undefined;
             }
 
             // Resolve icon position: per-notification → provider → default
-            const resolvedIconPosition =
-                action.iconPosition ??
-                providerAction?.iconPosition ??
-                NOTIFICATION_DEFAULT_ICON_POSITION;
+            const resolvedIconPosition = action.iconPosition ?? providerAction?.iconPosition ?? NOTIFICATION_DEFAULT_ICON_POSITION;
 
             return {
                 actionLabel: action.label,

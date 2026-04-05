@@ -26,9 +26,7 @@ const preview: Preview = {
                 {
                     provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                     useFactory: () => ({
-                        severityIconResolverService: new TbxMatNotificationSeverityFontIconService(
-                            'material-symbols-rounded'
-                        ),
+                        severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
                     }),
                 },
             ],
@@ -37,20 +35,7 @@ const preview: Preview = {
     parameters: {
         options: {
             storySort: {
-                order: [
-                    'Notifications',
-                    [
-                        'Default Font Icons',
-                        'Filled Font Icons',
-                        'State Transition Font Icons',
-                        'Hover Fill Font Icons',
-                        'Default SVG Icons',
-                        'Custom Font Icons',
-                        'Custom SVG Icons',
-                        'Visibility',
-                        'Action Button',
-                    ],
-                ],
+                order: ['Notifications', ['Default Font Icons', 'Filled Font Icons', 'State Transition Font Icons', 'Hover Fill Font Icons', 'Default SVG Icons', 'Custom Font Icons', 'Custom SVG Icons', 'Visibility', 'Action Button']],
             },
         },
         controls: {

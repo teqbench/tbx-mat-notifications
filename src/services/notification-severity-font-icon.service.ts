@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-    TbxMatSeverityFontIconService,
-    TbxMatSeverityLevel,
-} from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityFontIconService, TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 
 /**
  * Default font-based severity notification icon service

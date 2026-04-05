@@ -1,17 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import {
-    NotificationHarnessComponent,
-    SHARED_ARG_TYPES,
-    DEFAULT_ARGS,
-    withDefaultProperties,
-    withCustomFontIcons,
-    withCustomFontIconsAndFontClose,
-    withCustomProperties,
-    COMPACT_CSS,
-    LARGE_CSS,
-    LARGE_ICON_ONLY_CSS,
-} from './notification.stories.common';
+import { NotificationHarnessComponent, SHARED_ARG_TYPES, DEFAULT_ARGS, withDefaultProperties, withCustomFontIcons, withCustomFontIconsAndFontClose, withCustomProperties, COMPACT_CSS, LARGE_CSS, LARGE_ICON_ONLY_CSS } from './notification.stories.common';
 
 const meta: Meta<NotificationHarnessComponent> = {
     title: 'Notifications/Custom Font Icons',
@@ -23,9 +12,7 @@ const meta: Meta<NotificationHarnessComponent> = {
 export default meta;
 type Story = StoryObj<NotificationHarnessComponent>;
 
-const CATEGORY_DESCRIPTION =
-    'Uses CustomFontIconService which overrides the default ligatures via initialize(): ' +
-    'task_alt, cancel, warning, lightbulb, contact_support.';
+const CATEGORY_DESCRIPTION = 'Uses CustomFontIconService which overrides the default ligatures via initialize(): ' + 'task_alt, cancel, warning, lightbulb, contact_support.';
 
 export const Default: Story = {
     args: { ...DEFAULT_ARGS, description: CATEGORY_DESCRIPTION },
@@ -57,9 +44,7 @@ export const FontCloseIcon: Story = {
     name: 'Font Close Icon',
     args: {
         ...DEFAULT_ARGS,
-        description:
-            CATEGORY_DESCRIPTION +
-            ' Also uses a custom font close icon (cancel ligature instead of the default close).',
+        description: CATEGORY_DESCRIPTION + ' Also uses a custom font close icon (cancel ligature instead of the default close).',
     },
     decorators: [withDefaultProperties(), withCustomFontIconsAndFontClose()],
 };
