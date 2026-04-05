@@ -47,9 +47,9 @@ If this package depends on other `@teqbench` packages, each package in the entir
 - `npm run build` — Build the package
 - `npm test` — Run tests
 - `npm run test:coverage` — Run tests with coverage enforcement
-- `npm run typecheck` — Full TypeScript type-check
-- `npm run lint` — Run ESLint checks
-- `npm run format` — Format all files with Prettier
+- `npm run typecheck` — Full [TypeScript ↗](https://www.typescriptlang.org) type-check
+- `npm run lint` — Run [ESLint ↗](https://eslint.org) checks
+- `npm run format` — Format all files with [Prettier ↗](https://prettier.io)
 - `npm run format:check` — Check formatting without writing (used in CI)
 
 ## Commit Convention
@@ -97,7 +97,7 @@ Follow **[Conventional Commits ↗](https://www.conventionalcommits.org)** stric
 2. Merge `main` into the release branch to resolve any conflicts (especially badge files)
 3. Open a PR from the release branch to `main`
 4. After merge, Release Please opens a version bump PR on `main`
-5. Merge the Release Please PR to trigger a GitHub Release and publish to GitHub Packages
+5. Merge the [Release Please ↗](https://github.com/googleapis/release-please) PR to trigger a GitHub Release and publish to [GitHub Packages ↗](https://github.com/orgs/teqbench/packages)
 6. The sync workflow automatically merges `main` back into `dev`
 
 For details on how the CI/CD pipelines work, see [docs/reference/workflows/](docs/reference/workflows/).

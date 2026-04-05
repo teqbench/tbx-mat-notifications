@@ -23,7 +23,7 @@ import { TbxMatFontIconService } from '@teqbench/tbx-mat-icons';
  * 1. **Explicit constructor argument** — `new TbxMatNotificationCloseFontIconService('material-symbols-sharp')`
  * 2. **`TBX_MAT_FONT_ICON_DEFAULT_FONT_SET` token** — set once in `app.config.ts`
  * 3. **`MAT_ICON_DEFAULT_OPTIONS.fontSet`** —
- *    {@link https://material.angular.io/components/icon | Angular Material}'s global icon default
+ *    {@link https://material.angular.dev/components/icon/api | Angular Material}'s global icon default
  * 4. **Error** — if none of the above provides a fontSet
  *
  * @example Using with MAT_ICON_DEFAULT_OPTIONS:
