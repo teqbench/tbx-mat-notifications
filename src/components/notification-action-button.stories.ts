@@ -10,6 +10,7 @@ import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-pro
 import { TbxMatNotificationSeverityFontIconService } from '../services/notification-severity-font-icon.service';
 import { TbxMatNotificationService } from '../services/notification.service';
 import { TbxMatNotificationIconPosition } from '../enums/notification-icon-position.enum';
+import { withDefaultProperties } from './notification.stories.common';
 
 // ─── Action Icon Resolver ─────────────────────────────────────────────────
 // Inline font icon resolver for action button icons. Material Symbols
@@ -354,7 +355,7 @@ export const Default: Story = {
     args: {
         description: 'Demonstrates all action button variants: appearances (text, tonal, filled, ' + 'outlined, elevated), icon-only, icon + label (before/after), action + close ' + 'combinations, countdown + action, and indefinite duration. The "Last dismiss ' + 'reason" shows the TbxMatNotificationDismissReason returned by the result promise.',
     },
-    decorators: [withProviders()],
+    decorators: [withDefaultProperties(), withProviders()],
 };
 
 export const ProviderDefaults: Story = {
@@ -362,5 +363,5 @@ export const ProviderDefaults: Story = {
     args: {
         description: 'Provider config sets application-wide action defaults: actionButtonType "tonal", ' + 'iconPosition Before, and a font icon resolver. Buttons that do not override ' + 'actionButtonType inherit tonal from the provider (e.g., the Text button renders ' + 'as tonal). Per-notification overrides still take precedence (Filled, Outlined, ' + 'Elevated). Icon buttons use the provider resolver as fallback.',
     },
-    decorators: [withProviderActionDefaults()],
+    decorators: [withDefaultProperties(), withProviderActionDefaults()],
 };
