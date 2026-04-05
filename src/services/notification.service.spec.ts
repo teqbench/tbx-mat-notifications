@@ -11,11 +11,7 @@ import { TbxMatNotificationService } from './notification.service';
 import { TbxMatNotificationSeverityFontIconService } from './notification-severity-font-icon.service';
 import { TbxMatNotificationComponent } from '../components/notification.component';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
-import {
-    NOTIFICATION_DEFAULT_DURATION_MS,
-    NOTIFICATION_MAX_DURATION_MS,
-    NOTIFICATION_MIN_DURATION_MS,
-} from '../constants/notification.constants';
+import { NOTIFICATION_DEFAULT_DURATION_MS } from '../constants/notification.constants';
 
 describe('TbxMatNotificationService', () => {
     let service: TbxMatNotificationService;
@@ -117,37 +113,37 @@ describe('TbxMatNotificationService', () => {
             expect(config.duration).toBe(NOTIFICATION_DEFAULT_DURATION_MS);
         });
 
-        it('should use the provided duration when within range', () => {
+        it('should use the provided duration as-is when positive', () => {
             service.show({
                 type: TbxMatSeverityLevel.Information,
                 message: 'Hello',
-                duration: 3000,
+                duration: 30_000,
             });
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
-            expect(config.duration).toBe(3000);
+            expect(config.duration).toBe(30_000);
         });
 
-        it('should clamp duration to minimum', () => {
+        it('should treat duration <= 0 as indefinite (0)', () => {
             service.show({
                 type: TbxMatSeverityLevel.Information,
                 message: 'Hello',
-                duration: 100,
+                duration: 0,
             });
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
-            expect(config.duration).toBe(NOTIFICATION_MIN_DURATION_MS);
+            expect(config.duration).toBe(0);
         });
 
-        it('should clamp duration to maximum', () => {
+        it('should treat negative duration as indefinite (0)', () => {
             service.show({
                 type: TbxMatSeverityLevel.Information,
                 message: 'Hello',
-                duration: 99_000,
+                duration: -500,
             });
 
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
-            expect(config.duration).toBe(NOTIFICATION_MAX_DURATION_MS);
+            expect(config.duration).toBe(0);
         });
 
         it('should provide dismissByClose and dismissByAction callbacks in the data', () => {

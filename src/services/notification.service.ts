@@ -8,11 +8,7 @@ import { type TbxMatNotificationConfig } from '../models/notification-config.mod
 import { type NotificationDataDto } from '../models/notification-data-dto.model';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { TbxMatNotificationCloseFontIconService } from './notification-close-font-icon.service';
-import {
-    NOTIFICATION_DEFAULT_DURATION_MS,
-    NOTIFICATION_MAX_DURATION_MS,
-    NOTIFICATION_MIN_DURATION_MS,
-} from '../constants/notification.constants';
+import { NOTIFICATION_DEFAULT_DURATION_MS } from '../constants/notification.constants';
 
 /**
  * Panel CSS class mapping for each notification severity level.
@@ -148,8 +144,8 @@ export class TbxMatNotificationService {
      * Otherwise, it is added to the FIFO queue and shown when all preceding
      * notifications have been dismissed.
      *
-     * Duration is clamped to [NOTIFICATION_MIN_DURATION_MS, NOTIFICATION_MAX_DURATION_MS].
-     * Defaults to NOTIFICATION_DEFAULT_DURATION_MS when omitted.
+     * Duration: `<= 0` is indefinite (no auto-dismiss), `> 0` is used as-is.
+     * Defaults to NOTIFICATION_DEFAULT_DURATION_MS (10000ms) when omitted.
      *
      * @param config - Full notification configuration.
      *
@@ -278,7 +274,7 @@ export class TbxMatNotificationService {
         }
 
         this.isActive.set(true);
-        const duration = this.clampDuration(config.duration);
+        const duration = this.resolveDuration(config.duration);
 
         const data: NotificationDataDto = {
             type: config.type,
@@ -309,17 +305,16 @@ export class TbxMatNotificationService {
     }
 
     /**
-     * Clamp duration to the allowed range.
-     * Returns the default when undefined.
+     * Resolve duration from consumer config.
+     * - undefined → default (NOTIFICATION_DEFAULT_DURATION_MS)
+     * - zero or negative → 0 (indefinite, no auto-dismiss)
+     * - positive → as-is, no clamping
      */
-    private clampDuration(duration: number | undefined): number {
+    private resolveDuration(duration: number | undefined): number {
         if (duration === undefined) {
             return NOTIFICATION_DEFAULT_DURATION_MS;
         }
 
-        return Math.max(
-            NOTIFICATION_MIN_DURATION_MS,
-            Math.min(duration, NOTIFICATION_MAX_DURATION_MS)
-        );
+        return duration <= 0 ? 0 : duration;
     }
 }

@@ -1,56 +1,38 @@
-import type {
-    MatSnackBarHorizontalPosition,
-    MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+import { TbxMatNotificationIconPosition } from '../enums/notification-icon-position.enum';
+import type { TbxMatNotificationActionButtonAppearance } from '../types/notification-action-button-appearance.type';
 
 /**
  * Notification system constants.
  *
- * Centralizes timing and positioning defaults for snackbar notifications.
+ * Centralizes timing and action defaults for snackbar notifications.
  * These values are used internally by {@link TbxMatNotificationService}
  * and are not exported from the public API. Consumers override per-call
- * via {@link TbxMatNotificationConfig.duration},
- * {@link TbxMatNotificationConfig.horizontalPosition}, and
- * {@link TbxMatNotificationConfig.verticalPosition}.
+ * via {@link TbxMatNotificationConfig}.
  */
-
-/**
- * Minimum duration a notification is displayed (milliseconds).
- *
- * Prevents notifications from disappearing too quickly to be read.
- * Any duration below this value is clamped up to this minimum.
- */
-export const NOTIFICATION_MIN_DURATION_MS = 1_000;
-
-/**
- * Maximum duration a notification is displayed (milliseconds).
- *
- * Prevents notifications from blocking the UI for too long.
- * Any duration above this value is clamped down to this maximum.
- */
-export const NOTIFICATION_MAX_DURATION_MS = 6_000;
 
 /**
  * Default duration when no duration is specified (milliseconds).
  *
  * Used when {@link TbxMatNotificationConfig.duration} is omitted.
- * Balances readability with minimal disruption.
+ * For notifications with an action button, a longer duration is
+ * recommended (e.g., 30000ms) to give users time to respond.
  */
-export const NOTIFICATION_DEFAULT_DURATION_MS = 4_000;
+export const NOTIFICATION_DEFAULT_DURATION_MS = 10_000;
 
 /**
- * Default horizontal position for snackbar notifications.
+ * Default action button appearance when not specified at the
+ * provider level or per-notification.
  *
- * Aligns with {@link https://m3.material.io/components/snackbar | Material Design} guidance for snackbar placement.
- * `'start'` maps to the left edge in LTR layouts, right in RTL.
+ * Per {@link https://m3.material.io/components/snackbar/guidelines | M3 guidelines},
+ * snackbars are the lowest-priority notification surface, so `'text'`
+ * (lowest emphasis) is the appropriate default.
  */
-export const NOTIFICATION_DEFAULT_HORIZONTAL_POSITION: MatSnackBarHorizontalPosition = 'start';
+export const NOTIFICATION_DEFAULT_ACTION_BUTTON_TYPE: TbxMatNotificationActionButtonAppearance =
+    'text';
 
 /**
- * Default vertical position for snackbar notifications.
- *
- * Bottom placement follows {@link https://m3.material.io/components/snackbar | Material Design} guidelines — snackbars
- * appear at the bottom of the viewport to avoid interfering with
- * primary content and navigation.
+ * Default icon position relative to the action button label when
+ * not specified at the provider level or per-notification.
  */
-export const NOTIFICATION_DEFAULT_VERTICAL_POSITION: MatSnackBarVerticalPosition = 'bottom';
+export const NOTIFICATION_DEFAULT_ICON_POSITION: TbxMatNotificationIconPosition =
+    TbxMatNotificationIconPosition.Before;
