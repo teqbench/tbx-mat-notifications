@@ -396,7 +396,9 @@ describe('TbxMatNotificationComponent', () => {
                 buildData({ actionLabel: 'Undo', actionButtonType: 'text' })
             );
 
-            const actionButton = fixture.debugElement.query(By.css('button[mat-button]'));
+            const actionButton = fixture.debugElement.query(
+                By.css('.tbx-mat-notification-action-button')
+            );
             expect(actionButton).not.toBeNull();
             expect(actionButton.nativeElement.textContent.trim()).toContain('Undo');
         });
@@ -404,7 +406,9 @@ describe('TbxMatNotificationComponent', () => {
         it('should not render action button when actionLabel is not set', () => {
             const fixture = createFixture(buildData());
 
-            const actionButton = fixture.debugElement.query(By.css('button[mat-button]'));
+            const actionButton = fixture.debugElement.query(
+                By.css('.tbx-mat-notification-action-button')
+            );
             expect(actionButton).toBeNull();
         });
 
@@ -414,7 +418,9 @@ describe('TbxMatNotificationComponent', () => {
                 buildData({ actionLabel: 'Retry', actionButtonType: 'text', dismissByAction })
             );
 
-            const actionButton = fixture.debugElement.query(By.css('button[mat-button]'));
+            const actionButton = fixture.debugElement.query(
+                By.css('.tbx-mat-notification-action-button')
+            );
             actionButton.nativeElement.click();
 
             expect(dismissByAction).toHaveBeenCalledOnce();
@@ -490,7 +496,9 @@ describe('TbxMatNotificationComponent', () => {
                 buildData({ actionLabel: 'Retry', actionButtonType: 'tonal' })
             );
 
-            const actionButton = fixture.debugElement.query(By.css('button[mat-button]'));
+            const actionButton = fixture.debugElement.query(
+                By.css('.tbx-mat-notification-action-button')
+            );
             expect(actionButton).not.toBeNull();
             expect(actionButton.nativeElement.textContent.trim()).toContain('Retry');
         });
@@ -509,7 +517,9 @@ describe('TbxMatNotificationComponent', () => {
                 })
             );
 
-            const actionButton = fixture.debugElement.query(By.css('button[mat-button]'));
+            const actionButton = fixture.debugElement.query(
+                By.css('.tbx-mat-notification-action-button')
+            );
             expect(actionButton).not.toBeNull();
             const icon = actionButton.query(By.css('mat-icon'));
             expect(icon).not.toBeNull();
@@ -530,7 +540,9 @@ describe('TbxMatNotificationComponent', () => {
                 })
             );
 
-            const actionButton = fixture.debugElement.query(By.css('button[mat-button]'));
+            const actionButton = fixture.debugElement.query(
+                By.css('.tbx-mat-notification-action-button')
+            );
             expect(actionButton).not.toBeNull();
             const icon = actionButton.query(By.css('mat-icon'));
             expect(icon).not.toBeNull();

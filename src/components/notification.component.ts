@@ -104,9 +104,9 @@ import { TbxMatNotificationIconPosition } from '../enums/notification-icon-posit
                         </button>
                     } @else {
                         <button
-                            mat-button
                             matSnackBarAction
-                            [appearance]="data.actionButtonType ?? 'text'"
+                            class="tbx-mat-notification-action-button"
+                            [matButton]="data.actionButtonType ?? 'text'"
                             (click)="data.dismissByAction()"
                         >
                             @if (
