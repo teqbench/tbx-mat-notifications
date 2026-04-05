@@ -22,8 +22,9 @@ import { type TbxMatNotificationActionButtonAppearance } from '../types/notifica
 /**
  * Panel CSS class mapping for each notification severity level.
  *
- * These classes are applied to the MatSnackBar overlay container via
- * MatSnackBarConfig.panelClass. The corresponding styles are defined
+ * These classes are applied to the
+ * {@link https://material.angular.dev/components/snack-bar/api | MatSnackBar}
+ * overlay container via `MatSnackBarConfig.panelClass`. The corresponding styles are defined
  * in src/styles/_tbx-mat-notifications.scss — consumers must import this
  * partial into their global stylesheet (snackbar overlays render
  * outside component scope).
