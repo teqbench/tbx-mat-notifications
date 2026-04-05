@@ -145,6 +145,28 @@ export function withCustomSvgIcons() {
     });
 }
 
+export function withCustomFontIconsAndFontClose() {
+    return applicationConfig({
+        providers: [
+            provideAnimationsAsync(),
+            {
+                provide: MAT_ICON_DEFAULT_OPTIONS,
+                useValue: { fontSet: 'material-symbols-rounded' },
+            },
+            {
+                provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+                useFactory: () => ({
+                    severityIconResolverService: new CustomFontIconService(),
+                    closeIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => 'cancel',
+                    },
+                }),
+            },
+        ],
+    });
+}
+
 export function withCustomSvgIconsAndSvgClose() {
     return applicationConfig({
         providers: [

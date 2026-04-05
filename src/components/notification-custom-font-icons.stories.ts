@@ -6,6 +6,7 @@ import {
     DEFAULT_ARGS,
     withDefaultProperties,
     withCustomFontIcons,
+    withCustomFontIconsAndFontClose,
     withCustomProperties,
     COMPACT_CSS,
     LARGE_CSS,
@@ -50,4 +51,15 @@ export const LargeIconOnly: Story = {
         horizontalPosition: 'center',
     },
     decorators: [withCustomProperties(LARGE_ICON_ONLY_CSS), withCustomFontIcons()],
+};
+
+export const FontCloseIcon: Story = {
+    name: 'Font Close Icon',
+    args: {
+        ...DEFAULT_ARGS,
+        description:
+            CATEGORY_DESCRIPTION +
+            ' Also uses a custom font close icon (cancel ligature instead of the default close).',
+    },
+    decorators: [withDefaultProperties(), withCustomFontIconsAndFontClose()],
 };
