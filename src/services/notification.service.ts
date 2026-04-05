@@ -5,7 +5,10 @@ import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 import { TbxMatNotificationComponent } from '../components/notification.component';
 import { type TbxMatNotificationConfigArgs } from '../types/notification-config-args.type';
 import { type TbxMatNotificationConfig } from '../models/notification-config.model';
+import { type TbxMatNotificationRef } from '../models/notification-ref.model';
+import { type TbxMatNotificationResult } from '../models/notification-result.model';
 import { type NotificationDataDto } from '../models/notification-data-dto.model';
+import { TbxMatNotificationDismissReason } from '../enums/notification-dismiss-reason.enum';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { TbxMatNotificationCloseFontIconService } from './notification-close-font-icon.service';
 import { NOTIFICATION_DEFAULT_DURATION_MS } from '../constants/notification.constants';
@@ -28,19 +31,46 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevel, string>> = {
 };
 
 /**
+ * Internal queue entry. Pairs a notification config with the promise
+ * resolvers needed to fulfill the TbxMatNotificationRef returned to
+ * the consumer.
+ */
+interface QueueEntry {
+    readonly config: TbxMatNotificationConfig;
+    readonly resolveSnackBarRef: (
+        ref: import('@angular/material/snack-bar').MatSnackBarRef<unknown> | null
+    ) => void;
+    readonly resolveResult: (result: TbxMatNotificationResult) => void;
+}
+
+/**
  * Application-wide notification service
  *
  * @remarks
- * Wraps {@link https://material.angular.io/components/snack-bar | Angular Material's MatSnackBar}
- * with typed severity levels, consistent positioning, configurable duration, and a
+ * Wraps {@link https://material.angular.dev/components/snack-bar/api | Angular Material's MatSnackBar}
+ * with typed severity levels, configurable duration, and a
  * custom snackbar component that displays an optional severity icon + message +
- * optional dismiss button.
+ * optional action button + optional dismiss button.
  *
  * Notifications are queued FIFO and displayed one at a time. When the current
  * notification is dismissed (manually or by timeout), the next queued notification
  * is shown automatically. This follows
  * {@link https://m3.material.io/components/snackbar | Material Design} guidelines —
  * only one snackbar should be visible at a time.
+ *
+ * All public methods return a {@link TbxMatNotificationRef} synchronously,
+ * containing the consumer's config and two promises:
+ * - `snackBarRef` — resolves with the native
+ *   {@link https://material.angular.dev/components/snack-bar/api | MatSnackBarRef}
+ *   when the notification displays, or `null` if cleared from the queue.
+ * - `result` — resolves with a {@link TbxMatNotificationResult} containing the
+ *   {@link TbxMatNotificationDismissReason} when the notification is dismissed.
+ *
+ * Consumers who do not need the ref or result should use the `void` prefix
+ * to suppress unhandled-promise lint warnings:
+ * ```typescript
+ * void this.notificationService.success('Saved');
+ * ```
  *
  * Queue state is exposed via {@link https://angular.dev/guide/signals | Angular signals}
  * for reactive consumption:
@@ -53,43 +83,45 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevel, string>> = {
  * and `dismissAll()` to programmatically clear notifications. Bind `isActive()`
  * and `pendingCount()` in templates or computed signals for reactive state.
  *
- * @example Convenience methods:
+ * @example Fire-and-forget convenience methods:
  * ```typescript
  * private readonly notify = inject(TbxMatNotificationService);
  *
- * this.notify.success('Item saved successfully.');
- * this.notify.error('Failed to load data. Please try again.');
- * this.notify.warning('Your session will expire in 5 minutes.');
- * this.notify.information('New version available.');
- * this.notify.help('Click the + button to add a new item.');
+ * void this.notify.success('Item saved successfully.');
+ * void this.notify.error('Failed to load data. Please try again.');
  * ```
  *
- * @example Full control via show():
+ * @example Reacting to action dismissal:
  * ```typescript
- * this.notify.show({
- *     type: TbxMatSeverityLevel.Warning,
- *     message: 'Unsaved changes will be lost.',
- *     duration: 6000,
- *     showCountdown: true,
- *     showSeverityIcon: false,
- *     showCloseButton: false,
+ * const ref = this.notify.success('Item deleted.', {
+ *     action: { label: 'Undo' },
+ *     duration: 30_000,
  * });
+ *
+ * const result = await ref.result;
+ * if (result.dismissReason === TbxMatNotificationDismissReason.Action) {
+ *     this.undoDelete();
+ * }
  * ```
  *
- * @example Queue and reactive state:
+ * @example Accessing the native snackbar ref:
  * ```typescript
- * this.notify.success('Step 1 complete.');
- * this.notify.success('Step 2 complete.');
- * this.notify.success('All done!');
- * // Shows each notification in order, advancing when the previous is dismissed.
+ * const ref = this.notify.error('Upload failed.', {
+ *     action: { label: 'Retry' },
+ * });
  *
- * this.notify.dismissAll(); // Clear current + all queued notifications.
+ * const snackBarRef = await ref.snackBarRef;
+ * snackBarRef?.afterOpened().subscribe(() => {
+ *     console.log('Notification is visible');
+ * });
  * ```
  *
  * @category Services
  * @since 1.0.0
  * @related TbxMatNotificationConfig
  * @related TbxMatNotificationConfigArgs
+ * @related TbxMatNotificationRef
+ * @related TbxMatNotificationResult
  * @related TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
  *
  * @public
@@ -101,11 +133,10 @@ export class TbxMatNotificationService {
     private readonly defaultCloseIconService = new TbxMatNotificationCloseFontIconService();
 
     /**
-     * FIFO queue of pending notifications. When a notification is dismissed,
-     * the next entry is shifted off and displayed. The queue self-drains as
-     * notifications auto-dismiss on their duration timeout.
+     * FIFO queue of pending notifications. Each entry pairs the consumer
+     * config with the promise resolvers for the TbxMatNotificationRef.
      */
-    private readonly queue: TbxMatNotificationConfig[] = [];
+    private readonly queue: QueueEntry[] = [];
 
     /**
      * Subscription to the current notification's afterDismissed() observable.
@@ -113,6 +144,9 @@ export class TbxMatNotificationService {
      * the afterDismissed callback from firing showNext() on a cleared queue.
      */
     private activeSubscription: Subscription | null = null;
+
+    /** Resolver for the active notification's result promise. */
+    private activeResultResolver: ((result: TbxMatNotificationResult) => void) | null = null;
 
     /**
      * Whether a notification is currently being displayed
@@ -144,28 +178,51 @@ export class TbxMatNotificationService {
      * Otherwise, it is added to the FIFO queue and shown when all preceding
      * notifications have been dismissed.
      *
-     * Duration: `<= 0` is indefinite (no auto-dismiss), `> 0` is used as-is.
-     * Defaults to NOTIFICATION_DEFAULT_DURATION_MS (10000ms) when omitted.
+     * Duration: zero or negative is indefinite (no auto-dismiss), positive
+     * is used as-is. Defaults to NOTIFICATION_DEFAULT_DURATION_MS (10000ms)
+     * when omitted.
      *
      * @param config - Full notification configuration.
      *
+     * @returns A {@link TbxMatNotificationRef} with the consumer's config,
+     * a promise for the native snackbar ref, and a promise for the dismiss result.
+     *
      * @public
      */
-    show(config: TbxMatNotificationConfig): void {
-        this.queue.push(config);
+    show(config: TbxMatNotificationConfig): TbxMatNotificationRef {
+        let resolveSnackBarRef!: QueueEntry['resolveSnackBarRef'];
+        let resolveResult!: QueueEntry['resolveResult'];
+
+        const snackBarRefPromise = new Promise<
+            import('@angular/material/snack-bar').MatSnackBarRef<unknown> | null
+        >((resolve) => {
+            resolveSnackBarRef = resolve;
+        });
+
+        const resultPromise = new Promise<TbxMatNotificationResult>((resolve) => {
+            resolveResult = resolve;
+        });
+
+        this.queue.push({ config, resolveSnackBarRef, resolveResult });
         this.pendingCount.set(this.queue.length);
 
         if (!this.isActive()) {
             this.showNext();
         }
+
+        return {
+            config,
+            snackBarRef: snackBarRefPromise,
+            result: resultPromise,
+        };
     }
 
     /**
      * Dismiss the currently visible notification
      *
      * @remarks
-     * If queued notifications remain, the next one is shown automatically
-     * via the afterDismissed() subscription chain.
+     * Convenience wrapper. If queued notifications remain, the next one is
+     * shown automatically via the afterDismissed() subscription chain.
      *
      * @public
      */
@@ -177,14 +234,21 @@ export class TbxMatNotificationService {
      * Dismiss the current notification and clear the entire queue
      *
      * @remarks
-     * No further queued notifications will be shown.
-     * Unsubscribes from the active afterDismissed() subscription before
-     * dismissing to prevent the callback from firing showNext() on a
-     * cleared queue.
+     * Convenience wrapper. No further queued notifications will be shown.
+     * Resolves all queued notification promises: `snackBarRef` with `null`,
+     * `result` with `ProgrammaticDismissAll`. Resolves the active
+     * notification's result with `ProgrammaticDismissAll`.
      *
      * @public
      */
     dismissAll(): void {
+        // Resolve all queued (not yet displayed) notification promises.
+        for (const entry of this.queue) {
+            entry.resolveSnackBarRef(null);
+            entry.resolveResult({
+                dismissReason: TbxMatNotificationDismissReason.ProgrammaticDismissAll,
+            });
+        }
         this.queue.length = 0;
         this.pendingCount.set(0);
 
@@ -195,6 +259,14 @@ export class TbxMatNotificationService {
             this.activeSubscription = null;
         }
 
+        // Resolve the active notification's result promise.
+        if (this.activeResultResolver) {
+            this.activeResultResolver({
+                dismissReason: TbxMatNotificationDismissReason.ProgrammaticDismissAll,
+            });
+            this.activeResultResolver = null;
+        }
+
         this.snackBar.dismiss();
         this.isActive.set(false);
     }
@@ -203,77 +275,92 @@ export class TbxMatNotificationService {
      * Display a success notification
      *
      * @param message - The message to display to the user.
-     * @param configArgs - Optional overrides for duration, position, countdown, and visibility options.
+     * @param configArgs - Optional overrides for duration, action, countdown, and visibility options.
+     *
+     * @returns A {@link TbxMatNotificationRef} for the queued notification.
      *
      * @public
      */
-    success(message: string, configArgs?: TbxMatNotificationConfigArgs): void {
-        this.show({ type: TbxMatSeverityLevel.Success, message, ...configArgs });
+    success(message: string, configArgs?: TbxMatNotificationConfigArgs): TbxMatNotificationRef {
+        return this.show({ type: TbxMatSeverityLevel.Success, message, ...configArgs });
     }
 
     /**
      * Display an error notification
      *
      * @param message - The message to display to the user.
-     * @param configArgs - Optional overrides for duration, position, countdown, and visibility options.
+     * @param configArgs - Optional overrides for duration, action, countdown, and visibility options.
+     *
+     * @returns A {@link TbxMatNotificationRef} for the queued notification.
      *
      * @public
      */
-    error(message: string, configArgs?: TbxMatNotificationConfigArgs): void {
-        this.show({ type: TbxMatSeverityLevel.Error, message, ...configArgs });
+    error(message: string, configArgs?: TbxMatNotificationConfigArgs): TbxMatNotificationRef {
+        return this.show({ type: TbxMatSeverityLevel.Error, message, ...configArgs });
     }
 
     /**
      * Display a warning notification
      *
      * @param message - The message to display to the user.
-     * @param configArgs - Optional overrides for duration, position, countdown, and visibility options.
+     * @param configArgs - Optional overrides for duration, action, countdown, and visibility options.
+     *
+     * @returns A {@link TbxMatNotificationRef} for the queued notification.
      *
      * @public
      */
-    warning(message: string, configArgs?: TbxMatNotificationConfigArgs): void {
-        this.show({ type: TbxMatSeverityLevel.Warning, message, ...configArgs });
+    warning(message: string, configArgs?: TbxMatNotificationConfigArgs): TbxMatNotificationRef {
+        return this.show({ type: TbxMatSeverityLevel.Warning, message, ...configArgs });
     }
 
     /**
      * Display an informational notification
      *
      * @param message - The message to display to the user.
-     * @param configArgs - Optional overrides for duration, position, countdown, and visibility options.
+     * @param configArgs - Optional overrides for duration, action, countdown, and visibility options.
+     *
+     * @returns A {@link TbxMatNotificationRef} for the queued notification.
      *
      * @public
      */
-    information(message: string, configArgs?: TbxMatNotificationConfigArgs): void {
-        this.show({ type: TbxMatSeverityLevel.Information, message, ...configArgs });
+    information(message: string, configArgs?: TbxMatNotificationConfigArgs): TbxMatNotificationRef {
+        return this.show({ type: TbxMatSeverityLevel.Information, message, ...configArgs });
     }
 
     /**
      * Display a help notification
      *
      * @param message - The message to display to the user.
-     * @param configArgs - Optional overrides for duration, position, countdown, and visibility options.
+     * @param configArgs - Optional overrides for duration, action, countdown, and visibility options.
+     *
+     * @returns A {@link TbxMatNotificationRef} for the queued notification.
      *
      * @public
      */
-    help(message: string, configArgs?: TbxMatNotificationConfigArgs): void {
-        this.show({ type: TbxMatSeverityLevel.Help, message, ...configArgs });
+    help(message: string, configArgs?: TbxMatNotificationConfigArgs): TbxMatNotificationRef {
+        return this.show({ type: TbxMatSeverityLevel.Help, message, ...configArgs });
     }
 
     /**
      * Shift the next notification off the queue and display it.
-     * Subscribes to afterDismissed() to chain to the following notification.
+     * Resolves the snackBarRef promise with the native ref.
+     * Subscribes to afterDismissed() to resolve the result promise
+     * and chain to the following notification.
      * When the queue is empty, sets isActive to false and stops.
      */
     private showNext(): void {
-        const config = this.queue.shift();
+        const entry = this.queue.shift();
         this.pendingCount.set(this.queue.length);
 
-        if (!config) {
+        if (!entry) {
             this.isActive.set(false);
             return;
         }
 
+        const { config, resolveSnackBarRef, resolveResult } = entry;
+
         this.isActive.set(true);
+        this.activeResultResolver = resolveResult;
         const duration = this.resolveDuration(config.duration);
 
         const data: NotificationDataDto = {
@@ -298,8 +385,22 @@ export class TbxMatNotificationService {
 
         const ref = this.snackBar.openFromComponent(TbxMatNotificationComponent, snackBarConfig);
 
+        // Resolve the snackBarRef promise — notification is now displayed.
+        resolveSnackBarRef(ref);
+
         this.activeSubscription = ref.afterDismissed().subscribe(() => {
             this.activeSubscription = null;
+
+            // Resolve the result promise with Timeout as the default reason.
+            // Full dismiss reason tracking (Action, Close, ProgrammaticDismissCurrent)
+            // will be implemented in #67b.
+            if (this.activeResultResolver) {
+                this.activeResultResolver({
+                    dismissReason: TbxMatNotificationDismissReason.Timeout,
+                });
+                this.activeResultResolver = null;
+            }
+
             this.showNext();
         });
     }
