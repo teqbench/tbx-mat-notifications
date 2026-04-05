@@ -417,10 +417,22 @@ export class TbxMatNotificationService {
                 this.providerConfig.closeIconResolverService ?? this.defaultCloseIconService,
         };
 
+        // Merge consumer panelClass with the severity panel class.
+        // Consumer classes are appended, not replaced.
+        const consumerPanelClass = config.snackBarConfig?.panelClass;
+        const mergedPanelClass: string[] = [
+            PANEL_CLASS_MAP[config.type],
+            ...(Array.isArray(consumerPanelClass)
+                ? consumerPanelClass
+                : consumerPanelClass
+                  ? [consumerPanelClass]
+                  : []),
+        ];
+
         const snackBarConfig: MatSnackBarConfig<NotificationDataDto> = {
             ...config.snackBarConfig,
             duration,
-            panelClass: PANEL_CLASS_MAP[config.type],
+            panelClass: mergedPanelClass,
             data,
         };
 

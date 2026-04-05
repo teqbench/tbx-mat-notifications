@@ -104,7 +104,7 @@ describe('TbxMatNotificationService', () => {
                 service.show({ type, message: 'test' });
 
                 const config = snackBarSpy.openFromComponent.mock.calls[0][1];
-                expect(config.panelClass).toBe(expectedClass);
+                expect(config.panelClass).toContain(expectedClass);
             }
         });
 
