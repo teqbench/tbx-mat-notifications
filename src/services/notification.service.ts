@@ -247,8 +247,20 @@ export class TbxMatNotificationService {
      * Dismiss the currently visible notification
      *
      * @remarks
-     * Convenience wrapper. If queued notifications remain, the next one is
-     * shown automatically via the afterDismissed() subscription chain.
+     * Convenience wrapper that sets the programmatic dismiss flag and calls
+     * `MatSnackBar.dismiss()`. The active notification's
+     * {@link TbxMatNotificationRef.result} promise resolves with
+     * {@link TbxMatNotificationDismissReason.ProgrammaticDismissCurrent}.
+     *
+     * If queued notifications remain, the next one is shown automatically
+     * via the afterDismissed() subscription chain. Queued notifications
+     * are not affected.
+     *
+     * Prefer this method over calling `dismiss()` directly on the native
+     * {@link https://material.angular.dev/components/snack-bar/api | MatSnackBarRef}
+     * obtained from {@link TbxMatNotificationRef.snackBarRef} — the native
+     * ref does not set the programmatic flag, so the result promise would
+     * resolve with `Timeout` instead of `ProgrammaticDismissCurrent`.
      *
      * @public
      */
@@ -262,9 +274,14 @@ export class TbxMatNotificationService {
      *
      * @remarks
      * Convenience wrapper. No further queued notifications will be shown.
-     * Resolves all queued notification promises: `snackBarRef` with `null`,
-     * `result` with `ProgrammaticDismissAll`. Resolves the active
-     * notification's result with `ProgrammaticDismissAll`.
+     *
+     * All queued (not yet displayed) notifications have their
+     * {@link TbxMatNotificationRef.snackBarRef} promise resolved with `null`
+     * and their {@link TbxMatNotificationRef.result} promise resolved with
+     * {@link TbxMatNotificationDismissReason.ProgrammaticDismissAll}.
+     *
+     * The active notification's result promise is also resolved with
+     * `ProgrammaticDismissAll` before the snackbar is dismissed.
      *
      * @public
      */
@@ -375,6 +392,33 @@ export class TbxMatNotificationService {
      * Subscribes to afterDismissed() to resolve the result promise
      * and chain to the following notification.
      * When the queue is empty, sets isActive to false and stops.
+     *
+     * ## Dismiss Flows
+     *
+     * Five code paths can dismiss the active notification. Each resolves
+     * the result promise with a distinct TbxMatNotificationDismissReason:
+     *
+     * 1. **Action click** — component calls dismissByAction() →
+     *    snackBarRef.dismissWithAction() → afterDismissed() fires with
+     *    dismissedByAction: true → resolves with Action.
+     *
+     * 2. **Close click** — component calls dismissByClose() → sets
+     *    closeFlag → snackBarRef.dismiss() → afterDismissed() fires →
+     *    closeFlag is true → resolves with Close.
+     *
+     * 3. **Timeout** — snackbar auto-dismisses after duration →
+     *    afterDismissed() fires → no flags set → resolves with Timeout.
+     *
+     * 4. **dismiss()** — service sets programmaticDismissCurrentFlag →
+     *    snackBar.dismiss() → afterDismissed() fires → flag is true →
+     *    resolves with ProgrammaticDismissCurrent.
+     *
+     * 5. **dismissAll()** — resolves all queued + active promises with
+     *    ProgrammaticDismissAll, unsubscribes from afterDismissed(),
+     *    then dismisses. afterDismissed() does not fire (unsubscribed).
+     *
+     * The activeResultResolved guard ensures only the first path
+     * resolves the promise — subsequent paths are no-ops.
      */
     private showNext(): void {
         const entry = this.queue.shift();
