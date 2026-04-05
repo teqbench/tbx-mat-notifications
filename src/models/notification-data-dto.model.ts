@@ -1,5 +1,5 @@
 import { type TbxMatIconResolver, type TbxMatIconType } from '@teqbench/tbx-mat-icons';
-import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import { type TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 
 import { type TbxMatNotificationActionButtonAppearance } from '../types/notification-action-button-appearance.type';
 import { type TbxMatNotificationIconPosition } from '../enums/notification-icon-position.enum';

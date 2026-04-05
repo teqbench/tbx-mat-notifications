@@ -765,4 +765,88 @@ describe('TbxMatNotificationService', () => {
             consoleSpy.mockRestore();
         });
     });
+
+    describe('provider-level action config cascade', () => {
+        it('should use provider actionButtonType when per-notification is not set', () => {
+            TestBed.resetTestingModule();
+            afterDismissed$ = new Subject<{ dismissedByAction: boolean }>();
+            snackBarSpy.openFromComponent.mockReturnValue({
+                afterDismissed: () => afterDismissed$.asObservable(),
+                dismiss: vi.fn(),
+                dismissWithAction: vi.fn(),
+            });
+
+            TestBed.configureTestingModule({
+                providers: [
+                    TbxMatNotificationService,
+                    { provide: MatSnackBar, useValue: snackBarSpy },
+                    {
+                        provide: TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
+                        useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
+                    },
+                    {
+                        provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+                        useFactory: () => ({
+                            severityIconResolverService:
+                                new TbxMatNotificationSeverityFontIconService(),
+                            actionConfig: {
+                                actionButtonType: 'tonal' as const,
+                            },
+                        }),
+                    },
+                ],
+            });
+
+            const svc = TestBed.inject(TbxMatNotificationService);
+            svc.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+                action: { label: 'Go' },
+            });
+
+            const data = snackBarSpy.openFromComponent.mock.calls[0][1].data;
+            expect(data.actionButtonType).toBe('tonal');
+        });
+
+        it('should let per-notification actionButtonType override provider', () => {
+            TestBed.resetTestingModule();
+            afterDismissed$ = new Subject<{ dismissedByAction: boolean }>();
+            snackBarSpy.openFromComponent.mockReturnValue({
+                afterDismissed: () => afterDismissed$.asObservable(),
+                dismiss: vi.fn(),
+                dismissWithAction: vi.fn(),
+            });
+
+            TestBed.configureTestingModule({
+                providers: [
+                    TbxMatNotificationService,
+                    { provide: MatSnackBar, useValue: snackBarSpy },
+                    {
+                        provide: TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
+                        useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
+                    },
+                    {
+                        provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+                        useFactory: () => ({
+                            severityIconResolverService:
+                                new TbxMatNotificationSeverityFontIconService(),
+                            actionConfig: {
+                                actionButtonType: 'tonal' as const,
+                            },
+                        }),
+                    },
+                ],
+            });
+
+            const svc = TestBed.inject(TbxMatNotificationService);
+            svc.show({
+                type: TbxMatSeverityLevel.Success,
+                message: 'Test',
+                action: { label: 'Go', actionButtonType: 'filled' },
+            });
+
+            const data = snackBarSpy.openFromComponent.mock.calls[0][1].data;
+            expect(data.actionButtonType).toBe('filled');
+        });
+    });
 });

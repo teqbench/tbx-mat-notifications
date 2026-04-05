@@ -15,6 +15,7 @@ import { TbxMatNotificationSeverityFontIconService } from '../services/notificat
 import { TbxMatNotificationComponent } from './notification.component';
 import { type NotificationDataDto } from '../models/notification-data-dto.model';
 import { NOTIFICATION_DEFAULT_DURATION_MS } from '../constants/notification.constants';
+import { TbxMatNotificationIconPosition } from '../enums/notification-icon-position.enum';
 
 const DUMMY_SVG = '<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>';
 
@@ -482,6 +483,58 @@ describe('TbxMatNotificationComponent', () => {
             const component = fixture.componentInstance;
             expect(component.actionIconFont()).toBeNull();
             expect(component.actionIconSvg()).toBeNull();
+        });
+
+        it('should render a tonal action button with correct appearance', () => {
+            const fixture = createFixture(
+                buildData({ actionLabel: 'Retry', actionButtonType: 'tonal' })
+            );
+
+            const actionButton = fixture.debugElement.query(By.css('button[mat-button]'));
+            expect(actionButton).not.toBeNull();
+            expect(actionButton.nativeElement.textContent.trim()).toContain('Retry');
+        });
+
+        it('should render action icon when iconPosition is Before', () => {
+            const fixture = createFixture(
+                buildData({
+                    actionLabel: 'Retry',
+                    actionButtonType: 'tonal',
+                    actionIconName: 'sync',
+                    actionIconPosition: TbxMatNotificationIconPosition.Before,
+                    actionIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => 'sync',
+                    },
+                })
+            );
+
+            const actionButton = fixture.debugElement.query(By.css('button[mat-button]'));
+            expect(actionButton).not.toBeNull();
+            const icon = actionButton.query(By.css('mat-icon'));
+            expect(icon).not.toBeNull();
+            expect(icon.nativeElement.textContent.trim()).toBe('sync');
+        });
+
+        it('should render action icon when iconPosition is After', () => {
+            const fixture = createFixture(
+                buildData({
+                    actionLabel: 'View',
+                    actionButtonType: 'outlined',
+                    actionIconName: 'open_in_new',
+                    actionIconPosition: TbxMatNotificationIconPosition.After,
+                    actionIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => 'open_in_new',
+                    },
+                })
+            );
+
+            const actionButton = fixture.debugElement.query(By.css('button[mat-button]'));
+            expect(actionButton).not.toBeNull();
+            const icon = actionButton.query(By.css('mat-icon'));
+            expect(icon).not.toBeNull();
+            expect(icon.nativeElement.textContent.trim()).toBe('open_in_new');
         });
     });
 });

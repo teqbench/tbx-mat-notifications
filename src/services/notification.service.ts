@@ -175,6 +175,9 @@ export class TbxMatNotificationService {
      */
     private programmaticDismissCurrentFlag = false;
 
+    private readonly _isActive = signal(false);
+    private readonly _pendingCount = signal(0);
+
     /**
      * Whether a notification is currently being displayed
      *
@@ -184,7 +187,7 @@ export class TbxMatNotificationService {
      *
      * @public
      */
-    readonly isActive = signal(false);
+    readonly isActive = this._isActive.asReadonly();
 
     /**
      * Number of notifications waiting in the queue (not including the active one)
@@ -195,7 +198,7 @@ export class TbxMatNotificationService {
      *
      * @public
      */
-    readonly pendingCount = signal(0);
+    readonly pendingCount = this._pendingCount.asReadonly();
 
     /**
      * Queue a notification for display
@@ -231,7 +234,7 @@ export class TbxMatNotificationService {
         });
 
         this.queue.push({ config, resolveSnackBarRef, resolveResult });
-        this.pendingCount.set(this.queue.length);
+        this._pendingCount.set(this.queue.length);
 
         if (!this.isActive()) {
             this.showNext();
@@ -295,7 +298,7 @@ export class TbxMatNotificationService {
             });
         }
         this.queue.length = 0;
-        this.pendingCount.set(0);
+        this._pendingCount.set(0);
 
         // Unsubscribe BEFORE dismissing — prevents afterDismissed()
         // from firing showNext() with an empty queue.
@@ -314,7 +317,7 @@ export class TbxMatNotificationService {
         }
 
         this.snackBar.dismiss();
-        this.isActive.set(false);
+        this._isActive.set(false);
     }
 
     /**
@@ -423,16 +426,16 @@ export class TbxMatNotificationService {
      */
     private showNext(): void {
         const entry = this.queue.shift();
-        this.pendingCount.set(this.queue.length);
+        this._pendingCount.set(this.queue.length);
 
         if (!entry) {
-            this.isActive.set(false);
+            this._isActive.set(false);
             return;
         }
 
         const { config, resolveSnackBarRef, resolveResult } = entry;
 
-        this.isActive.set(true);
+        this._isActive.set(true);
         this.activeResultResolver = resolveResult;
         this.activeResultResolved = false;
         this.closeFlag = false;

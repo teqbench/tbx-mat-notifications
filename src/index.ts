@@ -15,6 +15,8 @@
  * - {@link TbxMatNotificationService} — inject and call success/error/warning/information/help.
  * - {@link TbxMatNotificationRef} — returned from all service methods with config, native ref, and result promises.
  * - {@link TbxMatNotificationResult} — dismiss result with {@link TbxMatNotificationDismissReason}.
+ * - {@link TbxMatNotificationDismissReason} — enum of dismiss reasons (Action, Close, Timeout, etc.).
+ * - {@link TbxMatNotificationIconPosition} — enum for action button icon position (Before, After).
  * - {@link TbxMatNotificationConfig} — full config interface for show().
  * - {@link TbxMatNotificationConfigArgs} — optional config for convenience methods.
  * - {@link TbxMatNotificationAction} — action button configuration.

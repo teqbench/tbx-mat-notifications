@@ -75,9 +75,10 @@ import { TbxMatNotificationIconPosition } from '../enums/notification-icon-posit
                     <mat-icon
                         class="tbx-mat-notification-snackbar-icon"
                         [svgIcon]="severitySvg"
+                        aria-hidden="true"
                     ></mat-icon>
                 } @else {
-                    <mat-icon class="tbx-mat-notification-snackbar-icon">{{
+                    <mat-icon class="tbx-mat-notification-snackbar-icon" aria-hidden="true">{{
                         severityIconFont()
                     }}</mat-icon>
                 }
@@ -114,9 +115,12 @@ import { TbxMatNotificationIconPosition } from '../enums/notification-icon-posit
                             ) {
                                 @let actionSvgBefore = actionIconSvg();
                                 @if (actionSvgBefore) {
-                                    <mat-icon [svgIcon]="actionSvgBefore"></mat-icon>
+                                    <mat-icon
+                                        [svgIcon]="actionSvgBefore"
+                                        aria-hidden="true"
+                                    ></mat-icon>
                                 } @else {
-                                    <mat-icon>{{ actionIconFont() }}</mat-icon>
+                                    <mat-icon aria-hidden="true">{{ actionIconFont() }}</mat-icon>
                                 }
                             }
                             {{ data.actionLabel }}
@@ -125,9 +129,12 @@ import { TbxMatNotificationIconPosition } from '../enums/notification-icon-posit
                             ) {
                                 @let actionSvgAfter = actionIconSvg();
                                 @if (actionSvgAfter) {
-                                    <mat-icon [svgIcon]="actionSvgAfter"></mat-icon>
+                                    <mat-icon
+                                        [svgIcon]="actionSvgAfter"
+                                        aria-hidden="true"
+                                    ></mat-icon>
                                 } @else {
-                                    <mat-icon>{{ actionIconFont() }}</mat-icon>
+                                    <mat-icon aria-hidden="true">{{ actionIconFont() }}</mat-icon>
                                 }
                             }
                         </button>
