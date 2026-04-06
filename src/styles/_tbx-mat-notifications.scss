@@ -116,18 +116,15 @@ html {
  * ──────────────────────────────────────────────────────────────────────── */
 .tbx-mat-notification-snackbar-default {
     /* ── Icon button color tokens ──
-   * Match the snackbar action text button color so font-based icon-only
-   * buttons and the dismiss (close) icon button render at the same
-   * intensity as a text-labeled action button. Falls back to the M3
-   * inverse-primary token used by the theme's default snackbar button.
-   *
-   * Close icon tokens default to the action icon values. Consumers can
-   * override either set independently on the panel class.
+   * Match the M3 inverse-primary design token that Angular Material uses
+   * for snackbar action button color in the default theme. Both action
+   * and close icon buttons resolve to the same value by default.
+   * Consumers can override either set independently on the panel class.
    */
-    --tbx-mat-notification-action-icon-color: var(--mat-snack-bar-button-color, var(--mat-sys-inverse-primary));
-    --tbx-mat-notification-action-icon-state-layer-color: var(--mat-snack-bar-button-color, var(--mat-sys-inverse-primary));
-    --tbx-mat-notification-close-icon-color: var(--mat-snack-bar-button-color, var(--mat-sys-inverse-primary));
-    --tbx-mat-notification-close-icon-state-layer-color: var(--mat-snack-bar-button-color, var(--mat-sys-inverse-primary));
+    --tbx-mat-notification-action-icon-color: var(--mat-sys-inverse-primary);
+    --tbx-mat-notification-action-icon-state-layer-color: var(--mat-sys-inverse-primary);
+    --tbx-mat-notification-close-icon-color: var(--mat-sys-inverse-primary);
+    --tbx-mat-notification-close-icon-state-layer-color: var(--mat-sys-inverse-primary);
 }
 
 /* ── Severity panel mixin ─────────────────────────────────────────────────
