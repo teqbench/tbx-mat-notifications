@@ -1,5 +1,87 @@
 # Changelog
 
+## [6.0.1](https://github.com/teqbench/tbx-mat-notifications/compare/v6.0.0...v6.0.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* address review findings [#89](https://github.com/teqbench/tbx-mat-notifications/issues/89)-[#92](https://github.com/teqbench/tbx-mat-notifications/issues/92) — stale SCSS comment, missing default() docs and tests ([57f22ff](https://github.com/teqbench/tbx-mat-notifications/commit/57f22ff32b8a569efac5404950bceaea3d92b1c6))
+* **styles:** eliminate circular var() fallback for icon button colors in Safari/Firefox ([8c95497](https://github.com/teqbench/tbx-mat-notifications/commit/8c9549773ed0604099de902b62e443b86cda21a3))
+* **styles:** rename panel class snackbar-info to snackbar-information ([cf0ecc4](https://github.com/teqbench/tbx-mat-notifications/commit/cf0ecc43ebb79c660d5769d118f58d315a67b51a))
+
+## [6.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v5.0.0...v6.0.0) (2026-04-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* severityIconFont/severityIconSvg, closeIconFont/closeIconSvg, actionIconFont/actionIconSvg replaced by severityIcon, closeIcon, actionIcon returning ResolvedIcon | null.
+* update barrel file exports for action button support ([#70](https://github.com/teqbench/tbx-mat-notifications/issues/70))
+* add TbxMatNotificationRef return type and promise infrastructure ([#73](https://github.com/teqbench/tbx-mat-notifications/issues/73))
+* update duration constants and add action defaults ([#66](https://github.com/teqbench/tbx-mat-notifications/issues/66))
+* update models for action button and close icon resolver ([#65](https://github.com/teqbench/tbx-mat-notifications/issues/65))
+* rename icon services and notification component ([#64](https://github.com/teqbench/tbx-mat-notifications/issues/64))
+
+### Features
+
+* add action button rendering to notification component ([#68](https://github.com/teqbench/tbx-mat-notifications/issues/68)) ([35e65ec](https://github.com/teqbench/tbx-mat-notifications/commit/35e65ecb00cb4c0828f3801de2ee6e16c44fe37e))
+* add action resolution cascade and fallback rules ([#76](https://github.com/teqbench/tbx-mat-notifications/issues/76)) ([719f168](https://github.com/teqbench/tbx-mat-notifications/commit/719f168981a81acc740b33c1697ef17be6b8a1aa))
+* add dismiss reason tracking and promise resolution guard ([#74](https://github.com/teqbench/tbx-mat-notifications/issues/74)) ([d78b71f](https://github.com/teqbench/tbx-mat-notifications/commit/d78b71fff004da46b887b5327fd92ae7f2a7c498))
+* add panelClass merge for snackBarConfig passthrough ([#75](https://github.com/teqbench/tbx-mat-notifications/issues/75)) ([ece8b45](https://github.com/teqbench/tbx-mat-notifications/commit/ece8b45f5b2487f95b1d89a841c9f94d3216d62e))
+* Add support for a default severity level. Refine action button colors. ([3f28dff](https://github.com/teqbench/tbx-mat-notifications/commit/3f28dffb4623ee94906f8ce0c0d578b1989ea1e1))
+* add TbxMatNotificationRef return type and promise infrastructure ([#73](https://github.com/teqbench/tbx-mat-notifications/issues/73)) ([5a1cda4](https://github.com/teqbench/tbx-mat-notifications/commit/5a1cda4e8f3e33e660044ec28ee9badd7e96c2d2))
+* **models:** add types, enums, and interfaces for action button support ([#62](https://github.com/teqbench/tbx-mat-notifications/issues/62)) ([6428fde](https://github.com/teqbench/tbx-mat-notifications/commit/6428fde7a52a2a0d2f211a0b27b745ab17c64fa6))
+* **services:** add default close icon font resolver service ([#63](https://github.com/teqbench/tbx-mat-notifications/issues/63)) ([b466af8](https://github.com/teqbench/tbx-mat-notifications/commit/b466af8ddc460eac9a219542254477bb9c6263d5))
+* **styles:** add action button color overrides per severity panel class ([#69](https://github.com/teqbench/tbx-mat-notifications/issues/69)) ([eda6725](https://github.com/teqbench/tbx-mat-notifications/commit/eda6725e367d543d64082db1a496ff56aa29673b))
+
+
+### Bug Fixes
+
+* address code review findings (F1-F10) ([6e42f2f](https://github.com/teqbench/tbx-mat-notifications/commit/6e42f2f4f6fcc84a23dcf5b759e2dd91622b6218))
+* address code review findings (F1-F3) ([56c6b0f](https://github.com/teqbench/tbx-mat-notifications/commit/56c6b0f418741fadcfb84c20e86c1e0a1af95b15))
+* guard showNext() against destroyed injector ([470ccba](https://github.com/teqbench/tbx-mat-notifications/commit/470ccba1d9f3e376c929df27f400c74536e3a659))
+* **storybook:** reset CSS custom properties in action button stories ([a8f73fd](https://github.com/teqbench/tbx-mat-notifications/commit/a8f73fd28af7c7c76e69bb9351b6bf08eea3e553))
+* **test:** register dummy SVG icon to suppress MatIcon stderr error ([c0d4a95](https://github.com/teqbench/tbx-mat-notifications/commit/c0d4a9525bcc7bed842084cd239753584244e3b9))
+* use [matButton] input binding for action button appearance ([a092d4b](https://github.com/teqbench/tbx-mat-notifications/commit/a092d4bb572d4e4c08a42fb00a0ee328947b17ae))
+
+
+### Code Refactoring
+
+* re-architect notification component for Angular best practices ([f76dc13](https://github.com/teqbench/tbx-mat-notifications/commit/f76dc1342574643b2076aea0536d769157c0477c))
+* rename icon services and notification component ([#64](https://github.com/teqbench/tbx-mat-notifications/issues/64)) ([ff8ddd2](https://github.com/teqbench/tbx-mat-notifications/commit/ff8ddd2e1c215eb51ad645d2603740711442f1ff))
+* update barrel file exports for action button support ([#70](https://github.com/teqbench/tbx-mat-notifications/issues/70)) ([cfe671f](https://github.com/teqbench/tbx-mat-notifications/commit/cfe671f571296e47d9a9df41f728766606fa396f))
+* update duration constants and add action defaults ([#66](https://github.com/teqbench/tbx-mat-notifications/issues/66)) ([41dd504](https://github.com/teqbench/tbx-mat-notifications/commit/41dd50462fbcbdde906c91a26c36c5d73e497218))
+* update models for action button and close icon resolver ([#65](https://github.com/teqbench/tbx-mat-notifications/issues/65)) ([61d26fc](https://github.com/teqbench/tbx-mat-notifications/commit/61d26fc98d1d114675d3db62f17a1afd75f623d0))
+
+## [5.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v4.0.0...v5.0.0) (2026-04-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* Exported type TbxMatNotificationConfigArgsType is now TbxMatNotificationConfigArgs.
+* **icons:** Re-exported TbxMatSeverityLevelType is now TbxMatSeverityLevel.
+
+### Code Refactoring
+
+* **icons:** rename TbxMatSeverityLevelType to TbxMatSeverityLevel ([62634be](https://github.com/teqbench/tbx-mat-notifications/commit/62634be577af3041d4bf37069799d757c3fba4a5))
+* rename TbxMatNotificationConfigArgsType to TbxMatNotificationConfigArgs ([38a3d21](https://github.com/teqbench/tbx-mat-notifications/commit/38a3d21803c7842bf8c5ce39373d264bf69297cc))
+
+## [4.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v3.0.0...v4.0.0) (2026-04-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* license changed from Apache-2.0 to AGPL-3.0-only.
+
+### Bug Fixes
+
+* **deps:** resolve lockfile to correct package versions after merge ([172dac8](https://github.com/teqbench/tbx-mat-notifications/commit/172dac828632c00d9572eb787803327d8e36751b))
+* **security:** use email reporting channel for private repository ([05ec1b2](https://github.com/teqbench/tbx-mat-notifications/commit/05ec1b2169806f3f9f2dab0698b9c544cb6df603))
+
+
+### Miscellaneous Chores
+
+* switch license from Apache-2.0 to AGPL-3.0-only ([bcc339f](https://github.com/teqbench/tbx-mat-notifications/commit/bcc339f15d3ca5554fe341c8d675f0c6a443421a))
+
 ## [3.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v2.0.0...v3.0.0) (2026-03-31)
 
 
@@ -39,10 +121,10 @@
 ### ⚠ BREAKING CHANGES
 
 * warn() renamed to warning(), info() renamed to information().
-* TbxSeverityLevelType re-export renamed to TbxMatSeverityLevelType.
-* TBX_MAT_NOTIFICATION_ICON_SERVICE and TbxMatNotificationIconService removed. Use TBX_MAT_NOTIFICATION_PROVIDER_CONFIG with TbxMatNotificationFontIconService or TbxMatNotificationSvgIconService. TbxMatSeverityLevelType renamed to TbxSeverityLevelType.
+* TbxSeverityLevelType re-export renamed to TbxMatSeverityLevel.
+* TBX_MAT_NOTIFICATION_ICON_SERVICE and TbxMatNotificationIconService removed. Use TBX_MAT_NOTIFICATION_PROVIDER_CONFIG with TbxMatNotificationFontIconService or TbxMatNotificationSvgIconService. TbxMatSeverityLevel renamed to TbxSeverityLevelType.
 * All public API symbols are renamed with TbxMat/TBX_MAT_ prefix.
-* **icons:** SeverityLevelType re-export is now TbxMatSeverityLevelType.
+* **icons:** SeverityLevelType re-export is now TbxMatSeverityLevel.
 
 ### Features
 

@@ -1,17 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import {
-    NotificationHarnessComponent,
-    SHARED_ARG_TYPES,
-    DEFAULT_ARGS,
-    withDefaultProperties,
-    withCustomSvgIcons,
-    withCustomSvgIconsAndSvgClose,
-    withCustomProperties,
-    COMPACT_CSS,
-    LARGE_CSS,
-    LARGE_ICON_ONLY_CSS,
-} from './notification.stories.common';
+import { NotificationHarnessComponent, SHARED_ARG_TYPES, DEFAULT_ARGS, withDefaultProperties, withCustomSvgIcons, withCustomSvgIconsAndSvgClose, withCustomProperties, COMPACT_CSS, LARGE_CSS, LARGE_ICON_ONLY_CSS } from './notification.stories.common';
 
 const meta: Meta<NotificationHarnessComponent> = {
     title: 'Notifications/Custom SVG Icons',
@@ -23,9 +12,7 @@ const meta: Meta<NotificationHarnessComponent> = {
 export default meta;
 type Story = StoryObj<NotificationHarnessComponent>;
 
-const CATEGORY_DESCRIPTION =
-    'Uses CustomSvgIconService which overrides the default SVGs via initialize() ' +
-    'with icons from the "Web 5" collection (SVG Repo, CC0 license).';
+const CATEGORY_DESCRIPTION = 'Uses CustomSvgIconService which overrides the default SVGs via initialize() ' + 'with icons from the "Web 5" collection (SVG Repo, CC0 license).';
 
 export const Default: Story = {
     args: { ...DEFAULT_ARGS, description: CATEGORY_DESCRIPTION },
@@ -52,9 +39,7 @@ export const SvgCloseIcon: Story = {
     name: 'SVG Close Icon',
     args: {
         ...DEFAULT_ARGS,
-        description:
-            CATEGORY_DESCRIPTION +
-            ' Also uses a custom SVG close/dismiss icon registered with MatIconRegistry.',
+        description: CATEGORY_DESCRIPTION + ' Also uses a custom SVG close/dismiss icon registered with MatIconRegistry.',
     },
     decorators: [withDefaultProperties(), withCustomSvgIconsAndSvgClose()],
 };

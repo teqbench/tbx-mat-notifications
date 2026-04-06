@@ -20,8 +20,6 @@ The CI workflow is the quality gate for the repository. It runs formatting check
 
 ---
 
----
-
 ## Concurrency
 
 ```yaml
@@ -135,7 +133,7 @@ Full type-check (`tsc --noEmit`) without emitting output.
 npm run lint
 ```
 
-Runs ESLint with the flat config (`eslint.config.js`).
+Runs [ESLint ↗](https://eslint.org) with the flat config (`eslint.config.js`).
 
 #### 10. Run Tests with Coverage
 
@@ -159,7 +157,7 @@ Extracts badge data from test output for the gist push steps:
 
 #### 12. Check README Version Drift
 
-Compares the TypeScript and Node.js versions in `README.md`'s compatibility table against `package.json`. Fails the build if they don't match, preventing documentation drift after dependency updates.
+Compares the [TypeScript ↗](https://www.typescriptlang.org) and [Node.js ↗](https://nodejs.org) versions in `README.md`'s compatibility table against `package.json`. Fails the build if they don't match, preventing documentation drift after dependency updates.
 
 #### 13. Build
 
@@ -167,11 +165,11 @@ Compares the TypeScript and Node.js versions in `README.md`'s compatibility tabl
 npm run build
 ```
 
-Compiles TypeScript to `dist/` using `tsconfig.build.json`.
+Compiles [TypeScript ↗](https://www.typescriptlang.org) to `dist/` using `tsconfig.build.json`.
 
 #### 14–18. Push Badge Data to Gist
 
-Five badges are pushed as JSON to a shared public GitHub Gist using `schneegans/dynamic-badges-action@v1.7.0`. [Shields.io](https://shields.io) reads the JSON and renders the badges dynamically. Only runs on **push events** (not PRs).
+Five badges are pushed as JSON to a shared public GitHub Gist using `schneegans/dynamic-badges-action@v1.7.0`. [Shields.io ↗](https://shields.io) reads the JSON and renders the badges dynamically. Only runs on **push events** (not PRs).
 
 | Badge        | Style         | Source                                            | Gist Filename                       |
 | ------------ | ------------- | ------------------------------------------------- | ----------------------------------- |
@@ -196,13 +194,13 @@ All badge steps run with `if: always()` so badges update even on failure. The `s
 
 ## Badge Rendering
 
-Badges are rendered by [Shields.io endpoint badges](https://shields.io/badges/endpoint-badge). The URL format is:
+Badges are rendered by [Shields.io endpoint badges ↗](https://shields.io/badges/endpoint-badge). The URL format is:
 
 ```
 https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/{GIST_OWNER}/{GIST_ID}/raw/{REPO_NAME}-{BRANCH}-{badge}.json
 ```
 
-The gist stores JSON files matching the [Shields.io endpoint schema](https://shields.io/badges/endpoint-badge):
+The gist stores JSON files matching the [Shields.io endpoint schema ↗](https://shields.io/badges/endpoint-badge):
 
 ```json
 {
@@ -214,4 +212,4 @@ The gist stores JSON files matching the [Shields.io endpoint schema](https://shi
 }
 ```
 
-Shields.io caches responses for ~5 minutes. After a CI run, badges may take a few minutes to reflect new data.
+[Shields.io ↗](https://shields.io) caches responses for ~5 minutes. After a CI run, badges may take a few minutes to reflect new data.

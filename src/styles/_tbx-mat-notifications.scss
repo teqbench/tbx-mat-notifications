@@ -1,18 +1,21 @@
 @use '@angular/material' as mat;
 
-/* ─── Notification Color Tokens ─────────────────────────────────────────────
+/* ━━━ Notification Color Tokens ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  *
  * Default notification colors follow universal UX conventions:
- *   success = green, error = red, warning = amber, information = blue, help = blue
+ * success = green, error = red, warning = amber, information = blue, help = blue
  *
  * These are intentionally NOT tied to --mat-sys-* palette tokens because
  * notification severity colors must be immediately recognizable regardless
  * of theme. A purple-themed app still needs red errors and green successes.
  *
+ * The "default" severity level applies NO color overrides — it inherits
+ * whatever the current Material theme provides. No tokens are needed for it.
+ *
  * Themes can optionally override these via html[data-theme="id"] blocks
  * in the consuming application's theme stylesheet by redefining the
  * --tbx-mat-notification-* properties.
- * ─────────────────────────────────────────────────────────────────────────── */
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 html {
     /* Success — green */
@@ -36,104 +39,217 @@ html {
     --tbx-mat-notification-help-text: #ffffff;
 }
 
-/* ─── Panel Styles ──────────────────────────────────────────────────────────
+/* ━━━ Action Button Opacity Tokens ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *
+ * Centralized opacity values used by action button variants within severity
+ * panels. Defined once here so downstream consumers can override them
+ * without touching individual severity classes.
+ *
+ * These are NOT scoped per-severity — they control how opaque the action
+ * button elements are relative to the panel's text color. The slight
+ * transparency differentiates action buttons from the message text.
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+html {
+    --tbx-mat-notification-action-text-opacity: 0.8;
+
+    --tbx-mat-notification-action-filled-container-opacity: var(--tbx-mat-notification-action-text-opacity);
+    --tbx-mat-notification-action-tonal-container-opacity: 0.55;
+
+    --tbx-mat-notification-action-outlined-opacity: var(--tbx-mat-notification-action-text-opacity);
+    --tbx-mat-notification-action-elevated-opacity: var(--tbx-mat-notification-action-text-opacity);
+    --tbx-mat-notification-action-icon-opacity: var(--tbx-mat-notification-action-text-opacity);
+    --tbx-mat-notification-close-icon-opacity: var(--tbx-mat-notification-action-text-opacity);
+
+    --tbx-mat-notification-action-filled-hover-state-layer-opacity: 0.3;
+    --tbx-mat-notification-action-tonal-hover-state-layer-opacity: var(--tbx-mat-notification-action-filled-hover-state-layer-opacity);
+}
+
+/* ━━━ Panel Styles ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  *
  * Applied via MatSnackBarConfig.panelClass in TbxMatNotificationService.
  *
  * Uses Angular Material's recommended override mixin API:
- *   mat.snack-bar-overrides()   — container and text colors
- *   mat.icon-button-overrides() — dismiss button icon color
+ *   mat.snack-bar-overrides() — container and text colors
  *
- * This replaces the prior approach of targeting .mdc-snackbar__surface with
- * !important overrides and child selectors, which was brittle and broke
- * specificity for downstream consumers.
+ * Close icon button and all action button variant styling is applied via CSS
+ * custom properties set directly on each panel class, targeting the
+ * --mat-button-{variant}-{token} and --mat-icon-button-{token} naming
+ * conventions used by Angular Material's button components. Icon button
+ * tokens are mapped via class-targeted rules
+ * (.tbx-mat-notification-action-icon-button, .tbx-mat-notification-close-icon-button)
+ * rather than at the panel level. The mat.button-overrides() and
+ * mat.icon-button-overrides() mixins are not used because they require a Sass
+ * environment that matches Angular's internal compilation (Storybook's
+ * Vite/Sass pipeline is incompatible with the current-selector-or-root mixin).
  *
  * See: https://material.angular.dev/components/snack-bar/styling
- * ─────────────────────────────────────────────────────────────────────────── */
+ *      https://material.angular.dev/components/button/styling
+ *
+ * ── Button variant token mapping ──
+ *
+ * Each severity panel class overrides color tokens for all six button
+ * variants that the notification component supports:
+ *
+ *   text      — label at configured opacity; transparent container
+ *   filled    — container at configured opacity; solid bg-color label
+ *   tonal     — container at configured opacity; solid bg-color label;
+ *               state layer uses bg color for visible hover contrast
+ *   outlined  — label at configured opacity; text-color border; transparent container
+ *   elevated  — label at configured opacity; panel-colored container;
+ *               shadow escalates on hover (level1 → level2)
+ *   icon      — icon at configured opacity; separate action and close tokens
+ *               for independent consumer override
+ *
+ * State layer (hover/focus/press) colors are set to white for all variants
+ * so the M3 hover tint lightens the colored panel rather than applying
+ * the theme's primary color.
+ *
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-.tbx-mat-notification-snackbar-success {
+/* ── Default severity ──────────────────────────────────────────────────────
+ *
+ * The default severity level inherits the Material theme's snackbar
+ * styling for container and text colors. Icon button color tokens are
+ * set to --mat-sys-inverse-primary to match the theme's default
+ * snackbar action button color. The class exists so PANEL_CLASS_MAP
+ * has a valid entry and downstream consumers can target it if needed.
+ * ──────────────────────────────────────────────────────────────────────── */
+.tbx-mat-notification-snackbar-default {
+    /* ── Icon button color tokens ──
+   * Match the M3 inverse-primary design token that Angular Material uses
+   * for snackbar action button color in the default theme. Both action
+   * and close icon buttons resolve to the same value by default.
+   * Consumers can override either set independently on the panel class.
+   */
+    --tbx-mat-notification-action-icon-color: var(--mat-sys-inverse-primary);
+    --tbx-mat-notification-action-icon-state-layer-color: var(--mat-sys-inverse-primary);
+    --tbx-mat-notification-close-icon-color: var(--mat-sys-inverse-primary);
+    --tbx-mat-notification-close-icon-state-layer-color: var(--mat-sys-inverse-primary);
+}
+
+/* ── Severity panel mixin ─────────────────────────────────────────────────
+ *
+ * Generates all token overrides for a single severity level. Accepts the
+ * severity's background and text CSS custom property references.
+ *
+ * Using a mixin avoids repeating the same block of ~30 properties for
+ * each severity level. Each @include passes the severity-specific
+ * custom properties.
+ * ──────────────────────────────────────────────────────────────────────── */
+@mixin _severity-panel($bg, $text) {
+    /* ── Snackbar container + message text ── */
     @include mat.snack-bar-overrides(
         (
-            container-color: var(--tbx-mat-notification-success-background),
-            supporting-text-color: var(--tbx-mat-notification-success-text),
+            container-color: $bg,
+            supporting-text-color: $text,
         )
     );
 
-    @include mat.icon-button-overrides(
-        (
-            icon-color: var(--tbx-mat-notification-success-text),
-        )
-    );
+    /* ── Icon button color tokens ──
+   * Action and close icon buttons each compute their own color via
+   * color-mix() using their respective opacity tokens. Both opacity
+   * tokens default to --tbx-mat-notification-action-text-opacity so
+   * the buttons match by default. Consumers can override either
+   * opacity or color independently on the panel class.
+   *
+   * These custom properties are applied to the actual --mat-icon-button-*
+   * tokens via class-targeted rules below the panel definitions, not at
+   * the panel level, to avoid cross-browser issues with self-referential
+   * var() fallbacks.
+   */
+    --tbx-mat-notification-action-icon-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-icon-opacity) * 100%), transparent);
+    --tbx-mat-notification-action-icon-state-layer-color: #{$text};
+    --tbx-mat-notification-close-icon-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-close-icon-opacity) * 100%), transparent);
+    --tbx-mat-notification-close-icon-state-layer-color: #{$text};
+
+    /* ── Text button ── */
+    --mat-snack-bar-button-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-text-opacity) * 100%), transparent);
+    --mat-button-text-label-text-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-text-opacity) * 100%), transparent);
+    --mat-button-text-state-layer-color: #{$text};
+    --mat-button-text-ripple-color: color-mix(in srgb, #{$text} calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent);
+
+    /* ── Filled button ── */
+    --mat-button-filled-container-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-filled-container-opacity) * 100%), transparent);
+    --mat-button-filled-label-text-color: #{$bg};
+    --mat-button-filled-state-layer-color: #{$bg};
+    --mat-button-filled-hover-state-layer-opacity: var(--tbx-mat-notification-action-filled-hover-state-layer-opacity);
+    --mat-button-filled-ripple-color: color-mix(in srgb, #{$bg} calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent);
+
+    /* ── Tonal button ── */
+    --mat-button-tonal-container-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-tonal-container-opacity) * 100%), transparent);
+    --mat-button-tonal-label-text-color: #{$bg};
+    --mat-button-tonal-state-layer-color: #{$bg};
+    --mat-button-tonal-hover-state-layer-opacity: var(--tbx-mat-notification-action-tonal-hover-state-layer-opacity);
+    --mat-button-tonal-ripple-color: color-mix(in srgb, #{$bg} calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent);
+
+    /* ── Outlined button ── */
+    --mat-button-outlined-label-text-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-outlined-opacity) * 100%), transparent);
+    --mat-button-outlined-outline-color: #{$text};
+    --mat-button-outlined-state-layer-color: #{$text};
+    --mat-button-outlined-ripple-color: color-mix(in srgb, #{$text} calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent);
+
+    /* ── Elevated (protected) button ── */
+    --mat-button-protected-label-text-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-elevated-opacity) * 100%), transparent);
+    --mat-button-protected-container-color: #{$bg};
+    --mat-button-protected-state-layer-color: #{$text};
+    --mat-button-protected-container-elevation-shadow: var(--mat-sys-level1);
+    --mat-button-protected-hover-container-elevation-shadow: var(--mat-sys-level2);
+    --mat-button-protected-focus-container-elevation-shadow: var(--mat-sys-level1);
+    --mat-button-protected-pressed-container-elevation-shadow: var(--mat-sys-level1);
+    --mat-button-protected-ripple-color: color-mix(in srgb, #{$text} calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent);
+}
+
+.tbx-mat-notification-snackbar-success {
+    @include _severity-panel(var(--tbx-mat-notification-success-background), var(--tbx-mat-notification-success-text));
 }
 
 .tbx-mat-notification-snackbar-error {
-    @include mat.snack-bar-overrides(
-        (
-            container-color: var(--tbx-mat-notification-error-background),
-            supporting-text-color: var(--tbx-mat-notification-error-text),
-        )
-    );
-
-    @include mat.icon-button-overrides(
-        (
-            icon-color: var(--tbx-mat-notification-error-text),
-        )
-    );
+    @include _severity-panel(var(--tbx-mat-notification-error-background), var(--tbx-mat-notification-error-text));
 }
 
 .tbx-mat-notification-snackbar-warning {
-    @include mat.snack-bar-overrides(
-        (
-            container-color: var(--tbx-mat-notification-warning-background),
-            supporting-text-color: var(--tbx-mat-notification-warning-text),
-        )
-    );
-
-    @include mat.icon-button-overrides(
-        (
-            icon-color: var(--tbx-mat-notification-warning-text),
-        )
-    );
+    @include _severity-panel(var(--tbx-mat-notification-warning-background), var(--tbx-mat-notification-warning-text));
 }
 
-.tbx-mat-notification-snackbar-info {
-    @include mat.snack-bar-overrides(
-        (
-            container-color: var(--tbx-mat-notification-information-background),
-            supporting-text-color: var(--tbx-mat-notification-information-text),
-        )
-    );
-
-    @include mat.icon-button-overrides(
-        (
-            icon-color: var(--tbx-mat-notification-information-text),
-        )
-    );
+.tbx-mat-notification-snackbar-information {
+    @include _severity-panel(var(--tbx-mat-notification-information-background), var(--tbx-mat-notification-information-text));
 }
 
 .tbx-mat-notification-snackbar-help {
-    @include mat.snack-bar-overrides(
-        (
-            container-color: var(--tbx-mat-notification-help-background),
-            supporting-text-color: var(--tbx-mat-notification-help-text),
-        )
-    );
-
-    @include mat.icon-button-overrides(
-        (
-            icon-color: var(--tbx-mat-notification-help-text),
-        )
-    );
+    @include _severity-panel(var(--tbx-mat-notification-help-background), var(--tbx-mat-notification-help-text));
 }
 
-/* ─── Countdown Bar ─────────────────────────────────────────────────────────
+/* ── Icon button overrides ────────────────────────────────────────────────
  *
- * The countdown element is rendered by NotificationComponent but
+ * Map the library's custom icon-color tokens to Angular Material's
+ * --mat-icon-button-* tokens on each button class. This avoids setting
+ * --mat-icon-button-* at the panel level (which would create
+ * self-referential var() fallbacks that fail in Safari and Firefox).
+ *
+ * Both buttons resolve to the same computed color by default. Consumers
+ * can differentiate them by overriding --tbx-mat-notification-action-icon-*
+ * or --tbx-mat-notification-close-icon-* on the panel class.
+ * ──────────────────────────────────────────────────────────────────────── */
+
+.tbx-mat-notification-action-icon-button.mat-mdc-icon-button {
+    --mat-icon-button-icon-color: var(--tbx-mat-notification-action-icon-color);
+    --mat-icon-button-state-layer-color: var(--tbx-mat-notification-action-icon-state-layer-color);
+}
+
+.tbx-mat-notification-close-icon-button.mat-mdc-icon-button {
+    --mat-icon-button-icon-color: var(--tbx-mat-notification-close-icon-color);
+    --mat-icon-button-state-layer-color: var(--tbx-mat-notification-close-icon-state-layer-color);
+}
+
+/* ━━━ Countdown Bar ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *
+ * The countdown element is rendered by TbxMatNotificationComponent but
  * positioned globally because it must break out of the component's content
  * padding to span the full width of the snackbar surface. Global CSS can
  * reach into the component; component-scoped CSS cannot reach up to the
  * surface container.
- * ─────────────────────────────────────────────────────────────────────────── */
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 .mat-mdc-snack-bar-container .mdc-snackbar__surface {
     position: relative;

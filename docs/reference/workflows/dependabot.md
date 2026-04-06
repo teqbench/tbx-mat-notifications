@@ -1,6 +1,6 @@
 # Dependabot — `dependabot.yml`
 
-**File:** `.github/dependabot.yml`
+**File:** `.github/dependabot.yml` (not yet created in this repository — this documents the expected configuration)
 
 ---
 
@@ -59,7 +59,7 @@ Updates action versions used in all workflow files (e.g., `actions/checkout@v4` 
 
 ## Interaction with Pinned Dependencies
 
-Some dependencies are intentionally pinned without caret ranges (see `devDependenciesPinned` in `package.json`):
+Some dependencies are intentionally pinned without caret ranges (see the custom `devDependenciesPinned` field in `package.json` — this is a documentation-only field not defined by the [npm ↗](https://www.npmjs.com) spec):
 
 - **`typescript-eslint`** — pinned without `^` because patch releases have introduced breaking rule changes
 - **`@types/node`** — pinned to `~24.0.0` to match the Node 24 runtime

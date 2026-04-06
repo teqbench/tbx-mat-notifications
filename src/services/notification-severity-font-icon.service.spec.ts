@@ -1,15 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import {
-    TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
-    TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
-} from '@teqbench/tbx-mat-icons';
-import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
-import { TbxMatNotificationFontIconService } from './notification-font-icon.service';
+import { TBX_MAT_FONT_ICON_DEFAULT_FONT_SET, TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED } from '@teqbench/tbx-mat-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatNotificationSeverityFontIconService } from './notification-severity-font-icon.service';
 
-describe('TbxMatNotificationFontIconService', () => {
+describe('TbxMatNotificationSeverityFontIconService', () => {
     describe('with TBX_MAT_FONT_ICON_DEFAULT_FONT_SET token', () => {
-        let service: TbxMatNotificationFontIconService;
+        let service: TbxMatNotificationSeverityFontIconService;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
@@ -19,13 +16,13 @@ describe('TbxMatNotificationFontIconService', () => {
                         useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
                     },
                     {
-                        provide: TbxMatNotificationFontIconService,
-                        useFactory: () => new TbxMatNotificationFontIconService(),
+                        provide: TbxMatNotificationSeverityFontIconService,
+                        useFactory: () => new TbxMatNotificationSeverityFontIconService(),
                     },
                 ],
             });
 
-            service = TestBed.inject(TbxMatNotificationFontIconService);
+            service = TestBed.inject(TbxMatNotificationSeverityFontIconService);
         });
 
         it('should be created', () => {
@@ -60,11 +57,11 @@ describe('TbxMatNotificationFontIconService', () => {
 
         describe('resolve()', () => {
             it('should resolve all severity levels', () => {
-                expect(service.resolve(TbxMatSeverityLevelType.Success)).toBe('check_circle');
-                expect(service.resolve(TbxMatSeverityLevelType.Error)).toBe('error');
-                expect(service.resolve(TbxMatSeverityLevelType.Warning)).toBe('warning_amber');
-                expect(service.resolve(TbxMatSeverityLevelType.Information)).toBe('info');
-                expect(service.resolve(TbxMatSeverityLevelType.Help)).toBe('help');
+                expect(service.resolve(TbxMatSeverityLevel.Success)).toBe('check_circle');
+                expect(service.resolve(TbxMatSeverityLevel.Error)).toBe('error');
+                expect(service.resolve(TbxMatSeverityLevel.Warning)).toBe('warning_amber');
+                expect(service.resolve(TbxMatSeverityLevel.Information)).toBe('info');
+                expect(service.resolve(TbxMatSeverityLevel.Help)).toBe('help');
             });
 
             it('should return undefined for unknown keys', () => {
@@ -74,20 +71,19 @@ describe('TbxMatNotificationFontIconService', () => {
     });
 
     describe('with explicit fontSet via constructor', () => {
-        let service: TbxMatNotificationFontIconService;
+        let service: TbxMatNotificationSeverityFontIconService;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
                 providers: [
                     {
-                        provide: TbxMatNotificationFontIconService,
-                        useFactory: () =>
-                            new TbxMatNotificationFontIconService('material-symbols-outlined'),
+                        provide: TbxMatNotificationSeverityFontIconService,
+                        useFactory: () => new TbxMatNotificationSeverityFontIconService('material-symbols-outlined'),
                     },
                 ],
             });
 
-            service = TestBed.inject(TbxMatNotificationFontIconService);
+            service = TestBed.inject(TbxMatNotificationSeverityFontIconService);
         });
 
         it('should use the explicitly provided fontSet', () => {

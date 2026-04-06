@@ -20,9 +20,18 @@ export default defineConfig({
             exclude: [
                 // Interfaces — no runtime code
                 'src/models/notification-config.model.ts',
-                'src/models/notification-data.model.ts',
+                'src/models/notification-data-dto.model.ts',
+                'src/models/notification-action.model.ts',
+                'src/models/notification-provider-action-config.model.ts',
+                'src/models/notification-provider-config.model.ts',
+                'src/models/notification-result.model.ts',
+                'src/models/notification-ref.model.ts',
                 // Type aliases — no runtime code
                 'src/types/notification-config-args.type.ts',
+                'src/types/notification-action-button-appearance.type.ts',
+                // Enums — no testable logic (pure value declarations)
+                'src/enums/notification-dismiss-reason.enum.ts',
+                'src/enums/notification-icon-position.enum.ts',
                 // Constants — no testable logic
                 'src/constants/notification.constants.ts',
                 // Tokens (InjectionToken declarations — no testable logic)

@@ -1,18 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { MatIconRegistry } from '@angular/material/icon';
-import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
-import { TbxMatNotificationSvgIconService } from './notification-svg-icon.service';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatNotificationSeveritySvgIconService } from './notification-severity-svg-icon.service';
 
-describe('TbxMatNotificationSvgIconService', () => {
-    let service: TbxMatNotificationSvgIconService;
+describe('TbxMatNotificationSeveritySvgIconService', () => {
+    let service: TbxMatNotificationSeveritySvgIconService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [TbxMatNotificationSvgIconService],
+            providers: [TbxMatNotificationSeveritySvgIconService],
         });
 
-        service = TestBed.inject(TbxMatNotificationSvgIconService);
+        service = TestBed.inject(TbxMatNotificationSeveritySvgIconService);
     });
 
     it('should be created', () => {
@@ -21,33 +21,33 @@ describe('TbxMatNotificationSvgIconService', () => {
 
     describe('severity methods', () => {
         it('success() should return the Success enum value', () => {
-            expect(service.success()).toBe(TbxMatSeverityLevelType.Success);
+            expect(service.success()).toBe(TbxMatSeverityLevel.Success);
         });
 
         it('error() should return the Error enum value', () => {
-            expect(service.error()).toBe(TbxMatSeverityLevelType.Error);
+            expect(service.error()).toBe(TbxMatSeverityLevel.Error);
         });
 
         it('warning() should return the Warning enum value', () => {
-            expect(service.warning()).toBe(TbxMatSeverityLevelType.Warning);
+            expect(service.warning()).toBe(TbxMatSeverityLevel.Warning);
         });
 
         it('information() should return the Information enum value', () => {
-            expect(service.information()).toBe(TbxMatSeverityLevelType.Information);
+            expect(service.information()).toBe(TbxMatSeverityLevel.Information);
         });
 
         it('help() should return the Help enum value', () => {
-            expect(service.help()).toBe(TbxMatSeverityLevelType.Help);
+            expect(service.help()).toBe(TbxMatSeverityLevel.Help);
         });
     });
 
     describe('resolve()', () => {
         it('should resolve all severity levels', () => {
-            expect(service.resolve(TbxMatSeverityLevelType.Success)).toBe('success');
-            expect(service.resolve(TbxMatSeverityLevelType.Error)).toBe('error');
-            expect(service.resolve(TbxMatSeverityLevelType.Warning)).toBe('warning');
-            expect(service.resolve(TbxMatSeverityLevelType.Information)).toBe('information');
-            expect(service.resolve(TbxMatSeverityLevelType.Help)).toBe('help');
+            expect(service.resolve(TbxMatSeverityLevel.Success)).toBe('success');
+            expect(service.resolve(TbxMatSeverityLevel.Error)).toBe('error');
+            expect(service.resolve(TbxMatSeverityLevel.Warning)).toBe('warning');
+            expect(service.resolve(TbxMatSeverityLevel.Information)).toBe('information');
+            expect(service.resolve(TbxMatSeverityLevel.Help)).toBe('help');
         });
 
         it('should return undefined for unknown keys', () => {
@@ -61,10 +61,10 @@ describe('TbxMatNotificationSvgIconService', () => {
 
             TestBed.resetTestingModule();
             TestBed.configureTestingModule({
-                providers: [TbxMatNotificationSvgIconService],
+                providers: [TbxMatNotificationSeveritySvgIconService],
             });
 
-            TestBed.inject(TbxMatNotificationSvgIconService);
+            TestBed.inject(TbxMatNotificationSeveritySvgIconService);
 
             expect(addSpy).toHaveBeenCalledWith('success', expect.anything());
             expect(addSpy).toHaveBeenCalledWith('error', expect.anything());

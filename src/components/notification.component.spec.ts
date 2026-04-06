@@ -4,17 +4,14 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { By } from '@angular/platform-browser';
-import { TbxMatSeverityLevelType } from '@teqbench/tbx-mat-severity-icons';
-import {
-    TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
-    TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
-    TbxMatIconType,
-} from '@teqbench/tbx-mat-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import { TBX_MAT_FONT_ICON_DEFAULT_FONT_SET, TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED, TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
-import { TbxMatNotificationFontIconService } from '../services/notification-font-icon.service';
-import { NotificationComponent } from './notification.component';
-import { type NotificationData } from '../models/notification-data.model';
+import { TbxMatNotificationSeverityFontIconService } from '../services/notification-severity-font-icon.service';
+import { TbxMatNotificationComponent } from './notification.component';
+import { type NotificationDataDto } from '../models/notification-data-dto.model';
 import { NOTIFICATION_DEFAULT_DURATION_MS } from '../constants/notification.constants';
+import { TbxMatNotificationIconPosition } from '../enums/notification-icon-position.enum';
 
 const DUMMY_SVG = '<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>';
 
@@ -28,9 +25,9 @@ function registerDummySvgIcons(...names: string[]): void {
 }
 
 /** Create a fixture with the font icon provider config. */
-function createFixture(data: NotificationData): ComponentFixture<NotificationComponent> {
+function createFixture(data: NotificationDataDto): ComponentFixture<TbxMatNotificationComponent> {
     TestBed.configureTestingModule({
-        imports: [NotificationComponent],
+        imports: [TbxMatNotificationComponent],
         providers: [
             { provide: MAT_SNACK_BAR_DATA, useValue: data },
             {
@@ -40,38 +37,40 @@ function createFixture(data: NotificationData): ComponentFixture<NotificationCom
             {
                 provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                 useFactory: () => ({
-                    severityIconResolverService: new TbxMatNotificationFontIconService(),
+                    severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
                 }),
             },
         ],
     });
 
-    const fixture = TestBed.createComponent(NotificationComponent);
+    const fixture = TestBed.createComponent(TbxMatNotificationComponent);
     fixture.detectChanges();
     return fixture;
 }
 
-/** Helper to build NotificationData with sensible defaults. */
-function buildData(overrides: Partial<NotificationData> = {}): NotificationData {
+/** Helper to build NotificationDataDto with sensible defaults. */
+function buildData(overrides: Partial<NotificationDataDto> = {}): NotificationDataDto {
     return {
-        type: TbxMatSeverityLevelType.Information,
+        type: TbxMatSeverityLevel.Information,
         message: 'Test',
-        dismiss: vi.fn(),
+        dismissByClose: vi.fn(),
+        dismissByAction: vi.fn(),
         duration: NOTIFICATION_DEFAULT_DURATION_MS,
         showCountdown: false,
         showSeverityIcon: true,
         showCloseButton: true,
+        closeIconResolverService: {
+            iconType: TbxMatIconType.Font,
+            resolve: () => 'close',
+        },
         ...overrides,
     };
 }
 
-/** Create a fixture with a custom close icon config. */
-function createFixtureWithCloseIcon(
-    data: NotificationData,
-    closeIcon: { name: string; type: TbxMatIconType }
-): ComponentFixture<NotificationComponent> {
+/** Create a fixture with a custom close icon resolver on the DTO. */
+function createFixtureWithCloseIcon(data: NotificationDataDto): ComponentFixture<TbxMatNotificationComponent> {
     TestBed.configureTestingModule({
-        imports: [NotificationComponent],
+        imports: [TbxMatNotificationComponent],
         providers: [
             { provide: MAT_SNACK_BAR_DATA, useValue: data },
             {
@@ -81,18 +80,20 @@ function createFixtureWithCloseIcon(
             {
                 provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
                 useFactory: () => ({
-                    severityIconResolverService: new TbxMatNotificationFontIconService(),
-                    closeIcon,
+                    severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
                 }),
             },
         ],
     });
 
-    if (closeIcon.type === TbxMatIconType.Svg) {
-        registerDummySvgIcons(closeIcon.name);
+    if (data.closeIconResolverService.iconType === TbxMatIconType.Svg) {
+        const iconName = data.closeIconResolverService.resolve('close');
+        if (iconName) {
+            registerDummySvgIcons(iconName);
+        }
     }
 
-    const fixture = TestBed.createComponent(NotificationComponent);
+    const fixture = TestBed.createComponent(TbxMatNotificationComponent);
     fixture.detectChanges();
     return fixture;
 }
@@ -107,22 +108,20 @@ const svgResolverStub = {
     help: () => 'help',
     resolve: (name: string) => {
         const map: Record<string, string> = {
-            [TbxMatSeverityLevelType.Success]: 'success',
-            [TbxMatSeverityLevelType.Error]: 'error',
-            [TbxMatSeverityLevelType.Warning]: 'warning',
-            [TbxMatSeverityLevelType.Information]: 'information',
-            [TbxMatSeverityLevelType.Help]: 'help',
+            [TbxMatSeverityLevel.Success]: 'success',
+            [TbxMatSeverityLevel.Error]: 'error',
+            [TbxMatSeverityLevel.Warning]: 'warning',
+            [TbxMatSeverityLevel.Information]: 'information',
+            [TbxMatSeverityLevel.Help]: 'help',
         };
         return map[name];
     },
 };
 
 /** Create a fixture with an SVG-based resolver config. */
-function createFixtureWithSvgResolver(
-    data: NotificationData
-): ComponentFixture<NotificationComponent> {
+function createFixtureWithSvgResolver(data: NotificationDataDto): ComponentFixture<TbxMatNotificationComponent> {
     TestBed.configureTestingModule({
-        imports: [NotificationComponent],
+        imports: [TbxMatNotificationComponent],
         providers: [
             { provide: MAT_SNACK_BAR_DATA, useValue: data },
             {
@@ -134,28 +133,26 @@ function createFixtureWithSvgResolver(
 
     registerDummySvgIcons('success', 'error', 'warning', 'information', 'help');
 
-    const fixture = TestBed.createComponent(NotificationComponent);
+    const fixture = TestBed.createComponent(TbxMatNotificationComponent);
     fixture.detectChanges();
     return fixture;
 }
 
-describe('NotificationComponent', () => {
+describe('TbxMatNotificationComponent', () => {
     describe('icon mapping via TBX_MAT_NOTIFICATION_PROVIDER_CONFIG', () => {
-        const cases: Array<[TbxMatSeverityLevelType, string]> = [
-            [TbxMatSeverityLevelType.Success, 'check_circle'],
-            [TbxMatSeverityLevelType.Error, 'error'],
-            [TbxMatSeverityLevelType.Warning, 'warning_amber'],
-            [TbxMatSeverityLevelType.Information, 'info'],
-            [TbxMatSeverityLevelType.Help, 'help'],
+        const cases: Array<[TbxMatSeverityLevel, string]> = [
+            [TbxMatSeverityLevel.Success, 'check_circle'],
+            [TbxMatSeverityLevel.Error, 'error'],
+            [TbxMatSeverityLevel.Warning, 'warning_amber'],
+            [TbxMatSeverityLevel.Information, 'info'],
+            [TbxMatSeverityLevel.Help, 'help'],
         ];
 
         for (const [type, expectedIcon] of cases) {
             it(`should display "${expectedIcon}" icon for ${type}`, () => {
                 const fixture = createFixture(buildData({ type }));
 
-                const icon = fixture.debugElement.query(
-                    By.css('.tbx-mat-notification-snackbar-icon')
-                );
+                const icon = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-icon'));
                 expect(icon.nativeElement.textContent.trim()).toBe(expectedIcon);
             });
         }
@@ -163,27 +160,21 @@ describe('NotificationComponent', () => {
 
     describe('SVG icon rendering via TBX_MAT_NOTIFICATION_PROVIDER_CONFIG', () => {
         it('should render svgIcon binding when resolver has no fontSet', () => {
-            const fixture = createFixtureWithSvgResolver(
-                buildData({ type: TbxMatSeverityLevelType.Success })
-            );
+            const fixture = createFixtureWithSvgResolver(buildData({ type: TbxMatSeverityLevel.Success }));
 
             const icon = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-icon'));
             expect(icon.nativeElement.getAttribute('data-mat-icon-name')).toBe('success');
         });
 
-        it('should return null from severityIconFont when resolver has no fontSet', () => {
-            const fixture = createFixtureWithSvgResolver(
-                buildData({ type: TbxMatSeverityLevelType.Success })
-            );
+        it('should resolve severity icon as SVG when resolver uses SVG type', () => {
+            const fixture = createFixtureWithSvgResolver(buildData({ type: TbxMatSeverityLevel.Success }));
 
             const component = fixture.componentInstance;
-            expect(component.severityIconFont()).toBeNull();
+            expect(component.severityIcon()?.isSvg).toBe(true);
         });
 
         it('should not render font ligature text when using SVG resolver', () => {
-            const fixture = createFixtureWithSvgResolver(
-                buildData({ type: TbxMatSeverityLevelType.Error })
-            );
+            const fixture = createFixtureWithSvgResolver(buildData({ type: TbxMatSeverityLevel.Error }));
 
             const icon = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-icon'));
             // SVG icons render via data-mat-icon-name attribute, not text content
@@ -195,38 +186,51 @@ describe('NotificationComponent', () => {
         it('should default to "close" font ligature when closeIcon is not configured', () => {
             const fixture = createFixture(buildData());
 
-            const closeIcon = fixture.debugElement.query(By.css('button[matIconButton] mat-icon'));
+            const closeIcon = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button mat-icon'));
             expect(closeIcon.nativeElement.textContent.trim()).toBe('close');
         });
 
         it('should use a custom font close icon when configured', () => {
-            const fixture = createFixtureWithCloseIcon(buildData(), {
-                name: 'cancel',
-                type: TbxMatIconType.Font,
-            });
+            const fixture = createFixtureWithCloseIcon(
+                buildData({
+                    closeIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => 'cancel',
+                    },
+                })
+            );
 
-            const closeIcon = fixture.debugElement.query(By.css('button[matIconButton] mat-icon'));
+            const closeIcon = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button mat-icon'));
             expect(closeIcon.nativeElement.textContent.trim()).toBe('cancel');
         });
 
         it('should use an SVG close icon when configured', () => {
-            const fixture = createFixtureWithCloseIcon(buildData(), {
-                name: 'my-close-svg',
-                type: TbxMatIconType.Svg,
-            });
+            const fixture = createFixtureWithCloseIcon(
+                buildData({
+                    closeIconResolverService: {
+                        iconType: TbxMatIconType.Svg,
+                        resolve: () => 'my-close-svg',
+                    },
+                })
+            );
 
-            const closeIcon = fixture.debugElement.query(By.css('button[matIconButton] mat-icon'));
+            const closeIcon = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button mat-icon'));
             expect(closeIcon.nativeElement.getAttribute('data-mat-icon-name')).toBe('my-close-svg');
         });
 
-        it('should return null from closeIconFont when close icon is SVG', () => {
-            const fixture = createFixtureWithCloseIcon(buildData(), {
-                name: 'my-close-svg',
-                type: TbxMatIconType.Svg,
-            });
+        it('should resolve close icon as SVG when resolver uses SVG type', () => {
+            const fixture = createFixtureWithCloseIcon(
+                buildData({
+                    closeIconResolverService: {
+                        iconType: TbxMatIconType.Svg,
+                        resolve: () => 'my-close-svg',
+                    },
+                })
+            );
 
             const component = fixture.componentInstance;
-            expect(component.closeIconFont()).toBeNull();
+            expect(component.closeIcon()?.isSvg).toBe(true);
+            expect(component.closeIcon()?.name).toBe('my-close-svg');
         });
     });
 
@@ -240,23 +244,21 @@ describe('NotificationComponent', () => {
     });
 
     describe('dismiss button', () => {
-        it('should call dismiss when the close button is clicked', () => {
-            const dismiss = vi.fn();
-            const fixture = createFixture(buildData({ dismiss }));
+        it('should call dismissByClose when the close button is clicked', () => {
+            const dismissByClose = vi.fn();
+            const fixture = createFixture(buildData({ dismissByClose }));
 
-            const closeButton = fixture.debugElement.query(By.css('button[matIconButton]'));
+            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button'));
             closeButton.nativeElement.click();
 
-            expect(dismiss).toHaveBeenCalledOnce();
+            expect(dismissByClose).toHaveBeenCalledOnce();
         });
 
         it('should have an accessible aria-label', () => {
             const fixture = createFixture(buildData());
 
-            const closeButton = fixture.debugElement.query(By.css('button[matIconButton]'));
-            expect(closeButton.nativeElement.getAttribute('aria-label')).toBe(
-                'Dismiss notification'
-            );
+            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button'));
+            expect(closeButton.nativeElement.getAttribute('aria-label')).toBe('Dismiss notification');
         });
     });
 
@@ -276,9 +278,7 @@ describe('NotificationComponent', () => {
         });
 
         it('should still display the message when severity icon is hidden', () => {
-            const fixture = createFixture(
-                buildData({ showSeverityIcon: false, message: 'No icon here' })
-            );
+            const fixture = createFixture(buildData({ showSeverityIcon: false, message: 'No icon here' }));
 
             const message = fixture.debugElement.query(By.css('[matSnackBarLabel] span'));
             expect(message.nativeElement.textContent.trim()).toBe('No icon here');
@@ -289,30 +289,26 @@ describe('NotificationComponent', () => {
         it('should render close button when showCloseButton is true', () => {
             const fixture = createFixture(buildData({ showCloseButton: true }));
 
-            const closeButton = fixture.debugElement.query(By.css('button[matIconButton]'));
+            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button'));
             expect(closeButton).not.toBeNull();
         });
 
         it('should not render close button when showCloseButton is false', () => {
             const fixture = createFixture(buildData({ showCloseButton: false }));
 
-            const closeButton = fixture.debugElement.query(By.css('button[matIconButton]'));
+            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button'));
             expect(closeButton).toBeNull();
         });
 
         it('should not render actions container when showCloseButton is false', () => {
             const fixture = createFixture(buildData({ showCloseButton: false }));
 
-            const actions = fixture.debugElement.query(
-                By.css('.tbx-mat-notification-snackbar-actions')
-            );
+            const actions = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-actions'));
             expect(actions).toBeNull();
         });
 
         it('should still display the message when close button is hidden', () => {
-            const fixture = createFixture(
-                buildData({ showCloseButton: false, message: 'No close button' })
-            );
+            const fixture = createFixture(buildData({ showCloseButton: false, message: 'No close button' }));
 
             const message = fixture.debugElement.query(By.css('[matSnackBarLabel] span'));
             expect(message.nativeElement.textContent.trim()).toBe('No close button');
@@ -323,28 +319,215 @@ describe('NotificationComponent', () => {
         it('should not render countdown bar when showCountdown is false', () => {
             const fixture = createFixture(buildData({ showCountdown: false }));
 
-            const countdown = fixture.debugElement.query(
-                By.css('.tbx-mat-notification-snackbar-countdown')
-            );
+            const countdown = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-countdown'));
             expect(countdown).toBeNull();
         });
 
         it('should render countdown bar when showCountdown is true', () => {
             const fixture = createFixture(buildData({ showCountdown: true }));
 
-            const countdown = fixture.debugElement.query(
-                By.css('.tbx-mat-notification-snackbar-countdown')
-            );
+            const countdown = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-countdown'));
             expect(countdown).not.toBeNull();
         });
 
         it('should set animation-duration to the provided duration', () => {
             const fixture = createFixture(buildData({ showCountdown: true, duration: 3000 }));
 
-            const countdown = fixture.debugElement.query(
-                By.css('.tbx-mat-notification-snackbar-countdown')
-            );
+            const countdown = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-countdown'));
             expect(countdown.nativeElement.style.animationDuration).toBe('3000ms');
+        });
+
+        it('should not render countdown bar when duration is indefinite', () => {
+            const fixture = createFixture(buildData({ showCountdown: true, duration: 0 }));
+
+            const countdown = fixture.debugElement.query(By.css('.tbx-mat-notification-snackbar-countdown'));
+            expect(countdown).toBeNull();
+        });
+    });
+
+    describe('action button', () => {
+        it('should render a text action button when actionLabel is set', () => {
+            const fixture = createFixture(buildData({ actionLabel: 'Undo', actionButtonType: 'text' }));
+
+            const actionButton = fixture.debugElement.query(By.css('.tbx-mat-notification-action-button'));
+            expect(actionButton).not.toBeNull();
+            expect(actionButton.nativeElement.textContent.trim()).toContain('Undo');
+        });
+
+        it('should not render action button when actionLabel is not set', () => {
+            const fixture = createFixture(buildData());
+
+            const actionButton = fixture.debugElement.query(By.css('.tbx-mat-notification-action-button'));
+            expect(actionButton).toBeNull();
+        });
+
+        it('should call dismissByAction when action button is clicked', () => {
+            const dismissByAction = vi.fn();
+            const fixture = createFixture(buildData({ actionLabel: 'Retry', actionButtonType: 'text', dismissByAction }));
+
+            const actionButton = fixture.debugElement.query(By.css('.tbx-mat-notification-action-button'));
+            actionButton.nativeElement.click();
+
+            expect(dismissByAction).toHaveBeenCalledOnce();
+        });
+
+        it('should render an icon-only action button with aria-label', () => {
+            const fixture = createFixture(
+                buildData({
+                    actionLabel: 'Refresh',
+                    actionButtonType: 'icon',
+                    actionIconName: 'refresh',
+                    actionIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => 'refresh',
+                    },
+                })
+            );
+
+            const iconButton = fixture.debugElement.query(By.css('button[mat-icon-button][aria-label="Refresh"]'));
+            expect(iconButton).not.toBeNull();
+        });
+
+        it('should render action icon font ligature', () => {
+            const fixture = createFixture(
+                buildData({
+                    actionLabel: 'Retry',
+                    actionButtonType: 'icon',
+                    actionIconName: 'sync',
+                    actionIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => 'sync',
+                    },
+                })
+            );
+
+            const component = fixture.componentInstance;
+            expect(component.actionIcon()?.name).toBe('sync');
+            expect(component.actionIcon()?.isSvg).toBe(false);
+        });
+
+        it('should resolve action icon SVG name', () => {
+            const data = buildData({
+                actionLabel: 'Retry',
+                actionButtonType: 'icon',
+                actionIconName: 'action-icon',
+                actionIconResolverService: {
+                    iconType: TbxMatIconType.Svg,
+                    resolve: () => 'action-icon',
+                },
+            });
+
+            TestBed.configureTestingModule({
+                imports: [TbxMatNotificationComponent],
+                providers: [
+                    { provide: MAT_SNACK_BAR_DATA, useValue: data },
+                    {
+                        provide: TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
+                        useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
+                    },
+                    {
+                        provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+                        useFactory: () => ({
+                            severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
+                        }),
+                    },
+                ],
+            });
+
+            registerDummySvgIcons('action-icon');
+
+            const fixture = TestBed.createComponent(TbxMatNotificationComponent);
+            fixture.detectChanges();
+
+            const component = fixture.componentInstance;
+            expect(component.actionIcon()?.name).toBe('action-icon');
+            expect(component.actionIcon()?.isSvg).toBe(true);
+        });
+
+        it('should return null from action icon signal when no resolver', () => {
+            const fixture = createFixture(buildData({ actionLabel: 'Undo', actionButtonType: 'text' }));
+
+            const component = fixture.componentInstance;
+            expect(component.actionIcon()).toBeNull();
+        });
+
+        it('should render a tonal action button with correct appearance', () => {
+            const fixture = createFixture(buildData({ actionLabel: 'Retry', actionButtonType: 'tonal' }));
+
+            const actionButton = fixture.debugElement.query(By.css('.tbx-mat-notification-action-button'));
+            expect(actionButton).not.toBeNull();
+            expect(actionButton.nativeElement.textContent.trim()).toContain('Retry');
+        });
+
+        it('should render action icon when iconPosition is Before', () => {
+            const fixture = createFixture(
+                buildData({
+                    actionLabel: 'Retry',
+                    actionButtonType: 'tonal',
+                    actionIconName: 'sync',
+                    actionIconPosition: TbxMatNotificationIconPosition.Before,
+                    actionIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => 'sync',
+                    },
+                })
+            );
+
+            const actionButton = fixture.debugElement.query(By.css('.tbx-mat-notification-action-button'));
+            expect(actionButton).not.toBeNull();
+            const icon = actionButton.query(By.css('mat-icon'));
+            expect(icon).not.toBeNull();
+            expect(icon.nativeElement.textContent.trim()).toBe('sync');
+        });
+
+        it('should render action icon when iconPosition is After', () => {
+            const fixture = createFixture(
+                buildData({
+                    actionLabel: 'View',
+                    actionButtonType: 'outlined',
+                    actionIconName: 'open_in_new',
+                    actionIconPosition: TbxMatNotificationIconPosition.After,
+                    actionIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => 'open_in_new',
+                    },
+                })
+            );
+
+            const actionButton = fixture.debugElement.query(By.css('.tbx-mat-notification-action-button'));
+            expect(actionButton).not.toBeNull();
+            const icon = actionButton.query(By.css('mat-icon'));
+            expect(icon).not.toBeNull();
+            expect(icon.nativeElement.textContent.trim()).toBe('open_in_new');
+        });
+
+        it('should return null from closeIcon when resolver returns undefined', () => {
+            const fixture = createFixture(
+                buildData({
+                    closeIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => undefined as unknown as string,
+                    },
+                })
+            );
+
+            expect(fixture.componentInstance.closeIcon()).toBeNull();
+        });
+
+        it('should return null from actionIcon when resolver returns undefined', () => {
+            const fixture = createFixture(
+                buildData({
+                    actionLabel: 'Retry',
+                    actionButtonType: 'icon',
+                    actionIconName: 'refresh',
+                    actionIconResolverService: {
+                        iconType: TbxMatIconType.Font,
+                        resolve: () => undefined as unknown as string,
+                    },
+                })
+            );
+
+            expect(fixture.componentInstance.actionIcon()).toBeNull();
         });
     });
 });

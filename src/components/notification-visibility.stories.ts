@@ -1,11 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import {
-    NotificationHarnessComponent,
-    SHARED_ARG_TYPES,
-    DEFAULT_ARGS,
-    withDefaultProperties,
-} from './notification.stories.common';
+import { NotificationHarnessComponent, SHARED_ARG_TYPES, DEFAULT_ARGS, withDefaultProperties } from './notification.stories.common';
 
 const meta: Meta<NotificationHarnessComponent> = {
     title: 'Notifications/Visibility',
@@ -22,10 +17,7 @@ export const HiddenSeverityIcon: Story = {
     args: {
         ...DEFAULT_ARGS,
         showSeverityIcon: false,
-        description:
-            'showSeverityIcon is set to false. Notifications display only the message text ' +
-            'and dismiss button — the severity icon is omitted. The panel color still indicates ' +
-            'the severity level.',
+        description: 'showSeverityIcon is set to false. Notifications display only the message text ' + 'and dismiss button — the severity icon is omitted. The panel color still indicates ' + 'the severity level.',
     },
     decorators: [withDefaultProperties()],
 };
@@ -35,10 +27,7 @@ export const HiddenCloseButton: Story = {
     args: {
         ...DEFAULT_ARGS,
         showCloseButton: false,
-        description:
-            'showCloseButton is set to false. Notifications dismiss only via the duration ' +
-            'timeout or programmatically — there is no close button. Use the "With Countdown" ' +
-            'buttons to see the auto-dismiss countdown.',
+        description: 'showCloseButton is set to false. Notifications dismiss only via the duration ' + 'timeout or programmatically — there is no close button. Use the "With Countdown" ' + 'buttons to see the auto-dismiss countdown.',
     },
     decorators: [withDefaultProperties()],
 };
@@ -49,10 +38,7 @@ export const MessageOnly: Story = {
         ...DEFAULT_ARGS,
         showSeverityIcon: false,
         showCloseButton: false,
-        description:
-            'Both showSeverityIcon and showCloseButton are set to false. Notifications display ' +
-            'only the message text with the severity panel color. Use the "With Countdown" buttons ' +
-            'to see the auto-dismiss countdown.',
+        description: 'Both showSeverityIcon and showCloseButton are set to false. Notifications display ' + 'only the message text with the severity panel color. Use the "With Countdown" buttons ' + 'to see the auto-dismiss countdown.',
     },
     decorators: [withDefaultProperties()],
 };
