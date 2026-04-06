@@ -1,6 +1,6 @@
 {
   "name": "@teqbench/tbx-mat-notifications",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "Opinionated Angular notification service built on Material snackbar. Provides severity-leveled methods (success, error, warning, information, help), FIFO queuing with signal-based state, configurable duration, optional action button with multiple appearance variants, optional severity icon and close button visibility, a pure-CSS countdown bar, native MatSnackBarRef exposure via TbxMatNotificationRef, and dismiss reason tracking. Supports font and SVG icons via pluggable resolver services. Designed for Angular 21+ zoneless applications.",
   "type": "module",
   "exports": {
