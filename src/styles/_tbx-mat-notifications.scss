@@ -52,14 +52,17 @@ html {
 
 html {
     --tbx-mat-notification-action-text-opacity: 0.8;
-    --tbx-mat-notification-action-filled-container-opacity: 0.8;
+
+    --tbx-mat-notification-action-filled-container-opacity: var(--tbx-mat-notification-action-text-opacity);
     --tbx-mat-notification-action-tonal-container-opacity: 0.55;
 
+    --tbx-mat-notification-action-outlined-opacity: var(--tbx-mat-notification-action-text-opacity);
+    --tbx-mat-notification-action-elevated-opacity: var(--tbx-mat-notification-action-text-opacity);
     --tbx-mat-notification-action-icon-opacity: var(--tbx-mat-notification-action-text-opacity);
-    --tbx-mat-notification-close-icon-opacity: var(--tbx-mat-notification-action-icon-opacity);
+    --tbx-mat-notification-close-icon-opacity: var(--tbx-mat-notification-action-text-opacity);
 
     --tbx-mat-notification-action-filled-hover-state-layer-opacity: 0.3;
-    --tbx-mat-notification-action-tonal-hover-state-layer-opacity: 0.3;
+    --tbx-mat-notification-action-tonal-hover-state-layer-opacity: var(--tbx-mat-notification-action-filled-hover-state-layer-opacity);
 }
 
 /* ━━━ Panel Styles ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -180,13 +183,13 @@ html {
     --mat-button-tonal-ripple-color: color-mix(in srgb, #{$bg} calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent);
 
     /* ── Outlined button ── */
-    --mat-button-outlined-label-text-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-text-opacity) * 100%), transparent);
+    --mat-button-outlined-label-text-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-outlined-opacity) * 100%), transparent);
     --mat-button-outlined-outline-color: #{$text};
     --mat-button-outlined-state-layer-color: #{$text};
     --mat-button-outlined-ripple-color: color-mix(in srgb, #{$text} calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent);
 
     /* ── Elevated (protected) button ── */
-    --mat-button-protected-label-text-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-text-opacity) * 100%), transparent);
+    --mat-button-protected-label-text-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-elevated-opacity) * 100%), transparent);
     --mat-button-protected-container-color: #{$bg};
     --mat-button-protected-state-layer-color: #{$text};
     --mat-button-protected-container-elevation-shadow: var(--mat-sys-level1);
