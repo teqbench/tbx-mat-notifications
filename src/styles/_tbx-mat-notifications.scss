@@ -55,6 +55,9 @@ html {
     --tbx-mat-notification-action-filled-container-opacity: 0.8;
     --tbx-mat-notification-action-tonal-container-opacity: 0.55;
 
+    --tbx-mat-notification-action-icon-opacity: var(--tbx-mat-notification-action-text-opacity);
+    --tbx-mat-notification-close-icon-opacity: var(--tbx-mat-notification-action-icon-opacity);
+
     --tbx-mat-notification-action-filled-hover-state-layer-opacity: 0.3;
     --tbx-mat-notification-action-tonal-hover-state-layer-opacity: 0.3;
 }
@@ -117,8 +120,8 @@ html {
    */
     --tbx-mat-notification-action-icon-color: var(--mat-snack-bar-button-color, var(--mat-sys-inverse-primary));
     --tbx-mat-notification-action-icon-state-layer-color: var(--mat-snack-bar-button-color, var(--mat-sys-inverse-primary));
-    --tbx-mat-notification-close-icon-color: var(--tbx-mat-notification-action-icon-color);
-    --tbx-mat-notification-close-icon-state-layer-color: var(--tbx-mat-notification-action-icon-state-layer-color);
+    --tbx-mat-notification-close-icon-color: var(--mat-snack-bar-button-color, var(--mat-sys-inverse-primary));
+    --tbx-mat-notification-close-icon-state-layer-color: var(--mat-snack-bar-button-color, var(--mat-sys-inverse-primary));
 }
 
 /* ── Severity panel mixin ─────────────────────────────────────────────────
@@ -140,21 +143,21 @@ html {
     );
 
     /* ── Icon button color tokens ──
-   * Action and close icon buttons share the same default colors: icon
-   * color at the text-opacity level, state-layer at full $text.
-   * Close icon tokens reference the action icon values so both stay
-   * in sync by default. Consumers can override either set independently
-   * on the panel class without affecting the other.
+   * Action and close icon buttons each compute their own color via
+   * color-mix() using their respective opacity tokens. Both opacity
+   * tokens default to --tbx-mat-notification-action-text-opacity so
+   * the buttons match by default. Consumers can override either
+   * opacity or color independently on the panel class.
    *
    * These custom properties are applied to the actual --mat-icon-button-*
    * tokens via class-targeted rules below the panel definitions, not at
    * the panel level, to avoid cross-browser issues with self-referential
    * var() fallbacks.
    */
-    --tbx-mat-notification-action-icon-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-text-opacity) * 100%), transparent);
+    --tbx-mat-notification-action-icon-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-icon-opacity) * 100%), transparent);
     --tbx-mat-notification-action-icon-state-layer-color: #{$text};
-    --tbx-mat-notification-close-icon-color: var(--tbx-mat-notification-action-icon-color);
-    --tbx-mat-notification-close-icon-state-layer-color: var(--tbx-mat-notification-action-icon-state-layer-color);
+    --tbx-mat-notification-close-icon-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-close-icon-opacity) * 100%), transparent);
+    --tbx-mat-notification-close-icon-state-layer-color: #{$text};
 
     /* ── Text button ── */
     --mat-snack-bar-button-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-text-opacity) * 100%), transparent);
