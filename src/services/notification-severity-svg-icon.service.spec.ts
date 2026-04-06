@@ -2,17 +2,17 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { MatIconRegistry } from '@angular/material/icon';
 import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
-import { TbxMatNotificationSvgIconService } from './notification-svg-icon.service';
+import { TbxMatNotificationSeveritySvgIconService } from './notification-severity-svg-icon.service';
 
-describe('TbxMatNotificationSvgIconService', () => {
-    let service: TbxMatNotificationSvgIconService;
+describe('TbxMatNotificationSeveritySvgIconService', () => {
+    let service: TbxMatNotificationSeveritySvgIconService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [TbxMatNotificationSvgIconService],
+            providers: [TbxMatNotificationSeveritySvgIconService],
         });
 
-        service = TestBed.inject(TbxMatNotificationSvgIconService);
+        service = TestBed.inject(TbxMatNotificationSeveritySvgIconService);
     });
 
     it('should be created', () => {
@@ -61,10 +61,10 @@ describe('TbxMatNotificationSvgIconService', () => {
 
             TestBed.resetTestingModule();
             TestBed.configureTestingModule({
-                providers: [TbxMatNotificationSvgIconService],
+                providers: [TbxMatNotificationSeveritySvgIconService],
             });
 
-            TestBed.inject(TbxMatNotificationSvgIconService);
+            TestBed.inject(TbxMatNotificationSeveritySvgIconService);
 
             expect(addSpy).toHaveBeenCalledWith('success', expect.anything());
             expect(addSpy).toHaveBeenCalledWith('error', expect.anything());

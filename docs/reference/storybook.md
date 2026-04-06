@@ -4,9 +4,9 @@ Visual development and testing environment for notification components.
 
 ## Stack
 
-- **Storybook** v10 — component explorer
-- **@analogjs/storybook-angular** — Vite-based builder for Angular (replaces Webpack)
-- **@storybook/angular** — Angular framework integration
+- **[Storybook ↗](https://storybook.js.org)** v10 — component explorer
+- **@analogjs/storybook-angular** — Vite-based builder for [Angular ↗](https://angular.dev) (replaces Webpack)
+- **@storybook/angular** — [Angular ↗](https://angular.dev) framework integration
 
 ## Quick Start
 
@@ -29,7 +29,7 @@ All Storybook config lives in `.storybook/`:
 
 ### Why a separate `vite.config.ts`?
 
-The project does not have a root `vite.config.ts` (it uses ng-packagr for builds and Vitest has its own config). The Storybook Vite config is intentionally minimal — the `@analogjs/storybook-angular` preset adds the Angular compiler plugin automatically.
+The project does not have a root `vite.config.ts` (it uses [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr) for builds and [Vitest ↗](https://vitest.dev) has its own config). The Storybook Vite config is intentionally minimal — the `@analogjs/storybook-angular` preset adds the Angular compiler plugin automatically.
 
 ### Preview setup
 
@@ -38,15 +38,15 @@ The project does not have a root `vite.config.ts` (it uses ng-packagr for builds
 - **Azure Blue M3 theme** (`@angular/material/prebuilt-themes/azure-blue.css`) — provides typography, shape (border-radius), and interactive state tokens (ripples, hover). Without a theme, snackbar text, corners, and button effects fall back to unstyled browser defaults. Azure Blue is used as a neutral baseline; it does not affect notification severity colors, which are driven by `--tbx-mat-notification-*` custom properties in the SCSS partial.
 - `provideAnimationsAsync()` — required by Material snackbar animations
 - `MAT_ICON_DEFAULT_OPTIONS` — sets the default icon font set
-- `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG` — icon configuration (uses `TbxMatNotificationFontIconService` with Material Symbols Rounded)
+- `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG` — icon configuration (uses `TbxMatNotificationSeverityFontIconService` with [Material Symbols Rounded ↗](https://fonts.google.com/icons))
 - Imports `_tbx-mat-notifications.scss` — the global styles for severity colors and countdown bar
 
 ### Font loading
 
 `preview-head.html` loads Google Fonts directly via CDN links. This mirrors how consuming applications load these fonts. The two fonts loaded are:
 
-- **Roboto** — Material Design default body font
-- **Material Symbols Rounded** — icon font used by the notification icon service
+- **Roboto** — [Material Design ↗](https://m3.material.io) default body font
+- **[Material Symbols Rounded ↗](https://fonts.google.com/icons)** — icon font used by the notification icon service
 
 ## Writing Stories
 
@@ -98,7 +98,7 @@ export const Default: Story = {};
 
 ## Dependencies
 
-Storybook requires several Angular packages as devDependencies that the library normally receives from consumers at runtime:
+[Storybook ↗](https://storybook.js.org) requires several [Angular ↗](https://angular.dev) packages as devDependencies that the library normally receives from consumers at runtime:
 
 - `@angular/common`
 - `@angular/cdk`

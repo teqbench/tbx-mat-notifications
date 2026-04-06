@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import {
-    TbxMatSeverityFontIconService,
-    TbxMatSeverityLevel,
-} from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityFontIconService, TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 
 /**
- * Default font-based notification icon service
+ * Default font-based severity notification icon service
  *
  * @remarks
  * Extends `TbxMatSeverityFontIconService` from `@teqbench/tbx-mat-severity-icons`
@@ -17,10 +14,10 @@ import {
  *
  * The fontSet is resolved by `TbxMatFontIconService`'s fallback chain:
  *
- * 1. **Explicit constructor argument** — `new TbxMatNotificationFontIconService('material-symbols-sharp')`
+ * 1. **Explicit constructor argument** — `new TbxMatNotificationSeverityFontIconService('material-symbols-sharp')`
  * 2. **`TBX_MAT_FONT_ICON_DEFAULT_FONT_SET` token** — set once in `app.config.ts`
  * 3. **`MAT_ICON_DEFAULT_OPTIONS.fontSet`** —
- *    {@link https://material.angular.io/components/icon | Angular Material}'s global icon default
+ *    {@link https://material.angular.dev/components/icon/api | Angular Material}'s global icon default
  * 4. **Error** — if none of the above provides a fontSet
  *
  * For steps 1 and 2, the consuming component must bind `[fontSet]` on
@@ -31,7 +28,7 @@ import {
  * ```typescript
  * // app.config.ts
  * import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
- * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationFontIconService }
+ * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationSeverityFontIconService }
  *     from '@teqbench/tbx-mat-notifications';
  *
  * providers: [
@@ -39,7 +36,7 @@ import {
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationFontIconService(),
+ *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
  *         }),
  *     },
  * ]
@@ -48,14 +45,14 @@ import {
  * @example Using with an explicit fontSet:
  * ```typescript
  * // app.config.ts
- * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationFontIconService }
+ * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationSeverityFontIconService }
  *     from '@teqbench/tbx-mat-notifications';
  *
  * providers: [
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationFontIconService('material-symbols-rounded'),
+ *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService('material-symbols-rounded'),
  *         }),
  *     },
  * ]
@@ -66,7 +63,7 @@ import {
  * // app.config.ts
  * import { TBX_MAT_FONT_ICON_DEFAULT_FONT_SET, TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED }
  *     from '@teqbench/tbx-mat-icons';
- * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationFontIconService }
+ * import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG, TbxMatNotificationSeverityFontIconService }
  *     from '@teqbench/tbx-mat-notifications';
  *
  * providers: [
@@ -74,7 +71,7 @@ import {
  *     {
  *         provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
  *         useFactory: () => ({
- *             severityIconResolverService: new TbxMatNotificationFontIconService(),
+ *             severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
  *         }),
  *     },
  * ]
@@ -83,12 +80,12 @@ import {
  * @category Services
  * @since 1.0.0
  * @related TBX_MAT_NOTIFICATION_PROVIDER_CONFIG
- * @related TbxMatNotificationSvgIconService
+ * @related TbxMatNotificationSeveritySvgIconService
  *
  * @public
  */
 @Injectable()
-export class TbxMatNotificationFontIconService extends TbxMatSeverityFontIconService {
+export class TbxMatNotificationSeverityFontIconService extends TbxMatSeverityFontIconService {
     /**
      * @param fontSet - Optional fontSet identifier (e.g., `'material-symbols-rounded'`).
      *                  When provided, takes precedence over all global defaults.

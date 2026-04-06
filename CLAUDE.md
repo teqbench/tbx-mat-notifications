@@ -4,7 +4,7 @@ This file provides guidance for [Claude Code ↗](https://github.com/anthropics/
 
 ## Package Overview
 
-`@teqbench/tbx-mat-notifications` is an opinionated [Angular ↗](https://angular.dev) notification service built on [Material ↗](https://material.angular.io) snackbar. It provides severity-leveled methods (success, error, warning, information, help), FIFO queuing with signal-based state, configurable duration/position, and a pure-CSS countdown bar — no JS timers. Supports both font and SVG icons via `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG` injection token with `TbxMatNotificationFontIconService` or `TbxMatNotificationSvgIconService`. Designed for [Angular ↗](https://angular.dev) 21+ zoneless applications.
+`@teqbench/tbx-mat-notifications` is an opinionated [Angular ↗](https://angular.dev) notification service built on [Material ↗](https://material.angular.dev) snackbar. An opinionated thin layer around [MatSnackBar ↗](https://material.angular.dev/components/snack-bar/api) — opinionated about layout (severity icon, message, action button, close button), duration logic, and dismiss reason tracking — but transparent to the underlying [MatSnackBarConfig ↗](https://material.angular.dev/components/snack-bar/api) capabilities via passthrough. Provides severity-leveled methods (success, error, warning, information, help), FIFO queuing with signal-based state, configurable duration, optional action button with multiple appearance variants, a pure-CSS countdown bar — no JS timers, and native [MatSnackBarRef ↗](https://material.angular.dev/components/snack-bar/api) exposure via `TbxMatNotificationRef`. All service methods return `TbxMatNotificationRef` synchronously with promises for the native ref and dismiss result (`TbxMatNotificationDismissReason`). Supports both font and SVG icons via `TBX_MAT_NOTIFICATION_PROVIDER_CONFIG` injection token with `TbxMatNotificationSeverityFontIconService` or `TbxMatNotificationSeveritySvgIconService`. Designed for [Angular ↗](https://angular.dev) 21+ zoneless applications.
 
 This is a `@teqbench` [Angular ↗](https://angular.dev) package (`tbx-mat-*`) built with [TypeScript ↗](https://www.typescriptlang.org) and [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr).
 
@@ -35,6 +35,14 @@ This is a `@teqbench` [Angular ↗](https://angular.dev) package (`tbx-mat-*`) b
 
 - `src/` — Source code (all `.ts` files live here)
 - `src/index.ts` — Barrel file (public API exports)
+- `src/enums/` — Enum definitions (`TbxMatNotificationDismissReason`, `TbxMatNotificationIconPosition`)
+- `src/models/` — Interface definitions (config, DTO, action, ref, result, provider config)
+- `src/types/` — Type alias definitions (`TbxMatNotificationConfigArgs`, `TbxMatNotificationActionButtonAppearance`)
+- `src/services/` — Service classes (notification service, severity/close icon services)
+- `src/components/` — Notification component and Storybook stories
+- `src/constants/` — Internal constants (duration default, action button defaults)
+- `src/tokens/` — Injection tokens (`TBX_MAT_NOTIFICATION_PROVIDER_CONFIG`)
+- `src/styles/` — SCSS partials (panel classes, countdown bar, action button theming)
 - `dist/` — Compiled output (git-ignored, only this directory is published)
 - `docs/` — Documentation (placeholder for package-specific guides)
 - `.github/workflows/` — CI/CD pipelines (ci, release, sync, dep-compat-check, claude)
