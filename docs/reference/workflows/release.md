@@ -103,8 +103,8 @@ permissions:
 1. **Checkout code** — Standard checkout (no full history needed).
 2. **Setup Node** — Configures Node from `.nvmrc` with `registry-url: "https://npm.pkg.github.com"` for [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) authentication.
 3. **Install dependencies** — `npm ci` for deterministic builds. `GITHUB_TOKEN` with `packages: write` handles publishing to the current repo's package, and `packages: read` (inherited) handles installing dependencies.
-4. **Build** — `npm run build` compiles TypeScript to `dist/`.
-5. **Publish** — `npm publish ./dist` with `NODE_AUTH_TOKEN` set to `GITHUB_TOKEN`. Publishing from `dist/` directly means consumers resolve against ng-packagr's generated `package.json` with the correct APF entry points.
+4. **Build** — `npm run build` compiles [TypeScript ↗](https://www.typescriptlang.org) to `dist/`.
+5. **Publish** — `npm publish ./dist` with `NODE_AUTH_TOKEN` set to `GITHUB_TOKEN`. Publishing from `dist/` directly means consumers resolve against [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr)'s generated `package.json` with the correct APF entry points.
 
 > **Cross-repo `@teqbench` dependencies:** For packages that depend on other `@teqbench` packages, each dependency package must grant the consuming repository read access in its package settings (**[GitHub Packages ↗](https://github.com/orgs/teqbench/packages) → Manage access**). This applies to the entire transitive dependency tree, not just direct dependencies — same as CI.
 

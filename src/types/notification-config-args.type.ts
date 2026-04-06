@@ -21,11 +21,13 @@ import { type TbxMatNotificationConfig } from '../models/notification-config.mod
  * });
  * ```
  *
- * @example Override position:
+ * @example Override position via snackBarConfig passthrough:
  * ```typescript
  * this.notify.error('Upload failed.', {
- *     horizontalPosition: 'center',
- *     verticalPosition: 'top',
+ *     snackBarConfig: {
+ *         horizontalPosition: 'center',
+ *         verticalPosition: 'top',
+ *     },
  * });
  * ```
  *

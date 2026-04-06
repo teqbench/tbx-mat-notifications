@@ -133,7 +133,7 @@ Full type-check (`tsc --noEmit`) without emitting output.
 npm run lint
 ```
 
-Runs ESLint with the flat config (`eslint.config.js`).
+Runs [ESLint ↗](https://eslint.org) with the flat config (`eslint.config.js`).
 
 #### 10. Run Tests with Coverage
 
@@ -157,7 +157,7 @@ Extracts badge data from test output for the gist push steps:
 
 #### 12. Check README Version Drift
 
-Compares the TypeScript and Node.js versions in `README.md`'s compatibility table against `package.json`. Fails the build if they don't match, preventing documentation drift after dependency updates.
+Compares the [TypeScript ↗](https://www.typescriptlang.org) and [Node.js ↗](https://nodejs.org) versions in `README.md`'s compatibility table against `package.json`. Fails the build if they don't match, preventing documentation drift after dependency updates.
 
 #### 13. Build
 
@@ -165,7 +165,7 @@ Compares the TypeScript and Node.js versions in `README.md`'s compatibility tabl
 npm run build
 ```
 
-Compiles TypeScript to `dist/` using `tsconfig.build.json`.
+Compiles [TypeScript ↗](https://www.typescriptlang.org) to `dist/` using `tsconfig.build.json`.
 
 #### 14–18. Push Badge Data to Gist
 

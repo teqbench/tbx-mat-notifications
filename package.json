@@ -1,7 +1,7 @@
 {
   "name": "@teqbench/tbx-mat-notifications",
   "version": "5.0.0",
-  "description": "Opinionated Angular notification service built on Material snackbar. Provides severity-leveled methods (success, error, warning, information, help), FIFO queuing with signal-based state, configurable duration/position, optional severity icon and close button visibility, default font and SVG icons, and a pure-CSS countdown bar — no JS timers. Designed for Angular 21+ zoneless applications.",
+  "description": "Opinionated Angular notification service built on Material snackbar. Provides severity-leveled methods (success, error, warning, information, help), FIFO queuing with signal-based state, configurable duration, optional action button with multiple appearance variants, optional severity icon and close button visibility, a pure-CSS countdown bar, native MatSnackBarRef exposure via TbxMatNotificationRef, and dismiss reason tracking. Supports font and SVG icons via pluggable resolver services. Designed for Angular 21+ zoneless applications.",
   "type": "module",
   "exports": {
     "./styles/*": {
@@ -31,7 +31,7 @@
     "@angular/core": ">=21.0.0",
     "@angular/material": ">=21.0.0",
     "@teqbench/tbx-mat-icons": ">=4.0.0",
-    "@teqbench/tbx-mat-severity-icons": ">=5.0.0",
+    "@teqbench/tbx-mat-severity-icons": ">=6.0.0",
     "rxjs": ">=7.0.0"
   },
   "devDependenciesPinned": {
@@ -60,7 +60,7 @@
     "@angular/platform-browser-dynamic": "^21.2.6",
     "@storybook/angular": "^10.3.3",
     "@teqbench/tbx-mat-icons": "^4.0.0",
-    "@teqbench/tbx-mat-severity-icons": "^6.0.0",
+    "@teqbench/tbx-mat-severity-icons": "^7.0.0",
     "@types/node": "~24.12.0",
     "@vitest/coverage-v8": "^4.1.1",
     "angular-eslint": "^21.3.1",

@@ -1,16 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import {
-    NotificationHarnessComponent,
-    SHARED_ARG_TYPES,
-    DEFAULT_ARGS,
-    withDefaultProperties,
-    withDefaultSvgIcons,
-    withCustomProperties,
-    COMPACT_CSS,
-    LARGE_CSS,
-    LARGE_ICON_ONLY_CSS,
-} from './notification.stories.common';
+import { NotificationHarnessComponent, SHARED_ARG_TYPES, DEFAULT_ARGS, withDefaultProperties, withDefaultSvgIcons, withCustomProperties, COMPACT_CSS, LARGE_CSS, LARGE_ICON_ONLY_CSS } from './notification.stories.common';
 
 const meta: Meta<NotificationHarnessComponent> = {
     title: 'Notifications/Default SVG Icons',
@@ -22,9 +12,7 @@ const meta: Meta<NotificationHarnessComponent> = {
 export default meta;
 type Story = StoryObj<NotificationHarnessComponent>;
 
-const CATEGORY_DESCRIPTION =
-    'Uses TbxMatNotificationSvgIconService with its built-in default SVG icons ' +
-    'from the "Small Flat Vectors" collection (SVG Repo, PD license).';
+const CATEGORY_DESCRIPTION = 'Uses TbxMatNotificationSeveritySvgIconService with its built-in default SVG icons ' + 'from the "Small Flat Vectors" collection (SVG Repo, PD license).';
 
 export const Default: Story = {
     args: { ...DEFAULT_ARGS, description: CATEGORY_DESCRIPTION },

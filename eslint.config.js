@@ -19,14 +19,8 @@ export default tseslint.config(
             },
         },
         rules: {
-            '@angular-eslint/directive-selector': [
-                'error',
-                { type: 'attribute', prefix: 'tbx', style: 'camelCase' },
-            ],
-            '@angular-eslint/component-selector': [
-                'error',
-                { type: 'element', prefix: 'tbx', style: 'kebab-case' },
-            ],
+            '@angular-eslint/directive-selector': ['error', { type: 'attribute', prefix: 'tbx', style: 'camelCase' }],
+            '@angular-eslint/component-selector': ['error', { type: 'element', prefix: 'tbx', style: 'kebab-case' }],
             'tsdoc/syntax': 'warn',
         },
     },
