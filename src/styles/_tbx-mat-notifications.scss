@@ -84,8 +84,8 @@ html {
  *
  *   text      — label at 80% opacity; transparent container
  *   filled    — container at 80% opacity; solid white label
- *   tonal     — container at 40% text-color opacity; label at 80% bg-color
- *               opacity; state layer uses bg color for visible hover contrast
+ *   tonal     — container at 60% text-color opacity; solid bg-color label;
+ *               state layer uses bg color for visible hover contrast
  *   outlined  — label at 80% opacity; white border; transparent container
  *   elevated  — label at 80% opacity; panel-colored container;
  *               shadow escalates on hover (level1 → level2)
