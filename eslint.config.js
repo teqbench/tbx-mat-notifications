@@ -4,7 +4,7 @@ import tsdoc from 'eslint-plugin-tsdoc';
 
 export default tseslint.config(
     {
-        ignores: ['coverage/', 'dist/', 'node_modules/', '.storybook/', 'storybook-static/'],
+        ignores: ['.claude/', '.storybook/', 'coverage/', 'dist/', 'node_modules/', 'storybook-static/'],
     },
     ...tseslint.configs.recommended,
     ...angular.configs.tsRecommended,
