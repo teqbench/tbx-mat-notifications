@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.0.1](https://github.com/teqbench/tbx-mat-notifications/compare/v6.0.0...v6.0.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* address review findings [#89](https://github.com/teqbench/tbx-mat-notifications/issues/89)-[#92](https://github.com/teqbench/tbx-mat-notifications/issues/92) — stale SCSS comment, missing default() docs and tests ([57f22ff](https://github.com/teqbench/tbx-mat-notifications/commit/57f22ff32b8a569efac5404950bceaea3d92b1c6))
+* **styles:** eliminate circular var() fallback for icon button colors in Safari/Firefox ([8c95497](https://github.com/teqbench/tbx-mat-notifications/commit/8c9549773ed0604099de902b62e443b86cda21a3))
+* **styles:** rename panel class snackbar-info to snackbar-information ([cf0ecc4](https://github.com/teqbench/tbx-mat-notifications/commit/cf0ecc43ebb79c660d5769d118f58d315a67b51a))
+
 ## [6.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v5.0.0...v6.0.0) (2026-04-06)
 
 
