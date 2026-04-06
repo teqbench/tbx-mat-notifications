@@ -79,10 +79,11 @@ describe('TbxMatNotificationService', () => {
 
         it('should apply the correct panel class for each type', () => {
             const cases: Array<[TbxMatSeverityLevel, string]> = [
+                [TbxMatSeverityLevel.Default, 'tbx-mat-notification-snackbar-default'],
                 [TbxMatSeverityLevel.Success, 'tbx-mat-notification-snackbar-success'],
                 [TbxMatSeverityLevel.Error, 'tbx-mat-notification-snackbar-error'],
                 [TbxMatSeverityLevel.Warning, 'tbx-mat-notification-snackbar-warning'],
-                [TbxMatSeverityLevel.Information, 'tbx-mat-notification-snackbar-info'],
+                [TbxMatSeverityLevel.Information, 'tbx-mat-notification-snackbar-information'],
                 [TbxMatSeverityLevel.Help, 'tbx-mat-notification-snackbar-help'],
             ];
 
@@ -466,6 +467,14 @@ describe('TbxMatNotificationService', () => {
             const config = snackBarSpy.openFromComponent.mock.calls[0][1];
             expect(config.data.type).toBe(TbxMatSeverityLevel.Help);
             expect(config.data.message).toBe('Try this');
+        });
+
+        it('default() should show a Default notification', () => {
+            service.default('General');
+
+            const config = snackBarSpy.openFromComponent.mock.calls[0][1];
+            expect(config.data.type).toBe(TbxMatSeverityLevel.Default);
+            expect(config.data.message).toBe('General');
         });
 
         it('convenience methods should accept optional configArgs', () => {

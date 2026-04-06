@@ -186,7 +186,7 @@ describe('TbxMatNotificationComponent', () => {
         it('should default to "close" font ligature when closeIcon is not configured', () => {
             const fixture = createFixture(buildData());
 
-            const closeIcon = fixture.debugElement.query(By.css('.tbx-mat-notification-close-button mat-icon'));
+            const closeIcon = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button mat-icon'));
             expect(closeIcon.nativeElement.textContent.trim()).toBe('close');
         });
 
@@ -200,7 +200,7 @@ describe('TbxMatNotificationComponent', () => {
                 })
             );
 
-            const closeIcon = fixture.debugElement.query(By.css('.tbx-mat-notification-close-button mat-icon'));
+            const closeIcon = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button mat-icon'));
             expect(closeIcon.nativeElement.textContent.trim()).toBe('cancel');
         });
 
@@ -214,7 +214,7 @@ describe('TbxMatNotificationComponent', () => {
                 })
             );
 
-            const closeIcon = fixture.debugElement.query(By.css('.tbx-mat-notification-close-button mat-icon'));
+            const closeIcon = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button mat-icon'));
             expect(closeIcon.nativeElement.getAttribute('data-mat-icon-name')).toBe('my-close-svg');
         });
 
@@ -248,7 +248,7 @@ describe('TbxMatNotificationComponent', () => {
             const dismissByClose = vi.fn();
             const fixture = createFixture(buildData({ dismissByClose }));
 
-            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-button'));
+            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button'));
             closeButton.nativeElement.click();
 
             expect(dismissByClose).toHaveBeenCalledOnce();
@@ -257,7 +257,7 @@ describe('TbxMatNotificationComponent', () => {
         it('should have an accessible aria-label', () => {
             const fixture = createFixture(buildData());
 
-            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-button'));
+            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button'));
             expect(closeButton.nativeElement.getAttribute('aria-label')).toBe('Dismiss notification');
         });
     });
@@ -289,14 +289,14 @@ describe('TbxMatNotificationComponent', () => {
         it('should render close button when showCloseButton is true', () => {
             const fixture = createFixture(buildData({ showCloseButton: true }));
 
-            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-button'));
+            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button'));
             expect(closeButton).not.toBeNull();
         });
 
         it('should not render close button when showCloseButton is false', () => {
             const fixture = createFixture(buildData({ showCloseButton: false }));
 
-            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-button'));
+            const closeButton = fixture.debugElement.query(By.css('.tbx-mat-notification-close-icon-button'));
             expect(closeButton).toBeNull();
         });
 

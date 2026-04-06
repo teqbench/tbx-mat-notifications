@@ -223,6 +223,33 @@ Notification appearance is customizable via CSS custom properties. Set them glob
 | `--tbx-mat-notification-help-background`        | ![#1976D2](https://placehold.co/15x15/1976D2/1976D2.png) `#1976D2` | Help background             |
 | `--tbx-mat-notification-help-text`              | ![#FFFFFF](https://placehold.co/15x15/FFFFFF/FFFFFF.png) `#FFFFFF` | Help text/icon color        |
 
+#### Action Button Opacity
+
+Control the transparency of action button elements relative to the panel's text color. All variant tokens default to `--tbx-mat-notification-action-text-opacity` unless overridden. Set on `html` globally or on a panel class for per-severity overrides.
+
+| Property                                                         | Default                                       | Description                     |
+| ---------------------------------------------------------------- | --------------------------------------------- | ------------------------------- |
+| `--tbx-mat-notification-action-text-opacity`                     | `0.8`                                         | Text button label opacity       |
+| `--tbx-mat-notification-action-filled-container-opacity`         | `var(--...-action-text-opacity)`              | Filled button container opacity |
+| `--tbx-mat-notification-action-tonal-container-opacity`          | `0.55`                                        | Tonal button container opacity  |
+| `--tbx-mat-notification-action-outlined-opacity`                 | `var(--...-action-text-opacity)`              | Outlined button label opacity   |
+| `--tbx-mat-notification-action-elevated-opacity`                 | `var(--...-action-text-opacity)`              | Elevated button label opacity   |
+| `--tbx-mat-notification-action-icon-opacity`                     | `var(--...-action-text-opacity)`              | Action icon button icon opacity |
+| `--tbx-mat-notification-close-icon-opacity`                      | `var(--...-action-text-opacity)`              | Close icon button icon opacity  |
+| `--tbx-mat-notification-action-filled-hover-state-layer-opacity` | `0.3`                                         | Filled button hover state-layer |
+| `--tbx-mat-notification-action-tonal-hover-state-layer-opacity`  | `var(--...-filled-hover-state-layer-opacity)` | Tonal button hover state-layer  |
+
+#### Icon Button Colors
+
+Action and close icon buttons share the same computed color by default. Override these on a panel class to differentiate them per-severity.
+
+| Property                                               | Default                    | Description                          |
+| ------------------------------------------------------ | -------------------------- | ------------------------------------ |
+| `--tbx-mat-notification-action-icon-color`             | Computed via `color-mix()` | Action icon button icon color        |
+| `--tbx-mat-notification-action-icon-state-layer-color` | Panel text color           | Action icon button hover/focus color |
+| `--tbx-mat-notification-close-icon-color`              | Computed via `color-mix()` | Close icon button icon color         |
+| `--tbx-mat-notification-close-icon-state-layer-color`  | Panel text color           | Close icon button hover/focus color  |
+
 ## Styling Font Icons
 
 [Material Symbols ↗](https://fonts.google.com/icons) are variable fonts that expose four CSS axes via `font-variation-settings`. These axes apply to any `<mat-icon>` rendered with a Material Symbols font set. All four axes must be specified together — omitting an axis resets it to the font default.
@@ -314,6 +341,7 @@ font-variation-settings:
 | `warning(message, config?)`     | `TbxMatNotificationRef` | Show a warning notification                                              |
 | `information(message, config?)` | `TbxMatNotificationRef` | Show an information notification                                         |
 | `help(message, config?)`        | `TbxMatNotificationRef` | Show a help notification                                                 |
+| `default(message, config?)`     | `TbxMatNotificationRef` | Show a default notification (no severity styling)                        |
 | `show(config)`                  | `TbxMatNotificationRef` | Show a notification with full config                                     |
 | `dismiss()`                     | `void`                  | Dismiss current (convenience wrapper, tracks ProgrammaticDismissCurrent) |
 | `dismissAll()`                  | `void`                  | Dismiss current and clear queue (tracks ProgrammaticDismissAll)          |

@@ -30,7 +30,7 @@ const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevel, string>> = {
     [TbxMatSeverityLevel.Success]: 'tbx-mat-notification-snackbar-success',
     [TbxMatSeverityLevel.Error]: 'tbx-mat-notification-snackbar-error',
     [TbxMatSeverityLevel.Warning]: 'tbx-mat-notification-snackbar-warning',
-    [TbxMatSeverityLevel.Information]: 'tbx-mat-notification-snackbar-info',
+    [TbxMatSeverityLevel.Information]: 'tbx-mat-notification-snackbar-information',
     [TbxMatSeverityLevel.Help]: 'tbx-mat-notification-snackbar-help',
 };
 
