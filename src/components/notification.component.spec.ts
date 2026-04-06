@@ -407,17 +407,37 @@ describe('TbxMatNotificationComponent', () => {
         });
 
         it('should resolve action icon SVG name', () => {
-            const fixture = createFixture(
-                buildData({
-                    actionLabel: 'Retry',
-                    actionButtonType: 'icon',
-                    actionIconName: 'action-icon',
-                    actionIconResolverService: {
-                        iconType: TbxMatIconType.Svg,
-                        resolve: () => 'action-icon',
+            const data = buildData({
+                actionLabel: 'Retry',
+                actionButtonType: 'icon',
+                actionIconName: 'action-icon',
+                actionIconResolverService: {
+                    iconType: TbxMatIconType.Svg,
+                    resolve: () => 'action-icon',
+                },
+            });
+
+            TestBed.configureTestingModule({
+                imports: [TbxMatNotificationComponent],
+                providers: [
+                    { provide: MAT_SNACK_BAR_DATA, useValue: data },
+                    {
+                        provide: TBX_MAT_FONT_ICON_DEFAULT_FONT_SET,
+                        useValue: TBX_MAT_ICON_FONT_SET_MATERIAL_SYMBOLS_ROUNDED,
                     },
-                })
-            );
+                    {
+                        provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+                        useFactory: () => ({
+                            severityIconResolverService: new TbxMatNotificationSeverityFontIconService(),
+                        }),
+                    },
+                ],
+            });
+
+            registerDummySvgIcons('action-icon');
+
+            const fixture = TestBed.createComponent(TbxMatNotificationComponent);
+            fixture.detectChanges();
 
             const component = fixture.componentInstance;
             expect(component.actionIcon()?.name).toBe('action-icon');
