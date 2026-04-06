@@ -71,12 +71,15 @@ html {
  *
  * Uses Angular Material's recommended override mixin API:
  *   mat.snack-bar-overrides() — container and text colors
- *   mat.icon-button-overrides() — dismiss/close button state-layer color
  *
- * Action button styling is applied via CSS custom properties set directly
- * on each panel class, targeting the --mat-button-{variant}-{token} naming
- * convention used by Angular Material's button components. The
- * mat.button-overrides() mixin is not used because it requires a Sass
+ * Close icon button and all action button variant styling is applied via CSS
+ * custom properties set directly on each panel class, targeting the
+ * --mat-button-{variant}-{token} and --mat-icon-button-{token} naming
+ * conventions used by Angular Material's button components. Icon button
+ * tokens are mapped via class-targeted rules
+ * (.tbx-mat-notification-action-icon-button, .tbx-mat-notification-close-icon-button)
+ * rather than at the panel level. The mat.button-overrides() and
+ * mat.icon-button-overrides() mixins are not used because they require a Sass
  * environment that matches Angular's internal compilation (Storybook's
  * Vite/Sass pipeline is incompatible with the current-selector-or-root mixin).
  *
