@@ -54,7 +54,9 @@ html {
     --tbx-mat-notification-action-text-opacity: 0.8;
     --tbx-mat-notification-action-filled-container-opacity: 0.8;
     --tbx-mat-notification-action-tonal-container-opacity: 0.4;
-    --tbx-mat-notification-action-tonal-text-opacity: 0.8;
+
+    --tbx-mat-notification-action-filled-hover-state-layer-opacity: 0.3;
+    --tbx-mat-notification-action-tonal-hover-state-layer-opacity: 0.3;
 }
 
 /* ━━━ Panel Styles ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -150,13 +152,15 @@ html {
     /* ── Filled button ── */
     --mat-button-filled-container-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-filled-container-opacity) * 100%), transparent);
     --mat-button-filled-label-text-color: #{$bg};
-    --mat-button-filled-state-layer-color: #{$text};
-    --mat-button-filled-ripple-color: color-mix(in srgb, #{$text} calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent);
+    --mat-button-filled-state-layer-color: #{$bg};
+    --mat-button-filled-hover-state-layer-opacity: var(--tbx-mat-notification-action-filled-hover-state-layer-opacity);
+    --mat-button-filled-ripple-color: color-mix(in srgb, #{$bg} calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent);
 
     /* ── Tonal button ── */
     --mat-button-tonal-container-color: color-mix(in srgb, #{$text} calc(var(--tbx-mat-notification-action-tonal-container-opacity) * 100%), transparent);
-    --mat-button-tonal-label-text-color: color-mix(in srgb, #{$bg} calc(var(--tbx-mat-notification-action-tonal-text-opacity) * 100%), transparent);
+    --mat-button-tonal-label-text-color: #{$bg};
     --mat-button-tonal-state-layer-color: #{$bg};
+    --mat-button-tonal-hover-state-layer-opacity: var(--tbx-mat-notification-action-tonal-hover-state-layer-opacity);
     --mat-button-tonal-ripple-color: color-mix(in srgb, #{$bg} calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent);
 
     /* ── Outlined button ── */
