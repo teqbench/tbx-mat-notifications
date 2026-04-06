@@ -109,10 +109,11 @@ html {
 
 /* ── Default severity ──────────────────────────────────────────────────────
  *
- * Intentionally empty. The default severity level applies no color
- * overrides — the notification inherits the Material theme's snackbar
- * styling as-is. The class exists so PANEL_CLASS_MAP has a valid entry
- * and downstream consumers can target it if needed.
+ * The default severity level inherits the Material theme's snackbar
+ * styling for container and text colors. Icon button color tokens are
+ * set to --mat-sys-inverse-primary to match the theme's default
+ * snackbar action button color. The class exists so PANEL_CLASS_MAP
+ * has a valid entry and downstream consumers can target it if needed.
  * ──────────────────────────────────────────────────────────────────────── */
 .tbx-mat-notification-snackbar-default {
     /* ── Icon button color tokens ──
