@@ -314,6 +314,7 @@ font-variation-settings:
 | `warning(message, config?)`     | `TbxMatNotificationRef` | Show a warning notification                                              |
 | `information(message, config?)` | `TbxMatNotificationRef` | Show an information notification                                         |
 | `help(message, config?)`        | `TbxMatNotificationRef` | Show a help notification                                                 |
+| `default(message, config?)`     | `TbxMatNotificationRef` | Show a default notification (no severity styling)                        |
 | `show(config)`                  | `TbxMatNotificationRef` | Show a notification with full config                                     |
 | `dismiss()`                     | `void`                  | Dismiss current (convenience wrapper, tracks ProgrammaticDismissCurrent) |
 | `dismissAll()`                  | `void`                  | Dismiss current and clear queue (tracks ProgrammaticDismissAll)          |
