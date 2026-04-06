@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.0.2](https://github.com/teqbench/tbx-mat-notifications/compare/v6.0.1...v6.0.2) (2026-04-06)
+
+
+### Bug Fixes
+
+* **deps:** update vite to 7.3.2/8.0.5 to resolve CVEs ([8620a06](https://github.com/teqbench/tbx-mat-notifications/commit/8620a06f5b7ebcf7f725a489ee050f2e81cad92f))
+* **deps:** update vite to 7.3.2/8.0.5 to resolve CVEs ([1646027](https://github.com/teqbench/tbx-mat-notifications/commit/16460278fa9e2e22bee5375bb04f6769dde431b1))
+
 ## [6.0.1](https://github.com/teqbench/tbx-mat-notifications/compare/v6.0.0...v6.0.1) (2026-04-06)
 
 
