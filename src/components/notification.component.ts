@@ -160,7 +160,7 @@ interface ResolvedIcon {
                     }
                 }
                 @if (data.showCloseButton) {
-                    <button mat-icon-button matSnackBarAction class="tbx-mat-notification-close-button" (click)="data.dismissByClose()" aria-label="Dismiss notification">
+                    <button mat-icon-button matSnackBarAction class="tbx-mat-notification-close-icon-button" (click)="data.dismissByClose()" aria-label="Dismiss notification">
                         <ng-container *ngTemplateOutlet="tbxNgIconTemplate; context: { icon: closeIcon() }"></ng-container>
                     </button>
                 }
@@ -196,11 +196,6 @@ interface ResolvedIcon {
             font-size: var(--tbx-mat-notification-icon-size, 1.5rem);
             width: var(--tbx-mat-notification-icon-size, 1.5rem);
             height: var(--tbx-mat-notification-icon-size, 1.5rem);
-        }
-
-        .tbx-mat-notification-action-icon-button {
-            --mat-icon-button-icon-color: var(--tbx-mat-notification-action-icon-color, var(--mat-icon-button-icon-color));
-            --mat-icon-button-state-layer-color: var(--tbx-mat-notification-action-icon-state-layer-color, var(--mat-icon-button-state-layer-color));
         }
     `,
 })
