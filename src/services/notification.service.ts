@@ -26,6 +26,7 @@ import { type TbxMatNotificationActionButtonAppearance } from '../types/notifica
  * outside component scope).
  */
 const PANEL_CLASS_MAP: Readonly<Record<TbxMatSeverityLevel, string>> = {
+    [TbxMatSeverityLevel.Default]: 'tbx-mat-notification-snackbar-default',
     [TbxMatSeverityLevel.Success]: 'tbx-mat-notification-snackbar-success',
     [TbxMatSeverityLevel.Error]: 'tbx-mat-notification-snackbar-error',
     [TbxMatSeverityLevel.Warning]: 'tbx-mat-notification-snackbar-warning',
@@ -389,6 +390,26 @@ export class TbxMatNotificationService {
      */
     help(message: string, configArgs?: TbxMatNotificationConfigArgs): TbxMatNotificationRef {
         return this.show({ type: TbxMatSeverityLevel.Help, message, ...configArgs });
+    }
+
+    /**
+     * Display a default notification (no severity styling)
+     *
+     * @remarks
+     * The notification inherits the Material theme's default snackbar
+     * appearance with no severity-specific background color, icon, or
+     * action button color overrides. Use this for general-purpose messages
+     * that do not carry severity connotation.
+     *
+     * @param message - The message to display to the user.
+     * @param configArgs - Optional overrides for duration, action, countdown, and visibility options.
+     *
+     * @returns A {@link TbxMatNotificationRef} for the queued notification.
+     *
+     * @public
+     */
+    default(message: string, configArgs?: TbxMatNotificationConfigArgs): TbxMatNotificationRef {
+        return this.show({ type: TbxMatSeverityLevel.Default, message, ...configArgs });
     }
 
     /**

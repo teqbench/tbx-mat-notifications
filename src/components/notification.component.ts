@@ -133,7 +133,7 @@ interface ResolvedIcon {
             <div matSnackBarActions class="tbx-mat-notification-snackbar-actions">
                 @if (data.actionLabel) {
                     @if (data.actionButtonType === 'icon') {
-                        <button mat-icon-button matSnackBarAction (click)="data.dismissByAction()" [attr.aria-label]="data.actionLabel">
+                        <button mat-icon-button matSnackBarAction class="tbx-mat-notification-action-icon-button" (click)="data.dismissByAction()" [attr.aria-label]="data.actionLabel">
                             <ng-container *ngTemplateOutlet="tbxNgIconTemplate; context: { icon: actionIcon() }"></ng-container>
                         </button>
                     } @else {
@@ -196,6 +196,11 @@ interface ResolvedIcon {
             font-size: var(--tbx-mat-notification-icon-size, 1.5rem);
             width: var(--tbx-mat-notification-icon-size, 1.5rem);
             height: var(--tbx-mat-notification-icon-size, 1.5rem);
+        }
+
+        .tbx-mat-notification-action-icon-button {
+            --mat-icon-button-icon-color: var(--tbx-mat-notification-action-icon-color, var(--mat-icon-button-icon-color));
+            --mat-icon-button-state-layer-color: var(--tbx-mat-notification-action-icon-state-layer-color, var(--mat-icon-button-state-layer-color));
         }
     `,
 })

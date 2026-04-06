@@ -12,23 +12,21 @@ import { TbxMatNotificationService } from '../services/notification.service';
 import { TbxMatNotificationIconPosition } from '../enums/notification-icon-position.enum';
 import { withDefaultProperties } from './notification.stories.common';
 
-// ─── Action Icon Resolver ─────────────────────────────────────────────────
+// ━━━ Action Icon Resolver ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Inline font icon resolver for action button icons. Material Symbols
 // ligatures are the icon name itself, so resolve() is an identity function.
-
 const actionFontIconResolver = {
     iconType: TbxMatIconType.Font as const,
     resolve: (name: string) => name,
 };
 
-// ─── SVG Action Icon Resolver ─────────────────────────────────────────────
+// ━━━ SVG Action Icon Resolver ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Inline SVG icon resolver for action buttons. Icons are registered with
 // MatIconRegistry in the provider factory and resolved by name.
 
 // Bolt/lightning icon — visually distinct from any Material Symbols ligature.
 // Source: Material Design Icons (Apache 2.0)
 const SVG_BOLT = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.51c.4 0 .62.19.4.66C12.97 17.55 11 21 11 21z"/></svg>';
-
 const ACTION_SVG_ICON_NAME = 'action-bolt-svg';
 
 const actionSvgIconResolver = {
@@ -36,7 +34,7 @@ const actionSvgIconResolver = {
     resolve: () => ACTION_SVG_ICON_NAME,
 };
 
-// ─── Action Button Harness ──────────────────────────────────────────────────
+// ━━━ Action Button Harness ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 @Component({
     selector: 'tbx-action-button-harness',
@@ -88,10 +86,7 @@ const actionSvgIconResolver = {
                 <button mat-flat-button (click)="notify.dismissAll()">Dismiss All</button>
             </div>
 
-            <p class="state">
-                Active: {{ notify.isActive() }} &middot; Pending:
-                {{ notify.pendingCount() }}
-            </p>
+            <p class="state">Active: {{ notify.isActive() }} &middot; Pending: {{ notify.pendingCount() }}</p>
             @if (lastResult) {
                 <p class="state">Last dismiss reason: {{ lastResult }}</p>
             }
@@ -284,7 +279,165 @@ class ActionButtonHarnessComponent {
     }
 }
 
-// ─── Providers ──────────────────────────────────────────────────────────────
+// ━━━ Severity Matrix Harness ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+@Component({
+    selector: 'tbx-severity-matrix-harness',
+    imports: [MatButtonModule],
+    template: `
+        <div class="harness">
+            <p class="story-description">{{ description }}</p>
+
+            <div class="matrix">
+                @for (severity of severities; track severity.key) {
+                    <div class="severity-row">
+                        <h3 class="severity-label" [style.border-left-color]="severity.color">
+                            {{ severity.label }}
+                        </h3>
+                        <div class="button-group">
+                            <button mat-flat-button (click)="fire(severity.key, 'text')">Text</button>
+                            <button mat-flat-button (click)="fire(severity.key, 'filled')">Filled</button>
+                            <button mat-flat-button (click)="fire(severity.key, 'tonal')">Tonal</button>
+                            <button mat-flat-button (click)="fire(severity.key, 'outlined')">Outlined</button>
+                            <button mat-flat-button (click)="fire(severity.key, 'elevated')">Elevated</button>
+                            <button mat-flat-button (click)="fire(severity.key, 'icon')">Icon</button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <h3>Fire All for One Severity</h3>
+            <div class="button-group">
+                @for (severity of severities; track severity.key) {
+                    <button mat-flat-button (click)="fireAll(severity.key)">All {{ severity.label }}</button>
+                }
+            </div>
+
+            <h3>Queue</h3>
+            <div class="button-group">
+                <button mat-flat-button (click)="notify.dismissAll()">Dismiss All</button>
+            </div>
+            <p class="state">Active: {{ notify.isActive() }} &middot; Pending: {{ notify.pendingCount() }}</p>
+            @if (lastResult) {
+                <p class="state">Last dismiss reason: {{ lastResult }}</p>
+            }
+        </div>
+    `,
+    styles: `
+        .harness {
+            font-family: Roboto, sans-serif;
+            padding: 1.5rem;
+        }
+        .matrix {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .severity-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+        }
+        .severity-label {
+            margin: 0;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding-left: 0.5rem;
+            border-left: 3px solid #999;
+        }
+        h3 {
+            margin: 1.5rem 0 0.5rem;
+        }
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .state {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #666;
+        }
+        .story-description {
+            font-size: 0.875rem;
+            color: #333;
+            background: #f0f4ff;
+            border-left: 3px solid #1565c0;
+            padding: 0.5rem 0.75rem;
+            margin: 0 0 1rem;
+            line-height: 1.4;
+        }
+    `,
+})
+class SeverityMatrixHarnessComponent {
+    readonly notify = inject(TbxMatNotificationService);
+    description = '';
+    lastResult = '';
+
+    readonly severities = [
+        { key: 'default', label: 'Default', color: '#757575' },
+        { key: 'success', label: 'Success', color: '#2e7d32' },
+        { key: 'error', label: 'Error', color: '#c62828' },
+        { key: 'warning', label: 'Warning', color: '#f9a825' },
+        { key: 'information', label: 'Information', color: '#1565c0' },
+        { key: 'help', label: 'Help', color: '#1976d2' },
+    ];
+
+    private readonly messages: Record<string, string> = {
+        default: 'This is a default notification.',
+        success: 'Operation completed successfully.',
+        error: 'Something went wrong. Please try again.',
+        warning: 'Your session will expire in 5 minutes.',
+        information: 'A new version is available.',
+        help: 'Click the + button to add a new item.',
+    };
+
+    private readonly actionLabels: Record<string, string> = {
+        text: 'Undo',
+        filled: 'Retry',
+        tonal: 'Retry',
+        outlined: 'Update',
+        elevated: 'View',
+        icon: 'Retry',
+    };
+
+    fire(severityKey: string, buttonType: string): void {
+        const method = this.notify[severityKey as keyof TbxMatNotificationService] as (msg: string, args?: object) => ReturnType<TbxMatNotificationService['show']>;
+
+        const action: Record<string, unknown> = {
+            label: this.actionLabels[buttonType],
+            actionButtonType: buttonType,
+        };
+
+        // Icon-only buttons need an icon name and resolver
+        if (buttonType === 'icon') {
+            action['iconName'] = 'refresh';
+            action['actionIconResolverService'] = actionFontIconResolver;
+        }
+
+        const ref = method.call(this.notify, this.messages[severityKey], {
+            action,
+            duration: 0,
+            showCloseButton: true,
+        });
+
+        void this.trackResult(ref);
+    }
+
+    fireAll(severityKey: string): void {
+        const types = ['text', 'filled', 'tonal', 'outlined', 'elevated', 'icon'];
+        for (const type of types) {
+            this.fire(severityKey, type);
+        }
+    }
+
+    private async trackResult(ref: ReturnType<TbxMatNotificationService['show']>): Promise<void> {
+        const result = await ref.result;
+        this.lastResult = result.dismissReason;
+    }
+}
+
+// ━━━ Providers ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 /** Register the SVG action icon with MatIconRegistry. */
 function registerActionSvgIcon(): void {
@@ -340,7 +493,7 @@ function withProviderActionDefaults() {
     });
 }
 
-// ─── Stories ─────────────────────────────────────────────────────────────────
+// ━━━ Stories ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 const meta: Meta<ActionButtonHarnessComponent> = {
     title: 'Notifications/Action Button',
@@ -364,4 +517,15 @@ export const ProviderDefaults: Story = {
         description: 'Provider config sets application-wide action defaults: actionButtonType "tonal", ' + 'iconPosition Before, and a font icon resolver. Buttons that do not override ' + 'actionButtonType inherit tonal from the provider (e.g., the Text button renders ' + 'as tonal). Per-notification overrides still take precedence (Filled, Outlined, ' + 'Elevated). Icon buttons use the provider resolver as fallback.',
     },
     decorators: [withDefaultProperties(), withProviderActionDefaults()],
+};
+
+export const SeverityMatrix: StoryObj<SeverityMatrixHarnessComponent> = {
+    name: 'Severity × Button Type',
+    render: () => ({
+        props: {
+            description: 'Matrix view: fire any combination of severity level × action button type. ' + 'Each notification uses indefinite duration (duration: 0) so you can inspect ' + 'the styling at rest. Hover over action buttons to verify state-layer behavior. ' + 'Use "Dismiss All" to clear the queue between tests.',
+        },
+        template: `<tbx-severity-matrix-harness [description]="description"></tbx-severity-matrix-harness>`,
+    }),
+    decorators: [moduleMetadata({ imports: [SeverityMatrixHarnessComponent] }), withDefaultProperties(), withProviders()],
 };
