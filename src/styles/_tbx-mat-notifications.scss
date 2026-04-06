@@ -211,7 +211,7 @@ html {
     @include _severity-panel(var(--tbx-mat-notification-warning-background), var(--tbx-mat-notification-warning-text));
 }
 
-.tbx-mat-notification-snackbar-info {
+.tbx-mat-notification-snackbar-information {
     @include _severity-panel(var(--tbx-mat-notification-information-background), var(--tbx-mat-notification-information-text));
 }
 
