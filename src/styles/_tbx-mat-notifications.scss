@@ -91,15 +91,15 @@ html {
  * Each severity panel class overrides color tokens for all six button
  * variants that the notification component supports:
  *
- *   text      — label at 80% opacity; transparent container
- *   filled    — container at 80% opacity; solid white label
- *   tonal     — container at 60% text-color opacity; solid bg-color label;
+ *   text      — label at configured opacity; transparent container
+ *   filled    — container at configured opacity; solid bg-color label
+ *   tonal     — container at configured opacity; solid bg-color label;
  *               state layer uses bg color for visible hover contrast
- *   outlined  — label at 80% opacity; white border; transparent container
- *   elevated  — label at 80% opacity; panel-colored container;
+ *   outlined  — label at configured opacity; text-color border; transparent container
+ *   elevated  — label at configured opacity; panel-colored container;
  *               shadow escalates on hover (level1 → level2)
- *   icon      — same color as text action button; separate tokens
- *               for consumer override
+ *   icon      — icon at configured opacity; separate action and close tokens
+ *               for independent consumer override
  *
  * State layer (hover/focus/press) colors are set to white for all variants
  * so the M3 hover tint lightens the colored panel rather than applying
