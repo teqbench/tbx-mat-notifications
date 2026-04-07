@@ -126,6 +126,17 @@ html {
     --tbx-mat-notification-action-icon-state-layer-color: var(--mat-sys-inverse-primary);
     --tbx-mat-notification-close-icon-color: var(--mat-sys-inverse-primary);
     --tbx-mat-notification-close-icon-state-layer-color: var(--mat-sys-inverse-primary);
+
+    /* ── Outlined button ──
+   * The default snackbar inherits the Material theme's inverse-surface
+   * background. Without overrides, outlined button label and border
+   * use the theme's on-surface color (dark), which is illegible on the
+   * dark snackbar background. Use inverse-primary to match the text
+   * button color.
+   */
+    --mat-button-outlined-label-text-color: var(--mat-sys-inverse-primary);
+    --mat-button-outlined-outline-color: var(--mat-sys-inverse-primary);
+    --mat-button-outlined-state-layer-color: var(--mat-sys-inverse-on-surface);
 }
 
 /* ── Severity panel mixin ─────────────────────────────────────────────────
