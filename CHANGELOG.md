@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.0.3](https://github.com/teqbench/tbx-mat-notifications/compare/v6.0.2...v6.0.3) (2026-04-07)
+
+
+### Bug Fixes
+
+* **styles:** add outlined button overrides for default severity panel ([fe0673a](https://github.com/teqbench/tbx-mat-notifications/commit/fe0673a11b392eb103cb5c74a6904381a8a01547))
+* **styles:** outlined button legibility in default severity ([00407bf](https://github.com/teqbench/tbx-mat-notifications/commit/00407bf4a7d2e8573d7b6e5a7086aa92aea24a39))
+
 ## [6.0.2](https://github.com/teqbench/tbx-mat-notifications/compare/v6.0.1...v6.0.2) (2026-04-06)
 
 
