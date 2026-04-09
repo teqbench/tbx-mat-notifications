@@ -4,6 +4,16 @@
 
 > An opinionated thin layer around [Angular Material Snackbar ↗](https://material.angular.dev/components/snack-bar/api). Provides `TbxMatNotificationService` with severity-leveled methods (`success()`, `error()`, `warning()`, `information()`, `help()`), optional action button with multiple appearance variants, FIFO queuing with signal-based state, configurable duration, a pure-CSS countdown bar, and native [MatSnackBarRef ↗](https://material.angular.dev/components/snack-bar/api) exposure via `TbxMatNotificationRef`. All service methods return `TbxMatNotificationRef` synchronously with promises for the native ref and dismiss result.
 
+## When to use
+
+Notifications are one of three message surfaces in the TeqBench component family. Choose based on the weight of the message and how much interaction it needs:
+
+- **`@teqbench/tbx-mat-notifications`** (this package) — small, transient messages with at most one action control. Ideally one line of text, two lines acceptable. Use notifications to acknowledge something without interrupting the user's flow.
+- [`@teqbench/tbx-mat-banners`](https://github.com/teqbench/tbx-mat-banners) — wide, persistent messages with multiple action controls. Ideally one line of message text, up to three lines still acceptable. Use a banner when the message needs the user's attention and may offer a few follow-up choices.
+- [`@teqbench/tbx-mat-dialogs`](https://github.com/teqbench/tbx-mat-dialogs) — heavier, focused interactions for arbitrary content. Use a dialog when the message is long, the choices are many, or the interaction is complex.
+
+If a notification is growing past a single action control or a couple of lines of text, that is a signal to escalate to a banner. If a banner in turn is approaching the three-line limit or needs more than a handful of controls, escalate to a dialog.
+
 ## Installation
 
 Configure npm to use [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) for the `@teqbench` scope:
