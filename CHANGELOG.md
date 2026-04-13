@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.1.0](https://github.com/teqbench/tbx-mat-notifications/compare/v6.0.3...v6.1.0) (2026-04-13)
+
+
+### Features
+
+* **docs:** overhaul README and adopt the per-package docs pipeline ([2177b78](https://github.com/teqbench/tbx-mat-notifications/commit/2177b782a064f1f0858a3a5fc6bf06feabe1214c))
+* **docs:** overhaul README and adopt the per-package docs pipeline ([f3124cb](https://github.com/teqbench/tbx-mat-notifications/commit/f3124cbbd3f04755aab7b2631af9493ea9675dc5))
+
 ## [6.0.3](https://github.com/teqbench/tbx-mat-notifications/compare/v6.0.2...v6.0.3) (2026-04-07)
 
 
