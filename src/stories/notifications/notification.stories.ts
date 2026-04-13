@@ -22,8 +22,8 @@ type IconAnimation = 'none' | 'state-transition' | 'pulse';
                 <ul>
                     <li><strong>Show Severity Icon</strong> / <strong>Show Close Button</strong> — toggles the two optional UI elements</li>
                     <li><strong>Show Countdown</strong> — displays the CSS-driven countdown bar</li>
-                    <li><strong>Icon Size</strong> — standard / compact / large severity icon</li>
-                    <li><strong>Icon Animation</strong> — none, state-transition (fills on enter), or hover-fill</li>
+                    <li><strong>Icon Size</strong> — standard / medium / large severity icon</li>
+                    <li><strong>Icon Animation</strong> — none, state-transition (fill-in on enter), or pulse</li>
                 </ul>
             </div>
 
