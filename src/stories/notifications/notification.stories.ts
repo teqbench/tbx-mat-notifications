@@ -4,8 +4,8 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { TbxMatNotificationService } from '../../index';
 
-type IconSize = 'standard' | 'compact' | 'large';
-type IconAnimation = 'none' | 'state-transition' | 'hover-fill';
+type IconSize = 'standard' | 'medium' | 'large';
+type IconAnimation = 'none' | 'state-transition' | 'pulse';
 
 @Component({
     selector: 'tbx-notification-harness',
@@ -129,13 +129,13 @@ class NotificationHarnessComponent {
 
     constructor() {
         // Inject icon size CSS custom property at the document level so it
-        // reaches notifications (which render outside the component tree via
-        // the Material snackbar overlay).
+        // reaches notifications (which render inside the Material snackbar
+        // overlay, outside the component tree).
         const SIZE_STYLE_ID = 'tbx-notification-story-icon-size';
         const SIZE_MAP: Record<IconSize, string> = {
             standard: '',
-            compact: '1rem',
-            large: '2rem',
+            medium: '2rem',
+            large: '3rem',
         };
 
         effect(() => {
@@ -148,7 +148,10 @@ class NotificationHarnessComponent {
             document.head.appendChild(style);
         });
 
-        // Inject icon animation CSS at document level.
+        // Inject icon animation CSS at document level. Selectors target the
+        // Material snackbar container because notifications render inside
+        // `.mat-mdc-snack-bar-container` via the snackbar overlay — any
+        // component-scoped CSS in this harness wouldn't reach that DOM.
         const ANIM_STYLE_ID = 'tbx-notification-story-icon-animation';
 
         const STATE_CSS = `
@@ -156,19 +159,20 @@ class NotificationHarnessComponent {
         from { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         to   { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
       }
-      .tbx-mat-notification-panel .material-symbols-rounded {
+      .mat-mdc-snack-bar-container .material-symbols-rounded {
         animation: tbx-notification-icon-fill 0.3s ease-in-out 0.15s forwards;
         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
       }
     `;
 
-        const HOVER_CSS = `
-      .tbx-mat-notification-panel .material-symbols-rounded {
-        transition: font-variation-settings 0.2s ease;
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        const PULSE_CSS = `
+      @keyframes tbx-notification-icon-pulse {
+        from { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        to   { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
       }
-      .tbx-mat-notification-panel:hover .material-symbols-rounded {
-        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      .mat-mdc-snack-bar-container .tbx-mat-notification-snackbar-icon {
+        animation: tbx-notification-icon-pulse 1s ease-in-out infinite alternate;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
       }
     `;
 
@@ -178,7 +182,7 @@ class NotificationHarnessComponent {
             if (mode === 'none') return;
             const style = document.createElement('style');
             style.id = ANIM_STYLE_ID;
-            style.textContent = mode === 'state-transition' ? STATE_CSS : HOVER_CSS;
+            style.textContent = mode === 'state-transition' ? STATE_CSS : PULSE_CSS;
             document.head.appendChild(style);
         });
     }
@@ -231,13 +235,13 @@ const meta: Meta<NotificationHarnessComponent> = {
         iconSize: {
             name: 'Icon Size',
             control: 'select',
-            options: ['standard', 'compact', 'large'],
+            options: ['standard', 'medium', 'large'],
             description: 'Severity icon size',
         },
         iconAnimation: {
             name: 'Icon Animation',
             control: 'select',
-            options: ['none', 'state-transition', 'hover-fill'],
+            options: ['none', 'state-transition', 'pulse'],
             description: 'Icon fill animation',
         },
     },
