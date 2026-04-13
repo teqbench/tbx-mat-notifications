@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.1.1](https://github.com/teqbench/tbx-mat-notifications/compare/v6.1.0...v6.1.1) (2026-04-13)
+
+
+### Bug Fixes
+
+* **docs:** align notifications docs Storybook icon controls with banners ([dcd5e67](https://github.com/teqbench/tbx-mat-notifications/commit/dcd5e6753d329a682b50c55429208fb8afca6fce))
+* **docs:** align notifications docs Storybook icon controls with banners ([1ed7809](https://github.com/teqbench/tbx-mat-notifications/commit/1ed78090577bf179dd4fadd79de6a7b905a3b4db))
+
 ## [6.1.0](https://github.com/teqbench/tbx-mat-notifications/compare/v6.0.3...v6.1.0) (2026-04-13)
 
 
