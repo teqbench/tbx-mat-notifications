@@ -1,0 +1,26 @@
+# Short, scannable feature bullets rendered in the README "At a glance" section.
+# Each entry: one short noun phrase, one-line explanation.
+- name: Severity-leveled API
+  summary: Convenience methods for success, error, warning, information, and help with matching icons and colors.
+- name: Material snackbar base
+  summary: Thin opinionated layer over Angular Material's MatSnackBar with consistent visual treatment.
+- name: FIFO queue
+  summary: One notification at a time, with signal-based isActive and pendingCount state.
+- name: Synchronous ref
+  summary: Service methods return TbxMatNotificationRef immediately, with promises for the native ref and dismiss result.
+- name: Optional action button
+  summary: Single action with text, filled, tonal, outlined, elevated, or icon-only appearance and cascading defaults.
+- name: Dismiss reason tracking
+  summary: Result promise resolves with Action, Close, Timeout, or one of two programmatic dismiss reasons.
+- name: Pure-CSS countdown bar
+  summary: Opt-in visual progress toward auto-dismissal, no animation framework required.
+- name: Configurable duration
+  summary: Default 10s; positive values used as-is; zero or negative means indefinite.
+- name: Theming via CSS custom properties
+  summary: Per-severity colors, opacity tokens for button variants, and layout gaps exposed as CSS variables.
+- name: Pluggable icons
+  summary: Font (Material Symbols) or SVG icon resolver services via DI token, with optional per-action overrides.
+- name: Native ref exposure
+  summary: Underlying MatSnackBarRef available via the returned ref's snackBarRef promise for advanced use.
+- name: Zoneless ready
+  summary: Built for Angular 21+ zoneless applications using signal-based reactive state.
