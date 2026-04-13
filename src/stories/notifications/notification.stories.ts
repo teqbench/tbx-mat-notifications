@@ -18,12 +18,13 @@ type IconAnimation = 'none' | 'state-transition' | 'pulse';
                     By default notifications auto-dismiss after 10 seconds with a visible countdown bar. Pass
                     <code>&#123; duration: 0 &#125;</code> to make them indefinite (closed only by the action button, close button, or programmatic dismiss).
                 </p>
-                <p>Use the <strong>Controls</strong> panel below to try:</p>
+                <p>Use the <strong>Controls</strong> panel below to try all combinations of:</p>
                 <ul>
-                    <li><strong>Show Severity Icon</strong> / <strong>Show Close Button</strong> — toggles the two optional UI elements</li>
-                    <li><strong>Show Countdown</strong> — displays the CSS-driven countdown bar</li>
-                    <li><strong>Icon Size</strong> — standard / compact / large severity icon</li>
-                    <li><strong>Icon Animation</strong> — none, state-transition (fills on enter), or hover-fill</li>
+                    <li><strong>Show Severity Icon</strong> — displays the severity icon on the left of the message</li>
+                    <li><strong>Show Close Button</strong> — displays the close (×) button on the right</li>
+                    <li><strong>Show Countdown</strong> — displays the CSS-driven countdown bar along the bottom edge</li>
+                    <li><strong>Icon Size</strong> — standard / medium / large severity icon</li>
+                    <li><strong>Icon Animation</strong> — none, state-transition (fill-in on enter), or pulse</li>
                 </ul>
             </div>
 
