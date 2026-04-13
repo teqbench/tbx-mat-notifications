@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.1.2](https://github.com/teqbench/tbx-mat-notifications/compare/v6.1.1...v6.1.2) (2026-04-13)
+
+
+### Bug Fixes
+
+* **docs:** enumerate all five story controls in the instructions block ([d1d3d02](https://github.com/teqbench/tbx-mat-notifications/commit/d1d3d02d9cfec66f73db81432b9bce2e26d9adcb))
+* **docs:** update instructions text to match new Icon Size and Icon Animation options ([4a68e33](https://github.com/teqbench/tbx-mat-notifications/commit/4a68e333cb688140fadd0146a46f1744cc0ec51b))
+* **docs:** update instructions text to match new Icon Size and Icon Animation options ([f796b99](https://github.com/teqbench/tbx-mat-notifications/commit/f796b99e37a2f74b7d8383bb6ca54b4b4228dad2))
+
 ## [6.1.1](https://github.com/teqbench/tbx-mat-notifications/compare/v6.1.0...v6.1.1) (2026-04-13)
 
 
