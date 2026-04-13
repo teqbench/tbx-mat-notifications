@@ -4,6 +4,8 @@
 /dist
 /out-tsc
 /storybook-static
+/storybook-dev-static
+/storybook-docs-static
 
 # Node
 /node_modules

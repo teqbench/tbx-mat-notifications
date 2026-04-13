@@ -1,0 +1,17 @@
+# Glossary rendered in the README "Concepts" section. Term -> one-line definition.
+- term: Severity level
+  definition: A classification (success, error, warning, information, help) that selects the icon and color scheme applied to a notification.
+- term: Action button
+  definition: An optional single button rendered inside the notification; its click resolves the dismiss result with reason Action.
+- term: Dismiss reason
+  definition: The cause of a notification closing — action button, close button, timeout, or one of two programmatic paths (single or all).
+- term: Queue
+  definition: A FIFO list of pending notifications. One is visible at a time; queued notifications render in order as each resolves.
+- term: Countdown bar
+  definition: A pure-CSS progress bar rendered along the notification's edge that depletes over the configured duration. Opt-in via showCountdown.
+- term: Provider config
+  definition: The DI-provided configuration (TBX_MAT_NOTIFICATION_PROVIDER_CONFIG) that supplies the severity icon resolver, optional close icon resolver, and application-wide action defaults.
+- term: Action appearance cascade
+  definition: Per-notification action.actionButtonType overrides the provider's actionConfig.buttonType, which in turn overrides the built-in default of 'text'.
+- term: Icon resolver service
+  definition: A pluggable service that maps a severity level or a named icon to either a Material Symbols ligature (font) or an SVG markup string.
