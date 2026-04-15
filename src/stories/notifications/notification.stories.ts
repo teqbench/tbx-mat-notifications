@@ -293,6 +293,9 @@ export const Standard: Story = {
 export const StandardSvgIcons: Story = {
     name: 'Standard (SVG Icons)',
     args: SHARED_ARGS,
+    argTypes: {
+        iconAnimation: { table: { disable: true } },
+    },
     decorators: [
         applicationConfig({
             providers: [provideTbxMatSeverityTheme({ invert: false, applyToRoot: true })],
@@ -327,6 +330,9 @@ export const Inverted: Story = {
 export const InvertedSvgIcons: Story = {
     name: 'Inverted (SVG Icons)',
     args: SHARED_ARGS,
+    argTypes: {
+        iconAnimation: { table: { disable: true } },
+    },
     decorators: [
         applicationConfig({
             providers: [provideTbxMatSeverityTheme({ invert: true, applyToRoot: true })],
