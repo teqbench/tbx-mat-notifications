@@ -3,7 +3,8 @@ import { MatButtonModule } from '@angular/material/button';
 import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig, moduleMetadata } from '@storybook/angular';
 import { provideTbxMatSeverityTheme } from '@teqbench/tbx-mat-severity-theme';
-import { TbxMatNotificationService } from '../../index';
+import { TbxMatNotificationService, TbxMatNotificationSeveritySvgIconService } from '../../index';
+import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../../tokens/notification-provider-config.token';
 
 type IconSize = 'standard' | 'medium' | 'large';
 type IconAnimation = 'none' | 'state-transition' | 'pulse';
@@ -252,29 +253,63 @@ const meta: Meta<NotificationHarnessComponent> = {
 export default meta;
 type Story = StoryObj<NotificationHarnessComponent>;
 
-export const Notifications: Story = {
-    args: {
-        showSeverityIcon: true,
-        showCloseButton: true,
-        showCountdown: true,
-        iconSize: 'standard',
-        iconAnimation: 'none',
-    },
+const SHARED_ARGS = {
+    showSeverityIcon: true,
+    showCloseButton: true,
+    showCountdown: true,
+    iconSize: 'standard' as IconSize,
+    iconAnimation: 'none' as IconAnimation,
+};
+
+function withSvgIcons() {
+    return applicationConfig({
+        providers: [
+            {
+                provide: TBX_MAT_NOTIFICATION_PROVIDER_CONFIG,
+                useFactory: () => ({
+                    severityIconResolverService: new TbxMatNotificationSeveritySvgIconService(),
+                }),
+            },
+        ],
+    });
+}
+
+export const Standard: Story = {
+    args: SHARED_ARGS,
     decorators: [
         applicationConfig({
             providers: [provideTbxMatSeverityTheme({ invert: false, applyToRoot: true })],
         }),
     ],
+    parameters: {
+        docs: {
+            description: {
+                story: 'Standard severity palette with the default Material Symbols font icons — colored backgrounds, white text.',
+            },
+        },
+    },
+};
+
+export const StandardSvgIcons: Story = {
+    name: 'Standard (SVG Icons)',
+    args: SHARED_ARGS,
+    decorators: [
+        applicationConfig({
+            providers: [provideTbxMatSeverityTheme({ invert: false, applyToRoot: true })],
+        }),
+        withSvgIcons(),
+    ],
+    parameters: {
+        docs: {
+            description: {
+                story: 'Standard severity palette with the default SVG icons shipped by `@teqbench/tbx-mat-severity-theme` (registered via `TbxMatNotificationSeveritySvgIconService`).',
+            },
+        },
+    },
 };
 
 export const Inverted: Story = {
-    args: {
-        showSeverityIcon: true,
-        showCloseButton: true,
-        showCountdown: true,
-        iconSize: 'standard',
-        iconAnimation: 'none',
-    },
+    args: SHARED_ARGS,
     decorators: [
         applicationConfig({
             providers: [provideTbxMatSeverityTheme({ invert: true, applyToRoot: true })],
@@ -284,6 +319,24 @@ export const Inverted: Story = {
         docs: {
             description: {
                 story: 'Inverted severity palette — white backgrounds with colored text. Wired via `provideTbxMatSeverityTheme({ invert: true })` at bootstrap. The inversion is app-global: banners and dialogs consuming the same shared theme invert simultaneously.',
+            },
+        },
+    },
+};
+
+export const InvertedSvgIcons: Story = {
+    name: 'Inverted (SVG Icons)',
+    args: SHARED_ARGS,
+    decorators: [
+        applicationConfig({
+            providers: [provideTbxMatSeverityTheme({ invert: true, applyToRoot: true })],
+        }),
+        withSvgIcons(),
+    ],
+    parameters: {
+        docs: {
+            description: {
+                story: 'Inverted severity palette with the default SVG icons from `@teqbench/tbx-mat-severity-theme`.',
             },
         },
     },
