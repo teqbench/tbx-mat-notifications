@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.0.1](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.0...v8.0.1) (2026-04-15)
+
+
+### Bug Fixes
+
+* **deps:** require tbx-mat-severity-theme ^8.0.1 for corrected default SVG icons ([4479783](https://github.com/teqbench/tbx-mat-notifications/commit/44797837c594a1ec4a555a22c491d8fad06bab9d))
+* **deps:** require tbx-mat-severity-theme ^8.0.1 for corrected default SVG icons ([0a4cb08](https://github.com/teqbench/tbx-mat-notifications/commit/0a4cb08abcfffbc618fc5b88e86442ec2ab2fdbf))
+
 ## [8.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v7.0.0...v8.0.0) (2026-04-15)
 
 
