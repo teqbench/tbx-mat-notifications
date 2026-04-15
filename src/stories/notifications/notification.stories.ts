@@ -1,7 +1,8 @@
 import { Component, effect, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import type { Meta, StoryObj } from '@storybook/angular';
-import { moduleMetadata } from '@storybook/angular';
+import { applicationConfig, moduleMetadata } from '@storybook/angular';
+import { provideTbxMatSeverityTheme } from '@teqbench/tbx-mat-severity-theme';
 import { TbxMatNotificationService } from '../../index';
 
 type IconSize = 'standard' | 'medium' | 'large';
@@ -258,5 +259,32 @@ export const Notifications: Story = {
         showCountdown: true,
         iconSize: 'standard',
         iconAnimation: 'none',
+    },
+    decorators: [
+        applicationConfig({
+            providers: [provideTbxMatSeverityTheme({ invert: false, applyToRoot: true })],
+        }),
+    ],
+};
+
+export const Inverted: Story = {
+    args: {
+        showSeverityIcon: true,
+        showCloseButton: true,
+        showCountdown: true,
+        iconSize: 'standard',
+        iconAnimation: 'none',
+    },
+    decorators: [
+        applicationConfig({
+            providers: [provideTbxMatSeverityTheme({ invert: true, applyToRoot: true })],
+        }),
+    ],
+    parameters: {
+        docs: {
+            description: {
+                story: 'Inverted severity palette — white backgrounds with colored text. Wired via `provideTbxMatSeverityTheme({ invert: true })` at bootstrap. The inversion is app-global: banners and dialogs consuming the same shared theme invert simultaneously.',
+            },
+        },
     },
 };

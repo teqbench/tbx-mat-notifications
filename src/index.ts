@@ -36,7 +36,6 @@
  */
 
 // Enums
-export { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
 export { TbxMatNotificationDismissReason } from './enums/notification-dismiss-reason.enum';
 export { TbxMatNotificationIconPosition } from './enums/notification-icon-position.enum';
 

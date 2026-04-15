@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { TbxMatSeverityFontIconService, TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import { TBX_MAT_SEVERITY_DEFAULT_FONT_LIGATURES, TbxMatSeverityFontIconService, TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-theme';
 
 /**
  * Default font-based severity notification icon service
  *
  * @remarks
- * Extends `TbxMatSeverityFontIconService` from `@teqbench/tbx-mat-severity-icons`
- * and registers {@link https://fonts.google.com/icons | Material Symbols} ligatures
- * for each severity level. The inherited `resolve()` and severity
- * methods (`success()`, `error()`, etc.) work via the registered mappings.
+ * Extends `TbxMatSeverityFontIconService` from `@teqbench/tbx-mat-severity-theme`
+ * and registers the shared default {@link https://fonts.google.com/icons | Material Symbols}
+ * ligatures (`TBX_MAT_SEVERITY_DEFAULT_FONT_LIGATURES`) for every severity level.
+ * The inherited `resolve()` and severity methods (`default()`, `success()`,
+ * `error()`, etc.) work via the registered mappings.
  *
  * ### fontSet resolution
  *
@@ -97,23 +98,23 @@ export class TbxMatNotificationSeverityFontIconService extends TbxMatSeverityFon
     }
 
     /**
-     * Register default {@link https://fonts.google.com/icons | Material Symbols}
-     * ligature names for each severity level
+     * Register the shared default {@link https://fonts.google.com/icons | Material Symbols}
+     * ligatures for every severity level
      *
      * @remarks
+     * Iterates `TBX_MAT_SEVERITY_DEFAULT_FONT_LIGATURES` from
+     * `@teqbench/tbx-mat-severity-theme`, registering each level's ligature.
      * These work with any {@link https://fonts.google.com/icons | Material Symbols}
-     * font variant (outlined, rounded, sharp) since the ligature names are consistent
-     * across variants. Subclasses can override any of these defaults by calling
-     * `register()` with the same key and a different ligature.
+     * font variant (outlined, rounded, sharp) since the ligature names are
+     * consistent across variants. Subclasses can override any of these
+     * defaults by calling `register()` with the same key and a different ligature.
      *
      * @internal
      */
     protected override initialize(): void {
         super.initialize();
-        this.register(TbxMatSeverityLevel.Success, 'check_circle');
-        this.register(TbxMatSeverityLevel.Error, 'error');
-        this.register(TbxMatSeverityLevel.Warning, 'warning_amber');
-        this.register(TbxMatSeverityLevel.Information, 'info');
-        this.register(TbxMatSeverityLevel.Help, 'help');
+        for (const level of Object.values(TbxMatSeverityLevel)) {
+            this.register(level, TBX_MAT_SEVERITY_DEFAULT_FONT_LIGATURES[level]);
+        }
     }
 }

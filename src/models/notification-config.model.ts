@@ -1,5 +1,5 @@
 import type { MatSnackBarConfig } from '@angular/material/snack-bar';
-import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-theme';
 
 import { type TbxMatNotificationAction } from './notification-action.model';
 
