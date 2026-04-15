@@ -1,5 +1,16 @@
 # Changelog
 
+## [8.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v7.0.0...v8.0.0) (2026-04-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* @teqbench/tbx-mat-severity-icons is no longer a peer dependency. TbxMatSeverityLevel is now imported from @teqbench/tbx-mat-severity-theme. Consumers of this package must add @teqbench/tbx-mat-severity-theme ^8.0.0 as a peer.
+
+### Features
+
+* migrate from tbx-mat-severity-icons to tbx-mat-severity-theme ([3494079](https://github.com/teqbench/tbx-mat-notifications/commit/34940793fc177d247645adbeda0099c30d782843))
+
 ## [7.0.0](https://github.com/teqbench/tbx-mat-notifications/compare/v6.1.2...v7.0.0) (2026-04-13)
 
 
