@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { MatIconRegistry } from '@angular/material/icon';
-import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-theme';
 import { TbxMatNotificationSeveritySvgIconService } from './notification-severity-svg-icon.service';
 
 describe('TbxMatNotificationSeveritySvgIconService', () => {
@@ -20,6 +20,10 @@ describe('TbxMatNotificationSeveritySvgIconService', () => {
     });
 
     describe('severity methods', () => {
+        it('default() should return the Default enum value', () => {
+            expect(service.default()).toBe(TbxMatSeverityLevel.Default);
+        });
+
         it('success() should return the Success enum value', () => {
             expect(service.success()).toBe(TbxMatSeverityLevel.Success);
         });
@@ -43,6 +47,7 @@ describe('TbxMatNotificationSeveritySvgIconService', () => {
 
     describe('resolve()', () => {
         it('should resolve all severity levels', () => {
+            expect(service.resolve(TbxMatSeverityLevel.Default)).toBe('default');
             expect(service.resolve(TbxMatSeverityLevel.Success)).toBe('success');
             expect(service.resolve(TbxMatSeverityLevel.Error)).toBe('error');
             expect(service.resolve(TbxMatSeverityLevel.Warning)).toBe('warning');
@@ -66,12 +71,13 @@ describe('TbxMatNotificationSeveritySvgIconService', () => {
 
             TestBed.inject(TbxMatNotificationSeveritySvgIconService);
 
+            expect(addSpy).toHaveBeenCalledWith('default', expect.anything());
             expect(addSpy).toHaveBeenCalledWith('success', expect.anything());
             expect(addSpy).toHaveBeenCalledWith('error', expect.anything());
             expect(addSpy).toHaveBeenCalledWith('warning', expect.anything());
             expect(addSpy).toHaveBeenCalledWith('information', expect.anything());
             expect(addSpy).toHaveBeenCalledWith('help', expect.anything());
-            expect(addSpy).toHaveBeenCalledTimes(5);
+            expect(addSpy).toHaveBeenCalledTimes(6);
             addSpy.mockRestore();
         });
     });

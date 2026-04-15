@@ -6,7 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
-import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import { provideTbxMatSeverityTheme, TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-theme';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../tokens/notification-provider-config.token';
 import { TbxMatNotificationSeverityFontIconService } from '../services/notification-severity-font-icon.service';
 import { TbxMatNotificationSeveritySvgIconService } from '../services/notification-severity-svg-icon.service';
@@ -68,6 +68,7 @@ export function withDefaultFontIcons() {
     return applicationConfig({
         providers: [
             provideAnimationsAsync(),
+            provideTbxMatSeverityTheme({ invert: false, applyToRoot: true }),
             {
                 provide: MAT_ICON_DEFAULT_OPTIONS,
                 useValue: { fontSet: 'material-symbols-rounded' },
@@ -86,6 +87,7 @@ export function withCustomFontIcons() {
     return applicationConfig({
         providers: [
             provideAnimationsAsync(),
+            provideTbxMatSeverityTheme({ invert: false, applyToRoot: true }),
             {
                 provide: MAT_ICON_DEFAULT_OPTIONS,
                 useValue: { fontSet: 'material-symbols-rounded' },
@@ -104,6 +106,7 @@ export function withDefaultSvgIcons() {
     return applicationConfig({
         providers: [
             provideAnimationsAsync(),
+            provideTbxMatSeverityTheme({ invert: false, applyToRoot: true }),
             {
                 provide: MAT_ICON_DEFAULT_OPTIONS,
                 useValue: { fontSet: 'material-symbols-rounded' },
@@ -122,6 +125,7 @@ export function withCustomSvgIcons() {
     return applicationConfig({
         providers: [
             provideAnimationsAsync(),
+            provideTbxMatSeverityTheme({ invert: false, applyToRoot: true }),
             {
                 provide: MAT_ICON_DEFAULT_OPTIONS,
                 useValue: { fontSet: 'material-symbols-rounded' },
@@ -140,6 +144,7 @@ export function withCustomFontIconsAndFontClose() {
     return applicationConfig({
         providers: [
             provideAnimationsAsync(),
+            provideTbxMatSeverityTheme({ invert: false, applyToRoot: true }),
             {
                 provide: MAT_ICON_DEFAULT_OPTIONS,
                 useValue: { fontSet: 'material-symbols-rounded' },
@@ -162,6 +167,7 @@ export function withCustomSvgIconsAndSvgClose() {
     return applicationConfig({
         providers: [
             provideAnimationsAsync(),
+            provideTbxMatSeverityTheme({ invert: false, applyToRoot: true }),
             {
                 provide: MAT_ICON_DEFAULT_OPTIONS,
                 useValue: { fontSet: 'material-symbols-rounded' },
@@ -288,6 +294,7 @@ export const DEFAULT_ARGS = {
             <p class="theme-note">Theme: Angular Material prebuilt <strong>Azure Blue</strong>. Notification severity colors are independent of the M3 theme palette.</p>
             <h3>Notification Triggers</h3>
             <div class="button-group">
+                <button mat-flat-button (click)="fire('default')">Default</button>
                 <button mat-flat-button (click)="fire('success')">Success</button>
                 <button mat-flat-button (click)="fire('error')">Error</button>
                 <button mat-flat-button (click)="fire('warning')">Warning</button>
@@ -297,6 +304,7 @@ export const DEFAULT_ARGS = {
 
             <h3>With Countdown</h3>
             <div class="button-group">
+                <button mat-flat-button (click)="fire('default', true)">Default</button>
                 <button mat-flat-button (click)="fire('success', true)">Success</button>
                 <button mat-flat-button (click)="fire('error', true)">Error</button>
                 <button mat-flat-button (click)="fire('warning', true)">Warning</button>
@@ -366,6 +374,7 @@ export class NotificationHarnessComponent {
     readonly showCloseButton = input<boolean>(true);
 
     private readonly messages: Record<string, string> = {
+        default: 'A neutral, non-severity message.',
         success: 'Operation completed successfully.',
         error: 'Something went wrong. Please try again.',
         warning: 'Your session will expire in 5 minutes.',
@@ -397,11 +406,12 @@ export class NotificationHarnessComponent {
             },
         };
 
-        this.notify.success('Step 1: Operation completed successfully.', args);
-        this.notify.error('Step 2: Something went wrong.', args);
-        this.notify.warning('Step 3: Review needed.', args);
-        this.notify.information('Step 4: A new version is available.', args);
-        this.notify.help('Step 5: Click the + button to add a new item.', args);
+        this.notify.default('Step 1: A neutral, non-severity message.', args);
+        this.notify.success('Step 2: Operation completed successfully.', args);
+        this.notify.error('Step 3: Something went wrong.', args);
+        this.notify.warning('Step 4: Review needed.', args);
+        this.notify.information('Step 5: A new version is available.', args);
+        this.notify.help('Step 6: Click the + button to add a new item.', args);
     }
 }
 

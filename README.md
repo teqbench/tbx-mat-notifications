@@ -2,7 +2,7 @@
 
 ![Build Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-build-status.json) ![Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-tests.json) ![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-coverage.json) ![Version](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-version.json) ![Build Number](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-mat-notifications-main-build-number.json)
 
-> An opinionated [Angular ↗](https://angular.dev) notification service built on [Material snackbar ↗](https://material.angular.dev/components/snack-bar/api) with severity-leveled (i.e. success, error, warning, information, help) methods, a FIFO queue, an optional single action button, pluggable severity and close icons, and a pure-CSS countdown bar.
+> An opinionated [Angular ↗](https://angular.dev) notification service built on [Material snackbar ↗](https://material.angular.dev/components/snack-bar/api) with severity-leveled methods for all six tiers (default, success, error, warning, information, help), a FIFO queue, an optional single action button, pluggable severity and close icons, and a pure-CSS countdown bar. Severity colors, enum, abstract icon bases, default icon sets, and the optional inverted palette come from [`@teqbench/tbx-mat-severity-theme` ↗](https://github.com/teqbench/tbx-mat-severity-theme).
 
 <details>
 <summary><strong>Table of contents</strong></summary>
@@ -30,17 +30,17 @@
 
 `@teqbench/tbx-mat-notifications` provides transient, unobtrusive feedback for [Angular ↗](https://angular.dev) applications. It is a thin, opinionated layer on top of [Angular Material's snackbar ↗](https://material.angular.dev/components/snack-bar/api) that fills the gap left by the bare primitive: severity-leveled convenience methods, a FIFO queue so rapid-fire notifications don't overlap, a synchronous ref returned immediately, and consistent visual treatment across severities.
 
-Consumers `inject(TbxMatNotificationService)` and call `success()`, `error()`, `warning()`, `information()`, `help()`, or `default()` with a message and optional config for the common severity-leveled cases. For full control over every setting — severity, message, duration, countdown visibility, severity-icon visibility, close-button visibility, action button config, and a passthrough to the native [MatSnackBarConfig ↗](https://material.angular.dev/components/snack-bar/api) (position, politeness, custom panel classes) — call `show()` directly with the complete `TbxMatNotificationConfig`.
+Consumers `inject(TbxMatNotificationService)` and call `default()`, `success()`, `error()`, `warning()`, `information()`, or `help()` with a message and optional config for the common severity-leveled cases. For full control over every setting — severity, message, duration, countdown visibility, severity-icon visibility, close-button visibility, action button config, and a passthrough to the native [MatSnackBarConfig ↗](https://material.angular.dev/components/snack-bar/api) (position, politeness, custom panel classes) — call `show()` directly with the complete `TbxMatNotificationConfig`.
 
 Each call returns a `TbxMatNotificationRef` synchronously so callers can await the dismissal result without losing their place in the queue. Behind the scenes, if another notification is already visible, the new one waits; when the active one dismisses, the next one opens — no overlap, no fighting over the snackbar slot.
 
-Severity (`success`, `error`, `warning`, `information`, `help`) drives both the icon and the color scheme via dedicated CSS custom properties, independent of the active [M3 ↗](https://m3.material.io) theme palette. An optional single action button supports [Material's ↗](https://material.angular.dev) standard button appearances (`text`, `filled`, `tonal`, `outlined`, `elevated`) plus an icon-only variant, with defaults that cascade from per-notification to provider-level to built-in. A pure-CSS countdown bar (opt-in via `showCountdown`) renders progress toward auto-dismissal without requiring any animation framework.
+Severity (`default`, `success`, `error`, `warning`, `information`, `help`) drives both the icon and the color scheme. The six CSS custom-property pairs are aliased from the shared [`@teqbench/tbx-mat-severity-theme` ↗](https://github.com/teqbench/tbx-mat-severity-theme) tokens, so the five colored tiers stay independent of the active [M3 ↗](https://m3.material.io) theme palette while the `default` tier remains theme-responsive. Applications can opt into an inverted palette (white backgrounds with colored text) across every severity-aware `@teqbench` package by calling `provideTbxMatSeverityTheme({ invert: true })` at bootstrap. An optional single action button supports [Material's ↗](https://material.angular.dev) standard button appearances (`text`, `filled`, `tonal`, `outlined`, `elevated`) plus an icon-only variant, with defaults that cascade from per-notification to provider-level to built-in. A pure-CSS countdown bar (opt-in via `showCountdown`) renders progress toward auto-dismissal without requiring any animation framework.
 
 The library is designed for [Angular ↗](https://angular.dev) 21+ zoneless applications, uses [signal inputs ↗](https://angular.dev/guide/signals/inputs) for reactive state (`isActive()`, `pendingCount()`), and exposes a pluggable icon resolver so consumers can use [Material Symbols ↗](https://fonts.google.com/icons) font icons or bundled SVG icons without changing component code. The native [MatSnackBarRef ↗](https://material.angular.dev/components/snack-bar/api) is exposed via the returned ref's `snackBarRef` promise for consumers that need the underlying instance.
 
 ## At a glance
 
-- **Severity-leveled API** — convenience methods for success, error, warning, information, and help with matching icons and colors.
+- **Severity-leveled API** — convenience methods for default, success, error, warning, information, and help with matching icons and colors.
 - **Material snackbar base** — thin opinionated layer over [Angular Material's ↗](https://material.angular.dev) [MatSnackBar ↗](https://material.angular.dev/components/snack-bar/api) with consistent visual treatment.
 - **FIFO queue** — one notification at a time, with signal-based `isActive` and `pendingCount` state.
 - **Synchronous ref** — service methods return `TbxMatNotificationRef` immediately, with promises for the native ref and dismiss result.
@@ -81,7 +81,7 @@ npm install @teqbench/tbx-mat-notifications
 
 This package renders inside [Angular Material ↗](https://material.angular.dev)'s snackbar overlay and relies on an active [M3 ↗](https://m3.material.io) theme for typography, shape, and interactive states (button ripples, hover effects). If no [Angular Material ↗](https://material.angular.dev) theme is applied, notifications will render with unstyled browser defaults.
 
-Notification severity colors (success = green, error = red, etc.) are **not** tied to the theme palette — they use dedicated CSS custom properties and remain consistent regardless of which theme is active.
+The five colored severity tiers (success = green, error = red, warning = amber, information = blue, help = lighter blue) are **not** tied to the theme palette — their CSS custom properties alias the shared tokens exported by [`@teqbench/tbx-mat-severity-theme` ↗](https://github.com/teqbench/tbx-mat-severity-theme) and stay consistent regardless of which theme is active. The sixth tier (`default`) intentionally aliases the Material system `--mat-sys-inverse-surface` / `--mat-sys-inverse-on-surface` tokens so it remains theme-responsive. Inverted styling (white backgrounds, colored text) is available by calling `provideTbxMatSeverityTheme({ invert: true })` at bootstrap — note the flag applies app-wide across every `@teqbench` severity-aware package, not notifications alone.
 
 Import the global notification styles in your application's stylesheet:
 
@@ -99,6 +99,7 @@ import { TbxMatNotificationService } from '@teqbench/tbx-mat-notifications';
 private readonly notify = inject(TbxMatNotificationService);
 
 // Convenience methods — prefix with void when not awaiting the result
+void this.notify.default('Syncing...');
 void this.notify.success('Item saved successfully.');
 void this.notify.error('Failed to load data. Please try again.');
 void this.notify.warning('Your session will expire in 5 minutes.');
@@ -125,7 +126,7 @@ if (result.dismissReason === TbxMatNotificationDismissReason.Action) {
 ### Full control via show()
 
 ```typescript
-import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-notifications';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-theme';
 
 this.notify.show({
     type: TbxMatSeverityLevel.Warning,
@@ -224,7 +225,7 @@ Subclass `TbxMatNotificationSeveritySvgIconService` to register your own SVG mar
 ```typescript
 import { Injectable } from '@angular/core';
 import { TbxMatNotificationSeveritySvgIconService } from '@teqbench/tbx-mat-notifications';
-import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-theme';
 
 // MyNotificationSvgIcons is a consumer-defined subclass
 @Injectable()
@@ -486,7 +487,7 @@ font-variation-settings:
 | [Angular ↗](https://angular.dev)                                                         | >=21.0.0 |
 | [Angular Material ↗](https://material.angular.dev)                                       | >=21.0.0 |
 | [@teqbench/tbx-mat-icons ↗](https://github.com/teqbench/tbx-mat-icons)                   | >=4.0.0  |
-| [@teqbench/tbx-mat-severity-icons ↗](https://github.com/teqbench/tbx-mat-severity-icons) | >=6.0.0  |
+| [@teqbench/tbx-mat-severity-theme ↗](https://github.com/teqbench/tbx-mat-severity-theme) | >=8.0.0  |
 | [TypeScript ↗](https://www.typescriptlang.org)                                           | ~5.9.0   |
 | [Node.js ↗](https://nodejs.org)                                                          | >=24.0.0 |
 
@@ -494,7 +495,7 @@ font-variation-settings:
 
 - [`@teqbench/tbx-mat-banners` ↗](https://github.com/teqbench/tbx-mat-banners) — wider, persistent messages with multiple action controls for more involved interactions.
 - [`@teqbench/tbx-mat-dialogs` ↗](https://github.com/teqbench/tbx-mat-dialogs) — modal dialogs for heavier, focused interactions with arbitrary content.
-- [`@teqbench/tbx-mat-severity-icons` ↗](https://github.com/teqbench/tbx-mat-severity-icons) — severity icon resolver base services reused by this package.
+- [`@teqbench/tbx-mat-severity-theme` ↗](https://github.com/teqbench/tbx-mat-severity-theme) — severity enum, abstract icon-service bases, default icon sets, shared SCSS color tokens, and the inverted-palette provider helper consumed by this package.
 - [`@teqbench/tbx-mat-icons` ↗](https://github.com/teqbench/tbx-mat-icons) — shared icon resolver contracts and base services.
 
 ## Versioning & releases
