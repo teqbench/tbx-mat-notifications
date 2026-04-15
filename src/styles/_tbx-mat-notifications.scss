@@ -1,42 +1,23 @@
 @use '@angular/material' as mat;
+@use '@teqbench/tbx-mat-severity-theme/styles/tbx-mat-severity-theme' as severity;
 
 /* ━━━ Notification Color Tokens ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  *
- * Default notification colors follow universal UX conventions:
- * success = green, error = red, warning = amber, information = blue, help = blue
+ * Emits `--tbx-mat-notification-<level>-background` and
+ * `--tbx-mat-notification-<level>-text` custom properties for all six
+ * severity tiers (default, success, error, warning, information, help),
+ * each aliasing the corresponding `--tbx-mat-severity-<level>-*` token
+ * defined by `@teqbench/tbx-mat-severity-theme`.
  *
- * These are intentionally NOT tied to --mat-sys-* palette tokens because
- * notification severity colors must be immediately recognizable regardless
- * of theme. A purple-themed app still needs red errors and green successes.
- *
- * The "default" severity level applies NO color overrides — it inherits
- * whatever the current Material theme provides. No tokens are needed for it.
- *
- * Themes can optionally override these via html[data-theme="id"] blocks
- * in the consuming application's theme stylesheet by redefining the
- * --tbx-mat-notification-* properties.
+ * The shared theme package owns the actual color values (and the
+ * `.tbx-mat-severity-inverted` variant). Themes in consuming applications
+ * can override either the shared tokens (affects every severity-aware
+ * package) or the notification-prefixed aliases (notifications only) via
+ * html[data-theme="id"] blocks.
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 html {
-    /* Success — green */
-    --tbx-mat-notification-success-background: #2e7d32;
-    --tbx-mat-notification-success-text: #ffffff;
-
-    /* Error — red */
-    --tbx-mat-notification-error-background: #c62828;
-    --tbx-mat-notification-error-text: #ffffff;
-
-    /* Warning — amber */
-    --tbx-mat-notification-warning-background: #f9a825;
-    --tbx-mat-notification-warning-text: #ffffff;
-
-    /* Information — blue */
-    --tbx-mat-notification-information-background: #1565c0;
-    --tbx-mat-notification-information-text: #ffffff;
-
-    /* Help — blue (lighter) */
-    --tbx-mat-notification-help-background: #1976d2;
-    --tbx-mat-notification-help-text: #ffffff;
+    @include severity.tbx-mat-severity-theme('tbx-mat-notification');
 }
 
 /* ━━━ Action Button Opacity Tokens ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -107,37 +88,12 @@ html {
  *
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-/* ── Default severity ──────────────────────────────────────────────────────
- *
- * The default severity level inherits the Material theme's snackbar
- * styling for container and text colors. Icon button color tokens are
- * set to --mat-sys-inverse-primary to match the theme's default
- * snackbar action button color. The class exists so PANEL_CLASS_MAP
- * has a valid entry and downstream consumers can target it if needed.
- * ──────────────────────────────────────────────────────────────────────── */
-.tbx-mat-notification-snackbar-default {
-    /* ── Icon button color tokens ──
-   * Match the M3 inverse-primary design token that Angular Material uses
-   * for snackbar action button color in the default theme. Both action
-   * and close icon buttons resolve to the same value by default.
-   * Consumers can override either set independently on the panel class.
-   */
-    --tbx-mat-notification-action-icon-color: var(--mat-sys-inverse-primary);
-    --tbx-mat-notification-action-icon-state-layer-color: var(--mat-sys-inverse-primary);
-    --tbx-mat-notification-close-icon-color: var(--mat-sys-inverse-primary);
-    --tbx-mat-notification-close-icon-state-layer-color: var(--mat-sys-inverse-primary);
-
-    /* ── Outlined button ──
-   * The default snackbar inherits the Material theme's inverse-surface
-   * background. Without overrides, outlined button label and border
-   * use the theme's on-surface color (dark), which is illegible on the
-   * dark snackbar background. Use inverse-primary to match the text
-   * button color.
-   */
-    --mat-button-outlined-label-text-color: var(--mat-sys-inverse-primary);
-    --mat-button-outlined-outline-color: var(--mat-sys-inverse-primary);
-    --mat-button-outlined-state-layer-color: var(--mat-sys-inverse-on-surface);
-}
+/* (Default severity is bound below via the shared _severity-panel mixin using
+ * --tbx-mat-notification-default-{background,text}. Those tokens alias
+ * --mat-sys-inverse-surface / --mat-sys-inverse-on-surface in the normal
+ * case and flip to --mat-sys-surface / --mat-sys-on-surface under
+ * .tbx-mat-severity-inverted, so the Default panel responds to invert
+ * without needing a special-case block here.) */
 
 /* ── Severity panel mixin ─────────────────────────────────────────────────
  *
@@ -209,6 +165,10 @@ html {
     --mat-button-protected-focus-container-elevation-shadow: var(--mat-sys-level1);
     --mat-button-protected-pressed-container-elevation-shadow: var(--mat-sys-level1);
     --mat-button-protected-ripple-color: color-mix(in srgb, #{$text} calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent);
+}
+
+.tbx-mat-notification-snackbar-default {
+    @include _severity-panel(var(--tbx-mat-notification-default-background), var(--tbx-mat-notification-default-text));
 }
 
 .tbx-mat-notification-snackbar-success {

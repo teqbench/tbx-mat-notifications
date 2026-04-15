@@ -1,7 +1,7 @@
 import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-theme';
 import { TbxMatNotificationComponent } from '../components/notification.component';
 import { type TbxMatNotificationConfigArgs } from '../types/notification-config-args.type';
 import { type TbxMatNotificationConfig } from '../models/notification-config.model';

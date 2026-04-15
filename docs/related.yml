@@ -5,9 +5,9 @@
 - name: "@teqbench/tbx-mat-dialogs"
   url: https://github.com/teqbench/tbx-mat-dialogs
   summary: Modal dialogs for heavier, focused interactions with arbitrary content.
-- name: "@teqbench/tbx-mat-severity-icons"
-  url: https://github.com/teqbench/tbx-mat-severity-icons
-  summary: Severity icon resolver base services reused by this package.
+- name: "@teqbench/tbx-mat-severity-theme"
+  url: https://github.com/teqbench/tbx-mat-severity-theme
+  summary: Severity enum, abstract icon-service bases, default icon sets, shared SCSS color tokens, and the inverted-palette provider helper consumed by this package.
 - name: "@teqbench/tbx-mat-icons"
   url: https://github.com/teqbench/tbx-mat-icons
   summary: Shared icon resolver contracts and base services.

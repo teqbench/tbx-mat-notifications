@@ -1,5 +1,5 @@
 import { type TbxMatIconResolver, type TbxMatIconType } from '@teqbench/tbx-mat-icons';
-import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-icons';
+import type { TbxMatSeverityResolver, TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-theme';
 
 import { type TbxMatNotificationProviderActionConfig } from './notification-provider-action-config.model';
 

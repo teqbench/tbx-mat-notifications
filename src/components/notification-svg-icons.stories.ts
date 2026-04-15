@@ -12,7 +12,7 @@ const meta: Meta<NotificationHarnessComponent> = {
 export default meta;
 type Story = StoryObj<NotificationHarnessComponent>;
 
-const CATEGORY_DESCRIPTION = 'Uses TbxMatNotificationSeveritySvgIconService with its built-in default SVG icons ' + 'from the "Small Flat Vectors" collection (SVG Repo, PD license).';
+const CATEGORY_DESCRIPTION = 'Uses TbxMatNotificationSeveritySvgIconService with the default SVG icons from ' + '@teqbench/tbx-mat-severity-theme (CC0 license). Covers all six severity tiers including Default.';
 
 export const Default: Story = {
     args: { ...DEFAULT_ARGS, description: CATEGORY_DESCRIPTION },
