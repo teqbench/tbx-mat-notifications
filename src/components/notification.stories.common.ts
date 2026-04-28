@@ -1,4 +1,4 @@
-import { Component, inject, Injectable, input } from '@angular/core';
+import { Component, effect, inject, Injectable, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import type { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MAT_ICON_DEFAULT_OPTIONS, MatIconRegistry } from '@angular/material/icon';
@@ -274,12 +274,70 @@ export const HOVER_FILL_CSS = `
 
 export { withCustomProperties };
 
+// ─── Reactive Control Types ──────────────────────────────────────────────────
+
+export type IconSize = 'standard' | 'medium' | 'large';
+export type IconAnimation = 'none' | 'state-transition' | 'pulse' | 'hover-fill';
+export type Politeness = 'off' | 'polite' | 'assertive';
+export type Direction = 'ltr' | 'rtl';
+
 // ─── Shared Args ─────────────────────────────────────────────────────────────
 
 export const DEFAULT_ARGS = {
     horizontalPosition: 'start' as MatSnackBarHorizontalPosition,
     verticalPosition: 'bottom' as MatSnackBarVerticalPosition,
+    showSeverityIcon: true,
+    showCloseButton: true,
+    showCountdown: false,
+    duration: 10000,
+    iconSize: 'standard' as IconSize,
+    iconAnimation: 'none' as IconAnimation,
+    politeness: 'polite' as Politeness,
+    direction: 'ltr' as Direction,
 };
+
+// ─── Reactive CSS Injection ──────────────────────────────────────────────────
+
+const ICON_SIZE_STYLE_ID = 'tbx-notification-story-icon-size';
+const ICON_ANIM_STYLE_ID = 'tbx-notification-story-icon-animation';
+
+const ICON_SIZE_MAP: Record<IconSize, string> = {
+    standard: '',
+    medium: '2rem',
+    large: '3rem',
+};
+
+const STATE_TRANSITION_ANIM_CSS = `
+    @keyframes tbx-notification-icon-fill {
+        from { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        to   { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    }
+    .mat-mdc-snack-bar-container .material-symbols-rounded {
+        animation: tbx-notification-icon-fill 0.3s ease-in-out 0.15s forwards;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+`;
+
+const PULSE_ANIM_CSS = `
+    @keyframes tbx-notification-icon-pulse {
+        from { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        to   { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    }
+    .mat-mdc-snack-bar-container .material-symbols-rounded {
+        animation: tbx-notification-icon-pulse 1s ease-in-out infinite alternate;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+`;
+
+const HOVER_FILL_ANIM_CSS = `
+    .mat-mdc-snack-bar-container .material-symbols-rounded {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        transition: font-variation-settings 0.3s ease-in-out;
+    }
+    .mat-mdc-snack-bar-container .material-symbols-rounded:hover {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+`;
 
 // ─── Harness Component ───────────────────────────────────────────────────────
 
@@ -302,19 +360,9 @@ export const DEFAULT_ARGS = {
                 <button mat-flat-button (click)="fire('help')">Help</button>
             </div>
 
-            <h3>With Countdown</h3>
-            <div class="button-group">
-                <button mat-flat-button (click)="fire('default', true)">Default</button>
-                <button mat-flat-button (click)="fire('success', true)">Success</button>
-                <button mat-flat-button (click)="fire('error', true)">Error</button>
-                <button mat-flat-button (click)="fire('warning', true)">Warning</button>
-                <button mat-flat-button (click)="fire('information', true)">Information</button>
-                <button mat-flat-button (click)="fire('help', true)">Help</button>
-            </div>
-
             <h3>Queue Demo</h3>
             <div class="button-group">
-                <button mat-flat-button (click)="queueDemo()">Fire 5 Queued</button>
+                <button mat-flat-button (click)="queueDemo()">Fire 6 Queued</button>
                 <button mat-flat-button (click)="notify.dismissAll()">Dismiss All</button>
             </div>
             <p class="state">Active: {{ notify.isActive() }} &middot; Pending: {{ notify.pendingCount() }}</p>
@@ -372,6 +420,12 @@ export class NotificationHarnessComponent {
     readonly description = input<string>('');
     readonly showSeverityIcon = input<boolean>(true);
     readonly showCloseButton = input<boolean>(true);
+    readonly showCountdown = input<boolean>(false);
+    readonly duration = input<number>(10000);
+    readonly iconSize = input<IconSize>('standard');
+    readonly iconAnimation = input<IconAnimation>('none');
+    readonly politeness = input<Politeness>('polite');
+    readonly direction = input<Direction>('ltr');
 
     private readonly messages: Record<string, string> = {
         default: 'A neutral, non-severity message.',
@@ -382,36 +436,57 @@ export class NotificationHarnessComponent {
         help: 'Click the + button to add a new item.',
     };
 
-    fire(level: string, showCountdown = false): void {
-        const method = this.notify[level as keyof TbxMatNotificationService] as (msg: string, args?: object) => void;
-        method.call(this.notify, this.messages[level], {
-            showCountdown,
-            showSeverityIcon: this.showSeverityIcon(),
-            showCloseButton: this.showCloseButton(),
-            snackBarConfig: {
-                horizontalPosition: this.horizontalPosition(),
-                verticalPosition: this.verticalPosition(),
-            },
+    constructor() {
+        effect(() => {
+            const size = ICON_SIZE_MAP[this.iconSize()];
+            document.getElementById(ICON_SIZE_STYLE_ID)?.remove();
+            if (!size) return;
+            const style = document.createElement('style');
+            style.id = ICON_SIZE_STYLE_ID;
+            style.textContent = `html { --tbx-mat-notification-icon-size: ${size}; }`;
+            document.head.appendChild(style);
+        });
+
+        effect(() => {
+            const mode = this.iconAnimation();
+            document.getElementById(ICON_ANIM_STYLE_ID)?.remove();
+            if (mode === 'none') return;
+            const css = mode === 'state-transition' ? STATE_TRANSITION_ANIM_CSS : mode === 'pulse' ? PULSE_ANIM_CSS : HOVER_FILL_ANIM_CSS;
+            const style = document.createElement('style');
+            style.id = ICON_ANIM_STYLE_ID;
+            style.textContent = css;
+            document.head.appendChild(style);
         });
     }
 
-    queueDemo(): void {
-        const args = {
-            showCountdown: true,
-            showSeverityIcon: this.showSeverityIcon(),
-            showCloseButton: this.showCloseButton(),
-            snackBarConfig: {
-                horizontalPosition: this.horizontalPosition(),
-                verticalPosition: this.verticalPosition(),
-            },
-        };
+    fire(level: string): void {
+        const method = this.notify[level as keyof TbxMatNotificationService] as (msg: string, args?: object) => void;
+        method.call(this.notify, this.messages[level], this.buildArgs());
+    }
 
+    queueDemo(): void {
+        const args = this.buildArgs();
         this.notify.default('Step 1: A neutral, non-severity message.', args);
         this.notify.success('Step 2: Operation completed successfully.', args);
         this.notify.error('Step 3: Something went wrong.', args);
         this.notify.warning('Step 4: Review needed.', args);
         this.notify.information('Step 5: A new version is available.', args);
         this.notify.help('Step 6: Click the + button to add a new item.', args);
+    }
+
+    private buildArgs(): object {
+        return {
+            showCountdown: this.showCountdown(),
+            showSeverityIcon: this.showSeverityIcon(),
+            showCloseButton: this.showCloseButton(),
+            duration: this.duration(),
+            snackBarConfig: {
+                horizontalPosition: this.horizontalPosition(),
+                verticalPosition: this.verticalPosition(),
+                politeness: this.politeness(),
+                direction: this.direction(),
+            },
+        };
     }
 }
 
@@ -435,5 +510,33 @@ export const SHARED_ARG_TYPES = {
     showCloseButton: {
         control: 'boolean',
         description: 'Show the close/dismiss button in the snackbar',
+    },
+    showCountdown: {
+        control: 'boolean',
+        description: 'Show the CSS-driven countdown bar along the bottom edge',
+    },
+    duration: {
+        control: { type: 'number', min: 0, step: 500 },
+        description: 'Display duration in ms (0 = indefinite, requires manual dismiss)',
+    },
+    iconSize: {
+        control: 'select',
+        options: ['standard', 'medium', 'large'],
+        description: 'Severity icon size (overrides --tbx-mat-notification-icon-size at the document level)',
+    },
+    iconAnimation: {
+        control: 'select',
+        options: ['none', 'state-transition', 'pulse', 'hover-fill'],
+        description: 'Severity icon animation mode (Material Symbols FILL axis)',
+    },
+    politeness: {
+        control: 'select',
+        options: ['off', 'polite', 'assertive'],
+        description: 'aria-live politeness for screen readers',
+    },
+    direction: {
+        control: 'inline-radio',
+        options: ['ltr', 'rtl'],
+        description: 'Layout direction',
     },
 } as const;
