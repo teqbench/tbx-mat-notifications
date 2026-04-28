@@ -4,6 +4,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../src/tokens/notification-provider-config.token';
 import { TbxMatNotificationSeverityFontIconService } from '../src/services/notification-severity-font-icon.service';
+import { removeStoryOverrideStyleTag } from '../src/components/notification.stories.common';
 
 // M3 prebuilt theme — provides typography, shape, and state-layer tokens.
 // Without a theme, snackbar text, border-radius, and button ripples fall
@@ -16,6 +17,15 @@ import '../src/styles/_tbx-mat-notifications.scss';
 
 const preview: Preview = {
     decorators: [
+        // Global cleanup of the shared CSS-variable override tag injected by
+        // `withCustomProperties()` in notification.stories.common.ts. Runs
+        // before every story renders so overrides do not leak when navigating
+        // to a story whose decorator stack does not call withCustomProperties.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (story: () => any) => {
+            removeStoryOverrideStyleTag();
+            return story();
+        },
         applicationConfig({
             providers: [
                 provideAnimationsAsync(),

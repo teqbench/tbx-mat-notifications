@@ -194,15 +194,28 @@ export function withCustomSvgIconsAndSvgClose() {
 
 // ─── CSS Custom Property Overrides ───────────────────────────────────────────
 
-const STYLE_TAG_ID = 'tbx-notification-story-overrides';
+/**
+ * Shared id for the story-injected CSS-variable override tag.
+ *
+ * One id is reused across every `withCustomProperties()` invocation so a
+ * single global cleanup decorator in `.storybook/preview.ts` can guarantee
+ * a clean slate before each story renders, preventing overrides from
+ * leaking when navigating between stories whose decorator stacks don't
+ * include `withCustomProperties()` / `withDefaultProperties()`.
+ */
+export const STORY_OVERRIDE_STYLE_TAG_ID = 'tbx-notification-story-overrides';
+
+export function removeStoryOverrideStyleTag(): void {
+    document.getElementById(STORY_OVERRIDE_STYLE_TAG_ID)?.remove();
+}
 
 function withCustomProperties(css: string) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (story: () => any) => {
-        document.getElementById(STYLE_TAG_ID)?.remove();
+        removeStoryOverrideStyleTag();
         if (css) {
             const style = document.createElement('style');
-            style.id = STYLE_TAG_ID;
+            style.id = STORY_OVERRIDE_STYLE_TAG_ID;
             style.textContent = css;
             document.head.appendChild(style);
         }
