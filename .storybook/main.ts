@@ -35,6 +35,7 @@ const config: StorybookConfig = {
         options: {},
     },
     core: {
+        disableWhatsNewNotifications: true,
         builder: {
             name: '@storybook/builder-vite',
             options: {

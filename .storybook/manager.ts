@@ -1,4 +1,5 @@
 import { addons } from 'storybook/manager-api';
+import { RESET_STORY_ARGS, STORY_CHANGED } from 'storybook/internal/core-events';
 
 /**
  * Sidebar tag filter activated via the `filter` URL parameter.
@@ -22,4 +23,19 @@ addons.setConfig({
             },
         },
     },
+});
+
+/**
+ * Reset story args back to declared defaults whenever the user navigates to
+ * a different story. Without this, args set via the Controls panel persist
+ * across navigations (via URL params and session state). For this Storybook
+ * we want every story to load with its declared baseline so that comparing
+ * variants is predictable.
+ */
+addons.register('tbx-reset-args-on-story-change', (api) => {
+    const channel = api.getChannel();
+    if (!channel) return;
+    channel.on(STORY_CHANGED, (storyId: string) => {
+        channel.emit(RESET_STORY_ARGS, { storyId });
+    });
 });

@@ -39,6 +39,7 @@ const preview: Preview = {
             },
         },
         controls: {
+            disableSaveFromUI: true,
             matchers: {
                 color: /(background|color)$/i,
                 date: /Date$/i,
