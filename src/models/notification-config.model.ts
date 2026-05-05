@@ -22,7 +22,8 @@ import { type TbxMatNotificationAction } from './notification-action.model';
  *
  * @example Full control via show():
  * ```typescript
- * import { TbxMatNotificationService, TbxMatSeverityLevel } from '@teqbench/tbx-mat-notifications';
+ * import { TbxMatNotificationService } from '@teqbench/tbx-mat-notifications';
+ * import { TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-theme';
  *
  * private readonly notify = inject(TbxMatNotificationService);
  *
