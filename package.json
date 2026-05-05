@@ -34,8 +34,8 @@
   "peerDependencies": {
     "@angular/core": ">=21.0.0",
     "@angular/material": ">=21.0.0",
-    "@teqbench/tbx-mat-icons": ">=4.0.0",
-    "@teqbench/tbx-mat-severity-theme": ">=8.0.1",
+    "@teqbench/tbx-mat-icons": ">=4.2.0",
+    "@teqbench/tbx-mat-severity-theme": ">=8.0.2",
     "rxjs": ">=7.0.0"
   },
   "devDependenciesPinned": {
@@ -63,8 +63,8 @@
     "@angular/platform-browser": "^21.2.6",
     "@angular/platform-browser-dynamic": "^21.2.6",
     "@storybook/angular": "^10.3.3",
-    "@teqbench/tbx-mat-icons": "^4.1.0",
-    "@teqbench/tbx-mat-severity-theme": "^8.0.1",
+    "@teqbench/tbx-mat-icons": "^4.2.0",
+    "@teqbench/tbx-mat-severity-theme": "^8.0.2",
     "@types/node": "~24.12.0",
     "@vitest/coverage-v8": "^4.1.1",
     "angular-eslint": "^21.3.1",

@@ -19,13 +19,18 @@ npm run build-storybook  # build static output to storybook-static/
 
 All Storybook config lives in `.storybook/`:
 
-| File                | Purpose                                                          |
-| ------------------- | ---------------------------------------------------------------- |
-| `main.ts`           | Framework, builder, story globs, addons                          |
-| `preview.ts`        | Global decorators, providers (animations, icon service)          |
-| `preview-head.html` | Google Fonts links (Roboto, Material Symbols Rounded)            |
-| `vite.config.ts`    | Minimal Vite config for Storybook (separate from project config) |
-| `tsconfig.json`     | TypeScript config extending the project root                     |
+<dl>
+    <dt><code>main.ts</code></dt>
+    <dd>Framework, builder, story globs, addons.</dd>
+    <dt><code>preview.ts</code></dt>
+    <dd>Global decorators, providers (animations, icon service).</dd>
+    <dt><code>preview-head.html</code></dt>
+    <dd>Google Fonts links (Roboto, Material Symbols Rounded).</dd>
+    <dt><code>vite.config.ts</code></dt>
+    <dd>Minimal Vite config for Storybook (separate from project config).</dd>
+    <dt><code>tsconfig.json</code></dt>
+    <dd>TypeScript config extending the project root.</dd>
+</dl>
 
 ### Why a separate `vite.config.ts`?
 

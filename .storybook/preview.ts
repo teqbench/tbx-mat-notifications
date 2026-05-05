@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/angular';
+import type { Decorator, Preview } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
@@ -15,17 +15,18 @@ import '@angular/material/prebuilt-themes/azure-blue.css';
 
 import '../src/styles/_tbx-mat-notifications.scss';
 
+const cleanupOverrides: Decorator = (story) => {
+    removeStoryOverrideStyleTag();
+    return story();
+};
+
 const preview: Preview = {
     decorators: [
         // Global cleanup of the shared CSS-variable override tag injected by
         // `withCustomProperties()` in notification.stories.common.ts. Runs
         // before every story renders so overrides do not leak when navigating
         // to a story whose decorator stack does not call withCustomProperties.
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (story: () => any) => {
-            removeStoryOverrideStyleTag();
-            return story();
-        },
+        cleanupOverrides,
         applicationConfig({
             providers: [
                 provideAnimationsAsync(),

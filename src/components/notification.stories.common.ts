@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import type { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MAT_ICON_DEFAULT_OPTIONS, MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { applicationConfig } from '@storybook/angular';
+import { applicationConfig, type Decorator } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { TbxMatIconType } from '@teqbench/tbx-mat-icons';
 import { provideTbxMatSeverityTheme, TbxMatSeverityLevel } from '@teqbench/tbx-mat-severity-theme';
@@ -209,9 +209,8 @@ export function removeStoryOverrideStyleTag(): void {
     document.getElementById(STORY_OVERRIDE_STYLE_TAG_ID)?.remove();
 }
 
-function withCustomProperties(css: string) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (story: () => any) => {
+function withCustomProperties(css: string): Decorator {
+    return (story) => {
         removeStoryOverrideStyleTag();
         if (css) {
             const style = document.createElement('style');

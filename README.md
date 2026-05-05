@@ -266,70 +266,105 @@ The close button icon is resolved via `closeIconResolverService` on the provider
 
 ### TbxMatNotificationService
 
-| Method                          | Returns                 | Description                                                              |
-| ------------------------------- | ----------------------- | ------------------------------------------------------------------------ |
-| `success(message, config?)`     | `TbxMatNotificationRef` | Show a success notification                                              |
-| `error(message, config?)`       | `TbxMatNotificationRef` | Show an error notification                                               |
-| `warning(message, config?)`     | `TbxMatNotificationRef` | Show a warning notification                                              |
-| `information(message, config?)` | `TbxMatNotificationRef` | Show an information notification                                         |
-| `help(message, config?)`        | `TbxMatNotificationRef` | Show a help notification                                                 |
-| `default(message, config?)`     | `TbxMatNotificationRef` | Show a default notification (no severity styling)                        |
-| `show(config)`                  | `TbxMatNotificationRef` | Show a notification with full config                                     |
-| `dismiss()`                     | `void`                  | Dismiss current (convenience wrapper, tracks ProgrammaticDismissCurrent) |
-| `dismissAll()`                  | `void`                  | Dismiss current and clear queue (tracks ProgrammaticDismissAll)          |
-| `isActive()`                    | `Signal<boolean>`       | Whether a notification is visible                                        |
-| `pendingCount()`                | `Signal<number>`        | Count of queued notifications                                            |
+<dl>
+    <dt><code>success(message, config?)</code></dt>
+    <dd>Show a success notification. Returns: <code>TbxMatNotificationRef</code>.</dd>
+    <dt><code>error(message, config?)</code></dt>
+    <dd>Show an error notification. Returns: <code>TbxMatNotificationRef</code>.</dd>
+    <dt><code>warning(message, config?)</code></dt>
+    <dd>Show a warning notification. Returns: <code>TbxMatNotificationRef</code>.</dd>
+    <dt><code>information(message, config?)</code></dt>
+    <dd>Show an information notification. Returns: <code>TbxMatNotificationRef</code>.</dd>
+    <dt><code>help(message, config?)</code></dt>
+    <dd>Show a help notification. Returns: <code>TbxMatNotificationRef</code>.</dd>
+    <dt><code>default(message, config?)</code></dt>
+    <dd>Show a default notification (no severity styling). Returns: <code>TbxMatNotificationRef</code>.</dd>
+    <dt><code>show(config)</code></dt>
+    <dd>Show a notification with full config. Returns: <code>TbxMatNotificationRef</code>.</dd>
+    <dt><code>dismiss()</code></dt>
+    <dd>Dismiss current (convenience wrapper, tracks ProgrammaticDismissCurrent). Returns: <code>void</code>.</dd>
+    <dt><code>dismissAll()</code></dt>
+    <dd>Dismiss current and clear queue (tracks ProgrammaticDismissAll). Returns: <code>void</code>.</dd>
+    <dt><code>isActive()</code></dt>
+    <dd>Whether a notification is visible. Returns: <code>Signal&lt;boolean&gt;</code>.</dd>
+    <dt><code>pendingCount()</code></dt>
+    <dd>Count of queued notifications. Returns: <code>Signal&lt;number&gt;</code>.</dd>
+</dl>
 
 ### TbxMatNotificationRef
 
 Returned synchronously from all service methods.
 
-| Property      | Type                                       | Description                                                  |
-| ------------- | ------------------------------------------ | ------------------------------------------------------------ |
-| `config`      | `TbxMatNotificationConfig`                 | Consumer's config, available immediately                     |
-| `snackBarRef` | `Promise<MatSnackBarRef<unknown> \| null>` | Resolves when displayed, `null` if cleared from queue        |
-| `result`      | `Promise<TbxMatNotificationResult>`        | Resolves on dismissal with `TbxMatNotificationDismissReason` |
+<dl>
+    <dt><code>config</code> (<code>TbxMatNotificationConfig</code>)</dt>
+    <dd>Consumer's config, available immediately.</dd>
+    <dt><code>snackBarRef</code> (<code>Promise&lt;MatSnackBarRef&lt;unknown&gt; | null&gt;</code>)</dt>
+    <dd>Resolves when displayed, <code>null</code> if cleared from queue.</dd>
+    <dt><code>result</code> (<code>Promise&lt;TbxMatNotificationResult&gt;</code>)</dt>
+    <dd>Resolves on dismissal with <code>TbxMatNotificationDismissReason</code>.</dd>
+</dl>
 
 ### TbxMatNotificationDismissReason
 
-| Value                        | Trigger                        |
-| ---------------------------- | ------------------------------ |
-| `Action`                     | User clicked the action button |
-| `Close`                      | User clicked the close button  |
-| `Timeout`                    | Auto-dismissed after duration  |
-| `ProgrammaticDismissAll`     | `dismissAll()` called          |
-| `ProgrammaticDismissCurrent` | `dismiss()` called             |
+<dl>
+    <dt><code>Action</code></dt>
+    <dd>User clicked the action button.</dd>
+    <dt><code>Close</code></dt>
+    <dd>User clicked the close button.</dd>
+    <dt><code>Timeout</code></dt>
+    <dd>Auto-dismissed after duration.</dd>
+    <dt><code>ProgrammaticDismissAll</code></dt>
+    <dd><code>dismissAll()</code> called.</dd>
+    <dt><code>ProgrammaticDismissCurrent</code></dt>
+    <dd><code>dismiss()</code> called.</dd>
+</dl>
 
 ### TbxMatNotificationConfig
 
-| Property           | Type                                                     | Default | Description                                                         |
-| ------------------ | -------------------------------------------------------- | ------- | ------------------------------------------------------------------- |
-| `type`             | `TbxMatSeverityLevel`                                    | -       | Severity level (required)                                           |
-| `message`          | `string`                                                 | -       | Message text (required)                                             |
-| `duration`         | `number`                                                 | `10000` | Duration in ms. Zero or negative = indefinite.                      |
-| `showCountdown`    | `boolean`                                                | `false` | Show countdown bar (only when duration is positive)                 |
-| `showSeverityIcon` | `boolean`                                                | `true`  | Show severity icon                                                  |
-| `showCloseButton`  | `boolean`                                                | `true`  | Show close/dismiss button                                           |
-| `action`           | `TbxMatNotificationAction`                               | -       | Optional action button config                                       |
-| `snackBarConfig`   | `Partial<Omit<MatSnackBarConfig, 'data' \| 'duration'>>` | -       | Passthrough for native snackbar config (position, politeness, etc.) |
+<dl>
+    <dt><code>type</code> (<code>TbxMatSeverityLevel</code>)</dt>
+    <dd>Severity level (required).</dd>
+    <dt><code>message</code> (<code>string</code>)</dt>
+    <dd>Message text (required).</dd>
+    <dt><code>duration</code> (<code>number</code>)</dt>
+    <dd>Duration in ms. Zero or negative = indefinite. Default: <code>10000</code>.</dd>
+    <dt><code>showCountdown</code> (<code>boolean</code>)</dt>
+    <dd>Show countdown bar (only when duration is positive). Default: <code>false</code>.</dd>
+    <dt><code>showSeverityIcon</code> (<code>boolean</code>)</dt>
+    <dd>Show severity icon. Default: <code>true</code>.</dd>
+    <dt><code>showCloseButton</code> (<code>boolean</code>)</dt>
+    <dd>Show close/dismiss button. Default: <code>true</code>.</dd>
+    <dt><code>action</code> (<code>TbxMatNotificationAction</code>)</dt>
+    <dd>Optional action button config.</dd>
+    <dt><code>snackBarConfig</code> (<code>Partial&lt;Omit&lt;MatSnackBarConfig, 'data' | 'duration'&gt;&gt;</code>)</dt>
+    <dd>Passthrough for native snackbar config (position, politeness, etc.).</dd>
+</dl>
 
 ### TbxMatNotificationAction
 
-| Property                    | Type                                        | Default  | Description                                                       |
-| --------------------------- | ------------------------------------------- | -------- | ----------------------------------------------------------------- |
-| `label`                     | `string`                                    | -        | Button label (required). Used as `aria-label` for icon buttons.   |
-| `iconName`                  | `string`                                    | -        | Icon name resolved by the action icon resolver                    |
-| `actionButtonType`          | `MatButtonAppearance \| 'icon'`             | `'text'` | Button appearance (cascades: per-notification, provider, default) |
-| `iconPosition`              | `TbxMatNotificationIconPosition`            | `Before` | Icon position relative to label                                   |
-| `actionIconResolverService` | `TbxMatIconResolver<string> & { iconType }` | -        | Icon resolver (cascades: per-notification, provider)              |
+<dl>
+    <dt><code>label</code> (<code>string</code>)</dt>
+    <dd>Button label (required). Used as <code>aria-label</code> for icon buttons.</dd>
+    <dt><code>iconName</code> (<code>string</code>)</dt>
+    <dd>Icon name resolved by the action icon resolver.</dd>
+    <dt><code>actionButtonType</code> (<code>MatButtonAppearance | 'icon'</code>)</dt>
+    <dd>Button appearance (cascades: per-notification, provider, default). Default: <code>'text'</code>.</dd>
+    <dt><code>iconPosition</code> (<code>TbxMatNotificationIconPosition</code>)</dt>
+    <dd>Icon position relative to label. Default: <code>Before</code>.</dd>
+    <dt><code>actionIconResolverService</code> (<code>TbxMatIconResolver&lt;string&gt; &amp; { iconType }</code>)</dt>
+    <dd>Icon resolver (cascades: per-notification, provider).</dd>
+</dl>
 
 ### TbxMatNotificationProviderConfig
 
-| Property                      | Type                                                                     | Default      | Description                             |
-| ----------------------------- | ------------------------------------------------------------------------ | ------------ | --------------------------------------- |
-| `severityIconResolverService` | `TbxMatSeverityResolver & TbxMatIconResolver<TbxMatSeverityLevel> & ...` | -            | Severity icon resolver (required)       |
-| `closeIconResolverService`    | `TbxMatIconResolver<string> & { iconType }`                              | Default font | Close button icon resolver              |
-| `actionConfig`                | `TbxMatNotificationProviderActionConfig`                                 | -            | Application-wide action button defaults |
+<dl>
+    <dt><code>severityIconResolverService</code> (<code>TbxMatSeverityResolver &amp; TbxMatIconResolver&lt;TbxMatSeverityLevel&gt; &amp; ...</code>)</dt>
+    <dd>Severity icon resolver (required).</dd>
+    <dt><code>closeIconResolverService</code> (<code>TbxMatIconResolver&lt;string&gt; &amp; { iconType }</code>)</dt>
+    <dd>Close button icon resolver. Default: Default font.</dd>
+    <dt><code>actionConfig</code> (<code>TbxMatNotificationProviderActionConfig</code>)</dt>
+    <dd>Application-wide action button defaults.</dd>
+</dl>
 
 ## Styling
 
@@ -337,58 +372,89 @@ Notification appearance is customizable via CSS custom properties. Set them glob
 
 ### Layout
 
-| Property                                   | Default     | Description                          |
-| ------------------------------------------ | ----------- | ------------------------------------ |
-| `--tbx-mat-notification-padding`           | `0.25rem`   | Host element padding                 |
-| `--tbx-mat-notification-font-size`         | `inherit`   | Message text size                    |
-| `--tbx-mat-notification-icon-size`         | `1.5rem`    | Severity icon size                   |
-| `--tbx-mat-notification-label-gap`         | `1rem`      | Gap between icon and message         |
-| `--tbx-mat-notification-actions-padding`   | `1rem`      | Padding before actions area          |
-| `--tbx-mat-notification-actions-gap`       | `0.5rem`    | Gap between action and close buttons |
-| `--tbx-mat-notification-countdown-height`  | `0.1875rem` | Countdown bar thickness              |
-| `--tbx-mat-notification-countdown-opacity` | `0.4`       | Countdown bar opacity                |
+<dl>
+    <dt><code>--tbx-mat-notification-padding</code></dt>
+    <dd>Host element padding. Default: <code>0.25rem</code>.</dd>
+    <dt><code>--tbx-mat-notification-font-size</code></dt>
+    <dd>Message text size. Default: <code>inherit</code>.</dd>
+    <dt><code>--tbx-mat-notification-icon-size</code></dt>
+    <dd>Severity icon size. Default: <code>1.5rem</code>.</dd>
+    <dt><code>--tbx-mat-notification-label-gap</code></dt>
+    <dd>Gap between icon and message. Default: <code>1rem</code>.</dd>
+    <dt><code>--tbx-mat-notification-actions-padding</code></dt>
+    <dd>Padding before actions area. Default: <code>1rem</code>.</dd>
+    <dt><code>--tbx-mat-notification-actions-gap</code></dt>
+    <dd>Gap between action and close buttons. Default: <code>0.5rem</code>.</dd>
+    <dt><code>--tbx-mat-notification-countdown-height</code></dt>
+    <dd>Countdown bar thickness. Default: <code>0.1875rem</code>.</dd>
+    <dt><code>--tbx-mat-notification-countdown-opacity</code></dt>
+    <dd>Countdown bar opacity. Default: <code>0.4</code>.</dd>
+</dl>
 
 ### Colors
 
-| Property                                        | Default   | Description                 |
-| ----------------------------------------------- | --------- | --------------------------- |
-| `--tbx-mat-notification-success-background`     | `#2E7D32` | Success background          |
-| `--tbx-mat-notification-success-text`           | `#FFFFFF` | Success text/icon color     |
-| `--tbx-mat-notification-error-background`       | `#C62828` | Error background            |
-| `--tbx-mat-notification-error-text`             | `#FFFFFF` | Error text/icon color       |
-| `--tbx-mat-notification-warning-background`     | `#F9A825` | Warning background          |
-| `--tbx-mat-notification-warning-text`           | `#FFFFFF` | Warning text/icon color     |
-| `--tbx-mat-notification-information-background` | `#1565C0` | Information background      |
-| `--tbx-mat-notification-information-text`       | `#FFFFFF` | Information text/icon color |
-| `--tbx-mat-notification-help-background`        | `#1976D2` | Help background             |
-| `--tbx-mat-notification-help-text`              | `#FFFFFF` | Help text/icon color        |
+<dl>
+    <dt><code>--tbx-mat-notification-success-background</code></dt>
+    <dd>Success background. Default: <code>#2E7D32</code>.</dd>
+    <dt><code>--tbx-mat-notification-success-text</code></dt>
+    <dd>Success text/icon color. Default: <code>#FFFFFF</code>.</dd>
+    <dt><code>--tbx-mat-notification-error-background</code></dt>
+    <dd>Error background. Default: <code>#C62828</code>.</dd>
+    <dt><code>--tbx-mat-notification-error-text</code></dt>
+    <dd>Error text/icon color. Default: <code>#FFFFFF</code>.</dd>
+    <dt><code>--tbx-mat-notification-warning-background</code></dt>
+    <dd>Warning background. Default: <code>#F9A825</code>.</dd>
+    <dt><code>--tbx-mat-notification-warning-text</code></dt>
+    <dd>Warning text/icon color. Default: <code>#FFFFFF</code>.</dd>
+    <dt><code>--tbx-mat-notification-information-background</code></dt>
+    <dd>Information background. Default: <code>#1565C0</code>.</dd>
+    <dt><code>--tbx-mat-notification-information-text</code></dt>
+    <dd>Information text/icon color. Default: <code>#FFFFFF</code>.</dd>
+    <dt><code>--tbx-mat-notification-help-background</code></dt>
+    <dd>Help background. Default: <code>#1976D2</code>.</dd>
+    <dt><code>--tbx-mat-notification-help-text</code></dt>
+    <dd>Help text/icon color. Default: <code>#FFFFFF</code>.</dd>
+</dl>
 
 ### Action Button Opacity
 
 Control the transparency of action button elements relative to the panel's text color. All variant tokens default to `--tbx-mat-notification-action-text-opacity` unless overridden. Set on `html` globally or on a panel class for per-severity overrides.
 
-| Property                                                         | Default                                       | Description                     |
-| ---------------------------------------------------------------- | --------------------------------------------- | ------------------------------- |
-| `--tbx-mat-notification-action-text-opacity`                     | `0.8`                                         | Text button label opacity       |
-| `--tbx-mat-notification-action-filled-container-opacity`         | `var(--...-action-text-opacity)`              | Filled button container opacity |
-| `--tbx-mat-notification-action-tonal-container-opacity`          | `0.55`                                        | Tonal button container opacity  |
-| `--tbx-mat-notification-action-outlined-opacity`                 | `var(--...-action-text-opacity)`              | Outlined button label opacity   |
-| `--tbx-mat-notification-action-elevated-opacity`                 | `var(--...-action-text-opacity)`              | Elevated button label opacity   |
-| `--tbx-mat-notification-action-icon-opacity`                     | `var(--...-action-text-opacity)`              | Action icon button icon opacity |
-| `--tbx-mat-notification-close-icon-opacity`                      | `var(--...-action-text-opacity)`              | Close icon button icon opacity  |
-| `--tbx-mat-notification-action-filled-hover-state-layer-opacity` | `0.3`                                         | Filled button hover state-layer |
-| `--tbx-mat-notification-action-tonal-hover-state-layer-opacity`  | `var(--...-filled-hover-state-layer-opacity)` | Tonal button hover state-layer  |
+<dl>
+    <dt><code>--tbx-mat-notification-action-text-opacity</code></dt>
+    <dd>Text button label opacity. Default: <code>0.8</code>.</dd>
+    <dt><code>--tbx-mat-notification-action-filled-container-opacity</code></dt>
+    <dd>Filled button container opacity. Default: <code>var(--...-action-text-opacity)</code>.</dd>
+    <dt><code>--tbx-mat-notification-action-tonal-container-opacity</code></dt>
+    <dd>Tonal button container opacity. Default: <code>0.55</code>.</dd>
+    <dt><code>--tbx-mat-notification-action-outlined-opacity</code></dt>
+    <dd>Outlined button label opacity. Default: <code>var(--...-action-text-opacity)</code>.</dd>
+    <dt><code>--tbx-mat-notification-action-elevated-opacity</code></dt>
+    <dd>Elevated button label opacity. Default: <code>var(--...-action-text-opacity)</code>.</dd>
+    <dt><code>--tbx-mat-notification-action-icon-opacity</code></dt>
+    <dd>Action icon button icon opacity. Default: <code>var(--...-action-text-opacity)</code>.</dd>
+    <dt><code>--tbx-mat-notification-close-icon-opacity</code></dt>
+    <dd>Close icon button icon opacity. Default: <code>var(--...-action-text-opacity)</code>.</dd>
+    <dt><code>--tbx-mat-notification-action-filled-hover-state-layer-opacity</code></dt>
+    <dd>Filled button hover state-layer. Default: <code>0.3</code>.</dd>
+    <dt><code>--tbx-mat-notification-action-tonal-hover-state-layer-opacity</code></dt>
+    <dd>Tonal button hover state-layer. Default: <code>var(--...-filled-hover-state-layer-opacity)</code>.</dd>
+</dl>
 
 ### Icon Button Colors
 
 Action and close icon buttons share the same computed color by default. Override these on a panel class to differentiate them per-severity.
 
-| Property                                               | Default                    | Description                          |
-| ------------------------------------------------------ | -------------------------- | ------------------------------------ |
-| `--tbx-mat-notification-action-icon-color`             | Computed via `color-mix()` | Action icon button icon color        |
-| `--tbx-mat-notification-action-icon-state-layer-color` | Panel text color           | Action icon button hover/focus color |
-| `--tbx-mat-notification-close-icon-color`              | Computed via `color-mix()` | Close icon button icon color         |
-| `--tbx-mat-notification-close-icon-state-layer-color`  | Panel text color           | Close icon button hover/focus color  |
+<dl>
+    <dt><code>--tbx-mat-notification-action-icon-color</code></dt>
+    <dd>Action icon button icon color. Default: Computed via <code>color-mix()</code>.</dd>
+    <dt><code>--tbx-mat-notification-action-icon-state-layer-color</code></dt>
+    <dd>Action icon button hover/focus color. Default: Panel text color.</dd>
+    <dt><code>--tbx-mat-notification-close-icon-color</code></dt>
+    <dd>Close icon button icon color. Default: Computed via <code>color-mix()</code>.</dd>
+    <dt><code>--tbx-mat-notification-close-icon-state-layer-color</code></dt>
+    <dd>Close icon button hover/focus color. Default: Panel text color.</dd>
+</dl>
 
 ### Styling Font Icons
 
@@ -402,12 +468,16 @@ font-variation-settings:
     'opsz' 24;
 ```
 
-| Axis   | Range   | Default | Description                                                                                                    |
-| ------ | ------- | ------- | -------------------------------------------------------------------------------------------------------------- |
-| `FILL` | 0-1     | 0       | Outlined (0) or filled (1). Use to convey state transitions.                                                   |
-| `wght` | 100-700 | 400     | Stroke weight. Higher values produce bolder icons for visual emphasis.                                         |
-| `GRAD` | -50-200 | 0       | Grade. Fine-grained weight adjustment without changing icon size. Use -25 to reduce glare on dark backgrounds. |
-| `opsz` | 20-48   | 48      | Optical size. Adjusts stroke weight automatically at different display sizes.                                  |
+<dl>
+    <dt><code>FILL</code></dt>
+    <dd>Outlined (0) or filled (1). Use to convey state transitions. Range: 0-1. Default: 0.</dd>
+    <dt><code>wght</code></dt>
+    <dd>Stroke weight. Higher values produce bolder icons for visual emphasis. Range: 100-700. Default: 400.</dd>
+    <dt><code>GRAD</code></dt>
+    <dd>Grade. Fine-grained weight adjustment without changing icon size. Use -25 to reduce glare on dark backgrounds. Range: -50-200. Default: 0.</dd>
+    <dt><code>opsz</code></dt>
+    <dd>Optical size. Adjusts stroke weight automatically at different display sizes. Range: 20-48. Default: 48.</dd>
+</dl>
 
 #### Filled icons
 
@@ -482,12 +552,14 @@ font-variation-settings:
 
 ## Compatibility
 
+<!-- Kept as a pipe table until teqbench/.github#22 lands; the centralized CI README version-check regex extracts versions from this exact shape. -->
+
 | Dependency                                                                               | Version  |
 | ---------------------------------------------------------------------------------------- | -------- |
 | [Angular ↗](https://angular.dev)                                                         | >=21.0.0 |
 | [Angular Material ↗](https://material.angular.dev)                                       | >=21.0.0 |
-| [@teqbench/tbx-mat-icons ↗](https://github.com/teqbench/tbx-mat-icons)                   | >=4.0.0  |
-| [@teqbench/tbx-mat-severity-theme ↗](https://github.com/teqbench/tbx-mat-severity-theme) | >=8.0.0  |
+| [@teqbench/tbx-mat-icons ↗](https://github.com/teqbench/tbx-mat-icons)                   | >=4.2.0  |
+| [@teqbench/tbx-mat-severity-theme ↗](https://github.com/teqbench/tbx-mat-severity-theme) | >=8.0.2  |
 | [TypeScript ↗](https://www.typescriptlang.org)                                           | ~5.9.0   |
 | [Node.js ↗](https://nodejs.org)                                                          | >=24.0.0 |
 
@@ -504,11 +576,11 @@ This package follows [Semantic Versioning ↗](https://semver.org). Versions and
 
 ## Contributing
 
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) authentication, branch conventions, commit format, and the PR workflow.
+Contributions are welcome. See the [contributing guide ↗](https://github.com/teqbench/.github/blob/main/CONTRIBUTING.md) for local setup, [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) authentication, branch conventions, commit format, and the PR workflow.
 
 ## Security
 
-See [SECURITY.md](SECURITY.md) for the supported-version policy and how to report a vulnerability privately.
+See the [security policy ↗](https://github.com/teqbench/.github/blob/main/SECURITY.md) for the supported-version policy and how to report a vulnerability privately.
 
 ## Feedback
 

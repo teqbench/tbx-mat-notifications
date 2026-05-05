@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig, moduleMetadata } from '@storybook/angular';
 import { provideTbxMatSeverityTheme } from '@teqbench/tbx-mat-severity-theme';
-import { TbxMatNotificationSeveritySvgIconService } from '../../index';
+import { TbxMatNotificationSeveritySvgIconService } from '../../services/notification-severity-svg-icon.service';
 import { TBX_MAT_NOTIFICATION_PROVIDER_CONFIG } from '../../tokens/notification-provider-config.token';
 import { DEFAULT_ARGS, NotificationHarnessComponent, SHARED_ARG_TYPES } from '../../components/notification.stories.common';
 import { ACTION_BUTTON_ARG_TYPES, ActionButtonHarnessComponent, DEFAULT_ACTION_ARGS, withActionProviders } from '../../components/notification-action-button.stories.common';
