@@ -45,13 +45,13 @@ This is a `@teqbench` [Angular ↗](https://angular.dev) package (`tbx-mat-*`) b
 - `src/styles/` — SCSS partials (panel classes, countdown bar, action button theming)
 - `dist/` — Compiled output (git-ignored, only this directory is published)
 - `docs/` — Per-package docs pipeline inputs (`overview.md`, `concepts.yml`, `features.yml`, `accessibility.md`) used to build the README and published with the package via `ng-package.json` assets. Also contains `reference/workflows/` describing each CI/CD pipeline.
-- `.github/workflows/` — CI/CD pipelines (ci, release, sync, dep-compat-check, claude)
+- `.github/workflows/` — CI/CD pipelines (ci, release, sync, dep-compat-check, claude, docs-deploy)
 - Dependency updates run centrally via [Renovate ↗](https://docs.renovatebot.com/) — see the [org-level Renovate doc ↗](https://github.com/teqbench/.github/blob/main/renovate.md) for workflow details and `renovate-config.js`; no per-repo config is required
 
 ## Publishing
 
 - Packages are published to [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) (`@teqbench` scope) via the release workflow.
-- Coverage thresholds are enforced in CI: 80% lines/functions/statements, 75% branches, per file. Lines guarded by `/* v8 ignore next */` are excluded from [V8 ↗](https://v8.dev) coverage collection (used by [Vitest ↗](https://vitest.dev)). This pragma marks code that is unreachable in the test environment (e.g., SSR `window` guards).
+- Coverage thresholds are enforced in CI: 80% lines/functions/statements, 75% branches, per file. Lines or short blocks guarded by `/* v8 ignore next */` (single line) or `/* v8 ignore start ... stop */` (multi-line) are excluded from [V8 ↗](https://v8.dev) coverage collection (used by [Vitest ↗](https://vitest.dev)). These pragmas mark code that is unreachable in the test environment (e.g., SSR `window` guards, `DestroyRef` cleanup paths).
 - **Build tooling:** [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr) is used to build [Angular ↗](https://angular.dev) Package Format (APF) output. It uses bundler module resolution internally, so source files use extensionless relative imports (e.g., `'./foo.service'`). The `ng-package.json` at the repo root configures the entry point and output directory. [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr) generates its own `package.json` inside `dist/` with the correct APF entry points (`module`, `typings`, `exports`, `sideEffects`). The release workflow publishes from `dist/` directly (`npm publish ./dist`), so consumers resolve against [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr)'s generated `package.json`. The root `package.json` does not need `main`, `types`, or `exports` fields.
 
 ## TSDoc Convention
@@ -243,7 +243,7 @@ All [TSDoc ↗](https://tsdoc.org) comments, inline code comments, and markdown 
 
 - Do not use terms with established technical meanings in unintended ways (e.g., "side-effect pattern" for fan-out, "structured output" for human-readable console logging).
 - Do not reference concepts or patterns that do not exist in the codebase.
-- Coverage pragmas (`/* v8 ignore next */`) and other non-obvious annotations must be documented in this file (see Publishing section).
+- Coverage pragmas (`/* v8 ignore next */` and `/* v8 ignore start ... stop */`) and other non-obvious annotations must be documented in this file (see Publishing section).
 - Configuration snapshots in documentation must note they are examples that may not reflect the current state.
 - Custom `package.json` metadata fields (not defined by the [npm ↗](https://www.npmjs.com) spec) must be identified as custom where referenced.
 
