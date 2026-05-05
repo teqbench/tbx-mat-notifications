@@ -1,5 +1,22 @@
 # Changelog
 
+## [8.0.2](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.1...v8.0.2) (2026-05-05)
+
+
+### Bug Fixes
+
+* **claude:** add docs-deploy and document both v8 ignore forms ([d03e5c2](https://github.com/teqbench/tbx-mat-notifications/commit/d03e5c2cb075c3552d87dc0b7ccdbf44beab42f0))
+* **claude:** add Markdown Tables Convention section ([c3bb16e](https://github.com/teqbench/tbx-mat-notifications/commit/c3bb16eef1f4c1dc012497f43c5947869bb1f40c))
+* **claude:** add secrets and private-content safety bullets ([5c300e7](https://github.com/teqbench/tbx-mat-notifications/commit/5c300e75004acea48785f3fc47769fa00d5455a5))
+* **claude:** describe docs/ as per-package docs pipeline inputs ([67cdaa1](https://github.com/teqbench/tbx-mat-notifications/commit/67cdaa179bece8d702a150de95bfc1ea26dcd844))
+* **claude:** document Renovate as central dependency update mechanism ([02b9f7b](https://github.com/teqbench/tbx-mat-notifications/commit/02b9f7b37e515ec6db0a2183840f0550465b5b5f))
+* **claude:** list actual APF entry points emitted by ng-packagr ([ca1a977](https://github.com/teqbench/tbx-mat-notifications/commit/ca1a9775c22a88eb1c001d18deb701cd9b30e3e6))
+* **docs:** correct [@example](https://github.com/example) import path and clean up decorator typings ([90d56b7](https://github.com/teqbench/tbx-mat-notifications/commit/90d56b708500ec07d31999c38c6e3ce5c547f498))
+* **docs:** replace markdown tables with definition lists ([f16512a](https://github.com/teqbench/tbx-mat-notifications/commit/f16512ad3ecce4a76222905b3d84edda16b03efb))
+* package updates, docs alignment, and code review fixes ([aaf16f2](https://github.com/teqbench/tbx-mat-notifications/commit/aaf16f258590edd74bbe1542f52f7fdd18a64e01))
+* **readme:** bump [@teqbench](https://github.com/teqbench) peer floors in Compatibility table ([128635b](https://github.com/teqbench/tbx-mat-notifications/commit/128635b283bc58a5eaa2ac1d003b91119125ed6b))
+* remove dependabot artifacts after migration to renovate ([babe612](https://github.com/teqbench/tbx-mat-notifications/commit/babe61281a5cbc5f627ed1202535abb509696853))
+
 ## [8.0.1](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.0...v8.0.1) (2026-04-15)
 
 
