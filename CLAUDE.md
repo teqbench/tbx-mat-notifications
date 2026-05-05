@@ -44,7 +44,7 @@ This is a `@teqbench` [Angular ↗](https://angular.dev) package (`tbx-mat-*`) b
 - `src/tokens/` — Injection tokens (`TBX_MAT_NOTIFICATION_PROVIDER_CONFIG`)
 - `src/styles/` — SCSS partials (panel classes, countdown bar, action button theming)
 - `dist/` — Compiled output (git-ignored, only this directory is published)
-- `docs/` — Documentation (placeholder for package-specific guides)
+- `docs/` — Per-package docs pipeline inputs (`overview.md`, `concepts.yml`, `features.yml`, `accessibility.md`) used to build the README and published with the package via `ng-package.json` assets. Also contains `reference/workflows/` describing each CI/CD pipeline.
 - `.github/workflows/` — CI/CD pipelines (ci, release, sync, dep-compat-check, claude)
 
 ## Publishing
