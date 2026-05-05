@@ -21,8 +21,7 @@ const preview: Preview = {
         // `withCustomProperties()` in notification.stories.common.ts. Runs
         // before every story renders so overrides do not leak when navigating
         // to a story whose decorator stack does not call withCustomProperties.
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (story: () => any) => {
+        (story: () => unknown) => {
             removeStoryOverrideStyleTag();
             return story();
         },
