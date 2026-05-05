@@ -558,8 +558,8 @@ font-variation-settings:
 | ---------------------------------------------------------------------------------------- | -------- |
 | [Angular ↗](https://angular.dev)                                                         | >=21.0.0 |
 | [Angular Material ↗](https://material.angular.dev)                                       | >=21.0.0 |
-| [@teqbench/tbx-mat-icons ↗](https://github.com/teqbench/tbx-mat-icons)                   | >=4.0.0  |
-| [@teqbench/tbx-mat-severity-theme ↗](https://github.com/teqbench/tbx-mat-severity-theme) | >=8.0.0  |
+| [@teqbench/tbx-mat-icons ↗](https://github.com/teqbench/tbx-mat-icons)                   | >=4.2.0  |
+| [@teqbench/tbx-mat-severity-theme ↗](https://github.com/teqbench/tbx-mat-severity-theme) | >=8.0.2  |
 | [TypeScript ↗](https://www.typescriptlang.org)                                           | ~5.9.0   |
 | [Node.js ↗](https://nodejs.org)                                                          | >=24.0.0 |
 
