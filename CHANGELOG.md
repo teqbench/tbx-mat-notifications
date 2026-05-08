@@ -1,5 +1,14 @@
 # Changelog
 
+## [8.0.3](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.2...v8.0.3) (2026-05-08)
+
+
+### Bug Fixes
+
+* **styles:** decouple close-icon opacity from action-button opacity ([d6817e9](https://github.com/teqbench/tbx-mat-notifications/commit/d6817e947dd6e402037b909062c064fdd03a0634))
+* **styles:** decouple close-icon opacity from action-button opacity ([9521c4d](https://github.com/teqbench/tbx-mat-notifications/commit/9521c4daa660562476436b283be11d2a9a0c7efa))
+* **styles:** decouple close-icon opacity from action-button opacity ([796ff57](https://github.com/teqbench/tbx-mat-notifications/commit/796ff57c0b953ce8f82eb1328dc667bf96a2e1d9))
+
 ## [8.0.2](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.1...v8.0.2) (2026-05-05)
 
 
