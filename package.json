@@ -78,7 +78,7 @@
     "rxjs": "^7.8.2",
     "storybook": "^10.3.3",
     "typescript": "~5.9.0",
-    "typescript-eslint": "8.57.2",
+    "typescript-eslint": "8.59.2",
     "vitest": "^4.0.18",
     "zone.js": "^0.16.1"
   },
