@@ -1,5 +1,14 @@
 # Changelog
 
+## [8.0.5](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.4...v8.0.5) (2026-05-10)
+
+
+### Bug Fixes
+
+* **ci:** pin reusable workflows to [@v2](https://github.com/v2).9.3 ([29d896a](https://github.com/teqbench/tbx-mat-notifications/commit/29d896a67dfa685750247a9d09dde77fdb40213d)), closes [#28](https://github.com/teqbench/tbx-mat-notifications/issues/28)
+* **deps:** bump tbx-mat-icons and tbx-mat-severity-theme peerDeps ([7b34ab4](https://github.com/teqbench/tbx-mat-notifications/commit/7b34ab4abe3db0ada485fc9e021140ddac0a9406))
+* **deps:** bump tbx-mat-icons and tbx-mat-severity-theme peerDeps ([9e4c635](https://github.com/teqbench/tbx-mat-notifications/commit/9e4c635c900f1de457dc5ec0b6a1552fd6d2fa5f)), closes [#28](https://github.com/teqbench/tbx-mat-notifications/issues/28)
+
 ## [8.0.4](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.3...v8.0.4) (2026-05-09)
 
 
