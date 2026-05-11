@@ -5,7 +5,7 @@
 
 ### Bug Fixes
 
-* **ci:** pin reusable workflows to [@v2](https://github.com/v2).9.3 ([29d896a](https://github.com/teqbench/tbx-mat-notifications/commit/29d896a67dfa685750247a9d09dde77fdb40213d)), closes [#28](https://github.com/teqbench/tbx-mat-notifications/issues/28)
+* **ci:** pin reusable workflows to v2.9.3 ([29d896a](https://github.com/teqbench/tbx-mat-notifications/commit/29d896a67dfa685750247a9d09dde77fdb40213d)), closes [#28](https://github.com/teqbench/tbx-mat-notifications/issues/28)
 * **deps:** bump tbx-mat-icons and tbx-mat-severity-theme peerDeps ([7b34ab4](https://github.com/teqbench/tbx-mat-notifications/commit/7b34ab4abe3db0ada485fc9e021140ddac0a9406))
 * **deps:** bump tbx-mat-icons and tbx-mat-severity-theme peerDeps ([9e4c635](https://github.com/teqbench/tbx-mat-notifications/commit/9e4c635c900f1de457dc5ec0b6a1552fd6d2fa5f)), closes [#28](https://github.com/teqbench/tbx-mat-notifications/issues/28)
 
@@ -14,9 +14,9 @@
 
 ### Bug Fixes
 
-* **ci:** pin reusable workflows to [@v2](https://github.com/v2).6.0 ([496a1da](https://github.com/teqbench/tbx-mat-notifications/commit/496a1da3a69699d63ee3b6c23356cb189f7110bd))
-* **ci:** pin reusable workflows to [@v2](https://github.com/v2).6.0 + bump [@teqbench](https://github.com/teqbench) peerDeps ([36234c7](https://github.com/teqbench/tbx-mat-notifications/commit/36234c720e46b7164b327b3cad1dd009528dec3f))
-* **deps:** bump [@teqbench](https://github.com/teqbench) peerDeps to latest patches ([5efc434](https://github.com/teqbench/tbx-mat-notifications/commit/5efc434da117591e81e200f3a9ff7a1b7fa3d9e7))
+* **ci:** pin reusable workflows to v2.6.0 ([496a1da](https://github.com/teqbench/tbx-mat-notifications/commit/496a1da3a69699d63ee3b6c23356cb189f7110bd))
+* **ci:** pin reusable workflows to v2.6.0 + bump teqbench peerDeps ([36234c7](https://github.com/teqbench/tbx-mat-notifications/commit/36234c720e46b7164b327b3cad1dd009528dec3f))
+* **deps:** bump teqbench peerDeps to latest patches ([5efc434](https://github.com/teqbench/tbx-mat-notifications/commit/5efc434da117591e81e200f3a9ff7a1b7fa3d9e7))
 
 ## [8.0.3](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.2...v8.0.3) (2026-05-08)
 
@@ -38,10 +38,10 @@
 * **claude:** describe docs/ as per-package docs pipeline inputs ([67cdaa1](https://github.com/teqbench/tbx-mat-notifications/commit/67cdaa179bece8d702a150de95bfc1ea26dcd844))
 * **claude:** document Renovate as central dependency update mechanism ([02b9f7b](https://github.com/teqbench/tbx-mat-notifications/commit/02b9f7b37e515ec6db0a2183840f0550465b5b5f))
 * **claude:** list actual APF entry points emitted by ng-packagr ([ca1a977](https://github.com/teqbench/tbx-mat-notifications/commit/ca1a9775c22a88eb1c001d18deb701cd9b30e3e6))
-* **docs:** correct [@example](https://github.com/example) import path and clean up decorator typings ([90d56b7](https://github.com/teqbench/tbx-mat-notifications/commit/90d56b708500ec07d31999c38c6e3ce5c547f498))
+* **docs:** correct example import path and clean up decorator typings ([90d56b7](https://github.com/teqbench/tbx-mat-notifications/commit/90d56b708500ec07d31999c38c6e3ce5c547f498))
 * **docs:** replace markdown tables with definition lists ([f16512a](https://github.com/teqbench/tbx-mat-notifications/commit/f16512ad3ecce4a76222905b3d84edda16b03efb))
 * package updates, docs alignment, and code review fixes ([aaf16f2](https://github.com/teqbench/tbx-mat-notifications/commit/aaf16f258590edd74bbe1542f52f7fdd18a64e01))
-* **readme:** bump [@teqbench](https://github.com/teqbench) peer floors in Compatibility table ([128635b](https://github.com/teqbench/tbx-mat-notifications/commit/128635b283bc58a5eaa2ac1d003b91119125ed6b))
+* **readme:** bump teqbench peer floors in Compatibility table ([128635b](https://github.com/teqbench/tbx-mat-notifications/commit/128635b283bc58a5eaa2ac1d003b91119125ed6b))
 * remove dependabot artifacts after migration to renovate ([babe612](https://github.com/teqbench/tbx-mat-notifications/commit/babe61281a5cbc5f627ed1202535abb509696853))
 
 ## [8.0.1](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.0...v8.0.1) (2026-04-15)
