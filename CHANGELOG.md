@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.0.6](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.5...v8.0.6) (2026-05-11)
+
+
+### Bug Fixes
+
+* **changelog:** strip broken at-mention autolinks from history ([07ee94a](https://github.com/teqbench/tbx-mat-notifications/commit/07ee94a5988a4364a3ec3e1837925254a1171732))
+* **changelog:** strip broken at-mention autolinks from history ([cfa1c34](https://github.com/teqbench/tbx-mat-notifications/commit/cfa1c34f4ff7ab87809ecb32fa0572a7783121ac))
+
 ## [8.0.5](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.4...v8.0.5) (2026-05-10)
 
 
