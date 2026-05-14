@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.7](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.6...v8.0.7) (2026-05-14)
+
+
+### Bug Fixes
+
+* **deps:** Update teqbench packages ([#228](https://github.com/teqbench/tbx-mat-notifications/issues/228)) ([132ac89](https://github.com/teqbench/tbx-mat-notifications/commit/132ac89abaa9d9cc00afd2b66abb49ee1b7d279e))
+
 ## [8.0.6](https://github.com/teqbench/tbx-mat-notifications/compare/v8.0.5...v8.0.6) (2026-05-11)
 
 
